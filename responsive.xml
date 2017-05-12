@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="content" method="upgrade">
+	<name>Responsive content images</name>
+	<author>Dimitrios Grammatikogiannis</author>
+	<creationDate>2017</creationDate>
+	<copyright>Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>d.grammatiko@gmail.com</authorEmail>
+	<version>1.0.0</version>
+	<description>Responsive images</description>
+	<files>
+		<filename plugin="responsive">responsive.php</filename>
+	</files>
+	<updateservers>
+		<server type="extension" priority="1" name="Responsive content images">https://raw.githubusercontent.com/ttc-freebies/updates/master/responsive/updates.xml</server>
+	</updateservers>
+</extension>
