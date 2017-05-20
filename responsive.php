@@ -36,7 +36,7 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		$dom = new domDocument;
-		$dom->loadHTML($row->text);
+		$dom->loadHTML(utf8_decode($row->text));
 
 		$xpath    = new DOMXpath($dom);
 		$body     = $xpath->query("//body");
@@ -76,7 +76,7 @@ class PlgContentResponsive extends JPlugin
 				// $images->item($i)->setAttribute('class', 'responsive');
 			}
 
-			$newHtml = $dom->saveHTML($body[0]);
+			$newHtml = utf8_encode($dom->saveHTML($body[0]));
 
 			$row->text = $newHtml;
 		}
