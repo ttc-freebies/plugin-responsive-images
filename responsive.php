@@ -73,7 +73,8 @@ class PlgContentResponsive extends JPlugin
 				$srcset = self::buildSrcset(array(320, 480, 768, 992, 1200, 1600, 1920), $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension']);
 
 				$images->item($i)->setAttribute('srcset', $srcset);
-				// $images->item($i)->setAttribute('class', 'responsive');
+				$images->item($i)->setAttribute('class', 'c-image-responsive');
+				$images->item($i)->setAttribute('width', '100%');
 			}
 
 			$row->text = $dom->saveHTML($body[0]);
