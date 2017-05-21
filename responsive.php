@@ -36,11 +36,11 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		$dom = new domDocument;
-		$dom->loadHTML('<?xml encoding="utf-8" ?>' . $row->text);
+		$dom->loadHTML($row->text);
 
 		$xpath    = new DOMXpath($dom);
 		$body     = $xpath->query("//body");
-		$images   = $xpath->query("//body/*/img");
+		$images   = $xpath->query("//img");
 		$validExt = array('jpg', 'jpeg', 'png');
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
