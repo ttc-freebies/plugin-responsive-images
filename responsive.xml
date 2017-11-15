@@ -8,9 +8,19 @@
 	<authorEmail>d.grammatiko@gmail.com</authorEmail>
 	<version>1.0.0</version>
 	<description>Responsive images</description>
+
 	<files>
 		<filename plugin="responsive">responsive.php</filename>
 	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="quality" type="integer" default="85" label="Image quality" first="1" last="100" step="1" description="This value will be effected on new generated images only." />
+			</fieldset>
+		</fields>
+	</config>
+
 	<updateservers>
 		<server type="extension" priority="1" name="Responsive content images">https://raw.githubusercontent.com/ttc-freebies/updates/master/responsive/updates.xml</server>
 	</updateservers>
