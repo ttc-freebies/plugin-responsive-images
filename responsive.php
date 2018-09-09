@@ -79,7 +79,7 @@ class PlgContentResponsive extends JPlugin
 				$images->item($i)->setAttribute('width', '100%');
 			}
 
-			$row->text = $dom->saveHTML($body[0]);
+			$row->text = substr(trim($dom->saveHTML($body[0])),12,-14);
 		}
 	}
 
