@@ -102,15 +102,11 @@ class PlgContentResponsive extends JPlugin
 				if (file_exists(JPATH_ROOT . $filesrc))
 				{
 					$srcset .= $filesrc . ' ' . $breakpoints[$i] . 'w';
-					if ($i + 1 !== $l)
-					{
-						$srcset .= ', ';
-					}
 				}
 			}
 		}
 
-		return $srcset;
+		return rtrim($srcset, ',');
 	}
 
 	/**
