@@ -80,7 +80,7 @@ class PlgContentResponsive extends JPlugin
 			}
 		}
 		
-		$row->text = $dom->saveHTML($body[0]);
+		$row->text = substr(trim($dom->saveHTML($body[0])),7,-14);
 	}
 
 	/**
