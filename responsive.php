@@ -101,16 +101,12 @@ class PlgContentResponsive extends JPlugin
 				$filesrc = '/media/cached-resp-images/' . $dirname . '/' . $filename . '@' . $breakpoints[$i] . '.' . $extension;
 				if (file_exists(JPATH_ROOT . $filesrc))
 				{
-					$srcset .= $filesrc . ' ' . $breakpoints[$i] . 'w';
-					if ($i + 1 !== $l)
-					{
-						$srcset .= ', ';
-					}
+					$srcset .= $filesrc . ' ' . $breakpoints[$i] . 'w, ';
 				}
 			}
 		}
 
-		return $srcset;
+		return rtrim($srcset, ',');
 	}
 
 	/**
