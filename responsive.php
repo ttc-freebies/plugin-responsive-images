@@ -78,9 +78,9 @@ class PlgContentResponsive extends JPlugin
 				$images->item($i)->setAttribute('class', 'c-image-responsive');
 				$images->item($i)->setAttribute('width', '100%');
 			}
-
-			$row->text = $dom->saveHTML($body[0]);
 		}
+		
+		$row->text = substr(trim($dom->saveHTML($body[0])),7,-14);
 	}
 
 	/**
