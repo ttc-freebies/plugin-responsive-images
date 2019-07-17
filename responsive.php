@@ -42,8 +42,29 @@ class PlgContentResponsive extends JPlugin
 		$body       = $xpath->query("//body");
 		$images     = $xpath->query("//img");
 		$validExt   = array('jpg', 'jpeg', 'png');
+		$sizeSplitt	= '_';
 		$validSize  = array(320, 480, 768, 992, 1200, 1600, 1920);
 		$quality    = (int) $this->params->get('quality', '85');
+		$scaleUp    = (bool)($this->params->get('scaleUp', '0') == '1');
+		
+		$scaleMethod = JImage::SCALE_INSIDE;
+		switch (mb_strtolower($this->params->get('scaleMethod', 'inside'))) {
+			case 'fill':
+				$scaleMethod = JImage::SCALE_FILL;
+				break;
+			case 'inside':
+				$scaleMethod = JImage::SCALE_INSIDE;
+				break;
+			case 'outside':
+				$scaleMethod = JImage::SCALE_OUTSIDE;
+				break;
+			case 'fit':
+				$scaleMethod = JImage::SCALE_FIT;
+				break;
+			default:
+				$scaleMethod = JImage::SCALE_INSIDE;
+				break;
+		}
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
 			// Get the original path
@@ -62,25 +83,26 @@ class PlgContentResponsive extends JPlugin
 			}
 
 			// If responsive image doesn't exist we will create it
-			if (!file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . '@' . $validSize[0] . '.' . $originalImagePathInfo['extension']))
+			if (!file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . $sizeSplitt . $validSize[0] . '.' . $originalImagePathInfo['extension']))
 			{
-				self::createImages($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $quality);
+				self::createImages($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $quality, $scaleUp, $scaleMethod, $sizeSplitt);
 			}
 
 			// If responsive image exists use it
-			if (file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . '@' . $validSize[0] . '.' . $originalImagePathInfo['extension']))
+			if (file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . $sizeSplitt . $validSize[0] . '.' . $originalImagePathInfo['extension']))
 			{
-				$images->item($i)->setAttribute('src', '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . '@' . $validSize[0] . '.' . $originalImagePathInfo['extension']);
+				$images->item($i)->setAttribute('src', 'media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplitt . $validSize[0] . '.' . $originalImagePathInfo['extension']);
 
-				$srcset = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension']);
+				$srcset = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplitt);
 
 				$images->item($i)->setAttribute('srcset', $srcset);
 				$images->item($i)->setAttribute('class', 'c-image-responsive');
 				$images->item($i)->setAttribute('width', '100%');
 			}
 		}
-		
-		$row->text = substr(trim($dom->saveHTML($body[0])),7,-14);
+
+		$lTmpTxt = trim($dom->saveHTML($body[0]));
+		$row->text = substr($lTmpTxt,6,strlen($lTmpTxt)-13);
 	}
 
 	/**
@@ -92,21 +114,21 @@ class PlgContentResponsive extends JPlugin
 	 *
 	 * @since  1.0
 	 */
-	private static function buildSrcset(array $breakpoints = array(), $dirname, $filename, $extension) {
+	private static function buildSrcset(array $breakpoints = array(), $dirname, $filename, $extension, $sizeSplitt) {
 		$srcset = '';
 
 		if (!empty($breakpoints)) {
 			for ($i = 0, $l = count($breakpoints); $i < $l; $i++)
 			{
-				$filesrc = '/media/cached-resp-images/' . $dirname . '/' . $filename . '@' . $breakpoints[$i] . '.' . $extension;
-				if (file_exists(JPATH_ROOT . $filesrc))
+				$filesrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . $breakpoints[$i] . '.' . $extension;
+				if (file_exists(JPATH_ROOT . '/' . $filesrc))
 				{
 					$srcset .= $filesrc . ' ' . $breakpoints[$i] . 'w, ';
 				}
 			}
 		}
 
-		return rtrim($srcset, ',');
+		return rtrim($srcset, ', ');
 	}
 
 	/**
@@ -118,7 +140,7 @@ class PlgContentResponsive extends JPlugin
 	 *
 	 * @since  1.0
 	 */
-	private static function createImages(array $breakpoints = array(), $dirname, $filename, $extension, $quality) {
+	private static function createImages(array $breakpoints = array(), $dirname, $filename, $extension, $quality, $scaleUp, $scaleMethod, $sizeSplitt) {
 		if (!empty($breakpoints))
 		{
 			// Create the images with width = breakpoint
@@ -161,14 +183,14 @@ class PlgContentResponsive extends JPlugin
 
 			for ($i = 0, $l = count($breakpoints); $i < $l; $i++)
 			{
-				if ($properties->width >= (int) $breakpoints[$i])
+				if ($scaleUp or ($properties->width >= (int) $breakpoints[$i]))
 				{
 					// Resize the image
-					$newImg = $image->resize((int) $breakpoints[$i], (int) $breakpoints[$i] / $aspectRatio, true);
+					$newImg = $image->resize((int) $breakpoints[$i]/*width*/, (int) $breakpoints[$i] / $aspectRatio /*height*/, true/*createNew*/, $scaleMethod/*scaleMethod*/);
 
 					// Create the files, always create the 320w image
 					$newImg->toFile(
-						JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . '@' . (int) $breakpoints[$i] . '.' . $extension,
+						JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension,
 						$imageType,
 						array('quality' => (int) $quality)
 					);
