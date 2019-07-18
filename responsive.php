@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+jimport('joomla.filesystem.file');
+
 /**
  * Content responsive images plugin
  */
@@ -65,7 +67,7 @@ class PlgContentResponsive extends JPlugin
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
 			// Get the original path
-			$originalImagePath     = $images->item($i)->getAttribute('src');
+			$originalImagePath     = JFile::makeSafe($images->item($i)->getAttribute('src'));
 			$originalImagePathInfo = pathinfo($originalImagePath);
 
 			// Bail out if no images supported
