@@ -6,7 +6,7 @@
 	<copyright>Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>d.grammatiko@gmail.com</authorEmail>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<description>Responsive images</description>
 
 	<!-- Runs on install/uninstall/update; -->

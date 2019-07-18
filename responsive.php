@@ -57,8 +57,8 @@ class PlgContentResponsive extends JPlugin
 			case 'fit':
 				$scaleMethod = JImage::SCALE_FIT;
 				break;
-			default:
 			case 'inside':
+			default:
 				$scaleMethod = JImage::SCALE_INSIDE;
 				break;
 		}
