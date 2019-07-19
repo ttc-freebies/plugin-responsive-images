@@ -67,7 +67,19 @@ class PlgContentResponsive extends JPlugin
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
 			// Get the original path
-			$originalImagePath     = JFile::makeSafe($images->item($i)->getAttribute('src'));
+			$originalImagePath     = $images->item($i)->getAttribute('src');
+
+			//define('COM_MEDIA_BASE', JPATH_ROOT . '/' . $params->get($path, 'images'));
+			$app = JFactory::getApplication('site');
+			$componentParams = $app->getParams('com_media');
+			$mediaRoot = $componentParams->get('file_path', 'images');
+			$baseDir = JPATH_ROOT . '/' . $mediaRoot;
+			$path = realpath(JPATH_ROOT . (substr($originalImagePath, 0, 1) === '/' ? $originalImagePath : '/'. $originalImagePath));
+
+			if (strpos($path, $baseDir) !== 0 || strpos($path, $baseDir) === false) {
+				continue;
+			}
+
 			$originalImagePathInfo = pathinfo($originalImagePath);
 
 			// Bail out if no images supported
