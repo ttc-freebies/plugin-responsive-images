@@ -38,7 +38,7 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		$dom = new domDocument;
-		$dom->loadHTML($row->text);
+		$dom->loadHTML('<?xml encoding="utf-8" ?>' . $row->text);
 
 		$xpath      = new DOMXpath($dom);
 		$body       = $xpath->query("//body");
