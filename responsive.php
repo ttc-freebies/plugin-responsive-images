@@ -29,8 +29,12 @@ class PlgContentResponsive extends JPlugin
 	 */
 	public function onContentPrepare($context, &$row, &$params, $page)
 	{
-		// We care only for articles
-		$canProceed = $context === 'com_content.article';
+		// We care only for articles and category
+        if ($context === 'com_content.article' || $context === 'com_content.category') {
+          $canProceed = true;
+        } else {
+          $canProceed = false;
+        }
 
 		if (!$canProceed)
 		{
@@ -38,11 +42,24 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		$dom = new domDocument;
-		$dom->loadHTML('<?xml encoding="utf-8" ?>' . $row->text);
+        libxml_use_internal_errors(true);
+        
+        if ( $context === 'com_content.article' ) {
+			$dom->loadHTML('<?xml encoding="utf-8" ?>' . $row->text);
+        } else if ( $context === 'com_content.category' ) {
+            $dom->loadHTML('<?xml encoding="utf-8" ?>' . $row->introtext);
+        }
+        libxml_clear_errors();
 
 		$xpath      = new DOMXpath($dom);
 		$body       = $xpath->query("//body");
 		$images     = $xpath->query("//img");
+        
+        //Create new wrapper div
+        $new_div = $dom->createElement('picture');
+        $new_div->setAttribute('class','wrapper');
+        $new_source = $dom->createElement('source');
+        $new_source->setAttribute('type','image/webp');
 		$validExt   = array('jpg', 'jpeg', 'png');
 		$sizeSplit	= '_';
 		$validSize  = array(320, 480, 768, 992, 1200, 1600, 1920);
@@ -66,6 +83,16 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
+            //Clone our created picture
+            $new_div_clone = $new_div->cloneNode();
+            //Replace image with this wrapper div
+            $images->item($i)->parentNode->replaceChild($new_div_clone,$images->item($i));
+            //Append this image to wrapper picture
+            $new_div_clone->appendChild($images->item($i));
+
+            $new_source_clone = $new_source->cloneNode();
+            $new_div_clone->appendChild($new_source_clone);
+
 			// Get the original path
 			$originalImagePath     = $images->item($i)->getAttribute('src');
 
@@ -105,15 +132,21 @@ class PlgContentResponsive extends JPlugin
 				$images->item($i)->setAttribute('src', 'media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']);
 
 				$srcset = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
+                $srcset_webp = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], 'webp', $sizeSplit);
+                $size = self::buildSize($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
 
 				$images->item($i)->setAttribute('srcset', $srcset);
 				$images->item($i)->setAttribute('class', 'c-image-responsive');
 				$images->item($i)->setAttribute('width', '100%');
+				$images->item($i)->setAttribute('sizes', $size);
+                $new_source_clone->setAttribute('srcset', $srcset_webp);
 			}
+
 		}
 
-		$lTmpTxt = trim($dom->saveHTML($body[0]));
+		$lTmpTxt = trim($dom->saveHTML($body[0]));		
 		$row->text = substr($lTmpTxt,6,strlen($lTmpTxt)-13);
+		
 	}
 
 	/**
@@ -140,6 +173,32 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		return rtrim($srcset, ', ');
+	}
+
+	/**
+	 * Build the srcset string
+	 *
+	 * @param  array $breakpoints the different breakpoints
+	 *
+	 * @return string
+	 *
+	 * @since  1.0
+	 */
+	private static function buildSize(array $breakpoints = array(), $dirname, $filename, $extension, $sizeSplitt) {
+		$size = '';
+
+		if (!empty($breakpoints)) {
+			for ($i = 0, $l = count($breakpoints); $i < $l; $i++)
+			{
+				$filesrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . $breakpoints[$i] . '.' . $extension;
+				if (file_exists(JPATH_ROOT . '/' . $filesrc))
+				{
+					$size .= ' ' . $breakpoints[$i] . 'w, ';
+				}
+			}
+		}
+
+		return rtrim($size, ', ');
 	}
 
 	/**
@@ -205,6 +264,12 @@ class PlgContentResponsive extends JPlugin
 						$imageType,
 						array('quality' => (int) $quality)
 					);
+
+                    $newImg->toFile(
+                        JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp',
+                        'IMAGETYPE_WEBP',
+                        array('quality' => (int) $quality)
+                    );
 				}
 			}
 		}
