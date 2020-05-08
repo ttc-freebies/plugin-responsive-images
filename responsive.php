@@ -85,13 +85,15 @@ class PlgContentResponsive extends JPlugin
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
 			//Clone our created picture
 			$new_div_clone = $new_div->cloneNode();
-			//Replace image with this wrapper div
-			$images->item($i)->parentNode->replaceChild($new_div_clone,$images->item($i));
-			//Append this image to wrapper picture
-			$new_div_clone->appendChild($images->item($i));
+			
 
 			$new_source_clone = $new_source->cloneNode();
 			$new_div_clone->appendChild($new_source_clone);
+
+			//Replace image with this wrapper div - create 'source' before images
+			$images->item($i)->parentNode->replaceChild($new_div_clone,$images->item($i));
+			//Append this image to wrapper picture
+			$new_div_clone->appendChild($images->item($i));
 
 			// Get the original path
 			$originalImagePath     = $images->item($i)->getAttribute('src');
@@ -137,7 +139,6 @@ class PlgContentResponsive extends JPlugin
 
 				$images->item($i)->setAttribute('srcset', $srcset);
 				$images->item($i)->setAttribute('class', 'c-image-responsive');
-				$images->item($i)->setAttribute('width', '100%');
 				$images->item($i)->setAttribute('sizes', $size);
 				$new_source_clone->setAttribute('srcset', $srcset_webp);
 			}
@@ -235,9 +236,11 @@ class PlgContentResponsive extends JPlugin
 				case 'jpeg':
 				case 'jpg':
 					$imageType = 'IMAGETYPE_JPEG';
+					$webp_resource = imagecreatefromjpeg(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
 					break;
 				case 'png':
 					$imageType = 'IMAGETYPE_PNG';
+					$webp_resource = imagecreatefrompng(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
 					break;
 				default:
 					$imageType = '';
@@ -258,18 +261,21 @@ class PlgContentResponsive extends JPlugin
 					// Resize the image
 					$newImg = $image->resize((int) $breakpoints[$i]/*width*/, (int) $breakpoints[$i] / $aspectRatio /*height*/, true/*createNew*/, $scaleMethod/*scaleMethod*/);
 
-					// Create the files, always create the 320w image
 					$newImg->toFile(
 						JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension,
 						$imageType,
 						array('quality' => (int) $quality)
 					);
 
-					$newImg->toFile(
-						JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp',
-						'IMAGETYPE_WEBP',
-						array('quality' => (int) $quality)
-					);
+					if ( $imageType === 'IMAGETYPE_JPEG') {
+						$webp_resource = imagecreatefromjpeg(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
+					} elseif ($imageType === 'IMAGETYPE_PNG') {
+					   $webp_resource = imagecreatefrompng(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
+					}
+
+					$webp = imagewebp($webp_resource, JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp', (int) $quality);
+
+
 				}
 			}
 		}
