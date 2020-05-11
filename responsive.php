@@ -36,6 +36,7 @@ class PlgContentResponsive extends JPlugin
 		  $canProceed = false;
 		}
 
+
 		if (!$canProceed)
 		{
 			return;
@@ -54,15 +55,15 @@ class PlgContentResponsive extends JPlugin
 		$xpath      = new DOMXpath($dom);
 		$body       = $xpath->query("//body");
 		$images     = $xpath->query("//img");
-		
+
 		//Create new wrapper div
-		$new_div = $dom->createElement('picture');
-		$new_div->setAttribute('class','wrapper');
-		$new_source = $dom->createElement('source');
-		$new_source->setAttribute('type','image/webp');
+		$picture_el = $dom->createElement('picture');
+		$picture_el->setAttribute('class','rt-image');
+		$source_el = $dom->createElement('source');
+		$source_el->setAttribute('type','image/webp');
 		$validExt   = array('jpg', 'jpeg', 'png');
-		$sizeSplit	= '_';
-		$validSize  = array(320, 480, 768, 992, 1200, 1600, 1920);
+		$sizeSplit    = '_';
+		$validSize  = array(200, 320, 480, 768, 992, 1200, 1600, 1920);
 		$quality    = (int) $this->params->get('quality', '85');
 		$scaleUp    = (bool)($this->params->get('scaleUp', '0') == '1');
 
@@ -83,17 +84,6 @@ class PlgContentResponsive extends JPlugin
 		}
 
 		for ($i = 0, $l = $images->length; $i < $l; $i++) {
-			//Clone our created picture
-			$new_div_clone = $new_div->cloneNode();
-			
-
-			$new_source_clone = $new_source->cloneNode();
-			$new_div_clone->appendChild($new_source_clone);
-
-			//Replace image with this wrapper div - create 'source' before images
-			$images->item($i)->parentNode->replaceChild($new_div_clone,$images->item($i));
-			//Append this image to wrapper picture
-			$new_div_clone->appendChild($images->item($i));
 
 			// Get the original path
 			$originalImagePath     = $images->item($i)->getAttribute('src');
@@ -131,16 +121,34 @@ class PlgContentResponsive extends JPlugin
 			// If responsive image exists use it
 			if (file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']))
 			{
-				$images->item($i)->setAttribute('src', 'media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']);
+				//$images->item($i)->setAttribute('src', 'media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']);
 
 				$srcset = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
-				$srcset_webp = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], 'webp', $sizeSplit);
 				$size = self::buildSize($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
 
-				$images->item($i)->setAttribute('srcset', $srcset);
 				$images->item($i)->setAttribute('class', 'c-image-responsive');
-				$images->item($i)->setAttribute('sizes', $size);
-				$new_source_clone->setAttribute('srcset', $srcset_webp);
+
+				$srcset_webp = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], 'webp', $sizeSplit);
+
+				if ($srcset_webp !== '') {
+					//Clone our created picture
+					$picture_el_clone = $picture_el->cloneNode();
+					$source_el_clone = $source_el->cloneNode();
+					$picture_el_clone->appendChild($source_el_clone);
+
+					//Replace image with this wrapper div - create 'source' before images
+					$images->item($i)->parentNode->replaceChild($picture_el_clone,$images->item($i));
+					//Append this image to wrapper picture
+					$picture_el_clone->appendChild($images->item($i));
+
+					$source_el_clone->setAttribute('sizes', $size);
+					$source_el_clone->setAttribute('srcset', $srcset_webp);
+
+				} else {
+					$images->item($i)->setAttribute('sizes', $size);
+					$images->item($i)->setAttribute('srcset', $srcset);
+				}
+				
 			}
 
 		}
@@ -186,6 +194,16 @@ class PlgContentResponsive extends JPlugin
 	 * @since  1.0
 	 */
 	private static function buildSize(array $breakpoints = array(), $dirname, $filename, $extension, $sizeSplitt) {
+
+		// Create the images with width = breakpoint
+		$image = new JImage;
+
+		// Load the file
+		$image->loadFile(JPATH_ROOT . '/' . $dirname . '/' .$filename . '.' . $extension);
+
+		// Get the properties
+		$properties = $image->getImageFileProperties(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
+
 		$size = '';
 
 		if (!empty($breakpoints)) {
@@ -194,10 +212,13 @@ class PlgContentResponsive extends JPlugin
 				$filesrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . $breakpoints[$i] . '.' . $extension;
 				if (file_exists(JPATH_ROOT . '/' . $filesrc))
 				{
-					$size .= ' ' . $breakpoints[$i] . 'w, ';
+					$size .= ' (max-width: ' . $breakpoints[$i]. 'px) ' . $breakpoints[$i] . 'px, ';
 				}
 			}
 		}
+
+		// Set last size as max avaliable size
+		$size = $size .  $properties->width . 'px';
 
 		return rtrim($size, ', ');
 	}
@@ -236,11 +257,9 @@ class PlgContentResponsive extends JPlugin
 				case 'jpeg':
 				case 'jpg':
 					$imageType = 'IMAGETYPE_JPEG';
-					$webp_resource = imagecreatefromjpeg(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
 					break;
 				case 'png':
 					$imageType = 'IMAGETYPE_PNG';
-					$webp_resource = imagecreatefrompng(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
 					break;
 				default:
 					$imageType = '';
@@ -267,14 +286,15 @@ class PlgContentResponsive extends JPlugin
 						array('quality' => (int) $quality)
 					);
 
-					if ( $imageType === 'IMAGETYPE_JPEG') {
+					if (function_exists('imagecreatefromjpeg') && $imageType === 'IMAGETYPE_JPEG') {
 						$webp_resource = imagecreatefromjpeg(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
-					} elseif ($imageType === 'IMAGETYPE_PNG') {
+					} elseif (function_exists('imagecreatefrompng') && $imageType === 'IMAGETYPE_PNG') {
 					   $webp_resource = imagecreatefrompng(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
 					}
 
-					$webp = imagewebp($webp_resource, JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp', (int) $quality);
-
+					if (function_exists('imagewebp') && isset($webp_resource) && $webp_resource !== false) {
+						imagewebp($webp_resource, JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp', (int) $quality);
+					}
 
 				}
 			}
