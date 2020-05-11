@@ -289,7 +289,7 @@ class PlgContentResponsive extends JPlugin
 					if (function_exists('imagecreatefromjpeg') && $imageType === 'IMAGETYPE_JPEG') {
 						$webp_resource = imagecreatefromjpeg(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
 					} elseif (function_exists('imagecreatefrompng') && $imageType === 'IMAGETYPE_PNG') {
-					   $webp_resource = imagecreatefrompng(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
+						$webp_resource = imagecreatefrompng(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
 					}
 
 					if (function_exists('imagewebp') && isset($webp_resource) && $webp_resource !== false) {
