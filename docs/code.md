@@ -20,7 +20,7 @@ echo $image;
 ```php
 $image = '<img src="some/path/to/some/image.jpg" alt="Some Text" data-something="whatever" />';
 ```
-- Then copy/paste this 5 lines: 
+- Then copy/paste these 5 lines: 
 ```php
 if (JPluginHelper::isEnabled('content', 'responsive')) {
   JLoader::register('Ttc\Freebies\Responsive\Helper', JPATH_ROOT . '/plugins/content/responsive/helper.php', true);
@@ -30,7 +30,7 @@ if (JPluginHelper::isEnabled('content', 'responsive')) {
 ```
 - This code essentially checks if the plugin is enabled and if so it will pass the variable `$img` to the internals and finally replace the variable with the new picture element
 
-- Finally echo the image so it can be displayed, if the plugin gets disabled or uninstalled the site will continue functioning as the previous step will not be executed
+- Finally echo the image so it can be displayed, if the plugin gets disabled or uninstalled the site will continue functioning since the previous step will not be executed
 ```php
 echo $image;
 ```
