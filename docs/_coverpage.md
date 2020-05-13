@@ -1,4 +1,4 @@
-# Joomla Responsive Images
+# Joomla support for srcset
 
 > Always serve the right size image
 
