@@ -9,7 +9,7 @@
 - 🎉 [NEW] Serve WebP images
 - 🎉 [NEW] Use the code in any Layout
 
-[GitHub](https://github.com/ttc-freebies/joomla-3.x-images-lazy-loading/)
+[GitHub](https://github.com/ttc-freebies/plugin-responsive-images/)
 [Download](dist/plg_responsive_3.0.0-beta.zip ':ignore')
 [Get Started](/installation)
 
