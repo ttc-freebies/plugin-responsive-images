@@ -110,7 +110,7 @@ class Helper {
       }
 
       // Create the fallback img
-      preg_replace('(src\s*=\s*".+?")', 'src="/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'] . '"', $image);
+      $image = preg_replace('/src\s*=\s*".+?"/', 'src="/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'] . '"', $image);
       if (strpos($image, ' loading=') === false) {
         $image = str_replace('<img ', '<img loading="lazy" ', $image);
       }

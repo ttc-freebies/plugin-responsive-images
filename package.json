@@ -1,17 +1,18 @@
 {
   "name": "plugin-responsive-images",
-  "version": "3.0.0-beta",
-  "description": "## What is it? A tiny content plugin that create a few different sized images on the fly and also update the markup to use the well established and supported HTML5 image tag srcset",
-  "main": "index.js",
+  "version": "3.0.1-beta",
+  "private": true,
+  "description": "A tiny content plugin that create a few different sized images on the fly and also update the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "serve": "npx serve docs"
   },
   "repository": {
     "type": "git",
     "url": "git+https://dgrammatiko@github.com/ttc-freebies/plugin-responsive-images.git"
   },
-  "author": "",
-  "license": "GPL",
+  "author": "Dimitris Grammatikogiannis",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/ttc-freebies/plugin-responsive-images/issues"
   },

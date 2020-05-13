@@ -2,7 +2,7 @@
 
 Installation is an easy process:
 
-- Download the latest version from here: [Download](dist/plg_responsive_3.0.0-beta.zip ':ignore')
+- Download the latest version from here: [Download](dist/plg_responsive_3.0.1-beta.zip ':ignore')
 - Drag and Drop the zipped file in the installation extension of the Joomla Extension Manager
 
 # Setup
