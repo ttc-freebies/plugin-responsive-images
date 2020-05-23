@@ -8,7 +8,7 @@ $image = '<img src="some/path/to/some/image.jpg" alt="Some Text" data-something=
 if (JPluginHelper::isEnabled('content', 'responsive')) {
   JLoader::register('Ttc\Freebies\Responsive\Helper', JPATH_ROOT . '/plugins/content/responsive/helper.php', true);
   $helper = new \Ttc\Freebies\Responsive\Helper;
-  $img = $helper->transformImage($img);
+  $image = $helper->transformImage($image);
 }
 
 echo $image;
@@ -25,7 +25,7 @@ $image = '<img src="some/path/to/some/image.jpg" alt="Some Text" data-something=
 if (JPluginHelper::isEnabled('content', 'responsive')) {
   JLoader::register('Ttc\Freebies\Responsive\Helper', JPATH_ROOT . '/plugins/content/responsive/helper.php', true);
   $helper = new \Ttc\Freebies\Responsive\Helper;
-  $img = $helper->transformImage($img);
+  $image = $helper->transformImage($image);
 }
 ```
 - This code essentially checks if the plugin is enabled and if so it will pass the variable `$img` to the internals and finally replace the variable with the new picture element
