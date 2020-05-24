@@ -12,8 +12,8 @@ const { version } = require('./package.json');
     await mkdir('./dist');
   }
 
-  let xml =  await readFile('./package/responsive.xml', { encoding: 'utf8' });
-  xml = xml.replace('{{version}}', version);
+  let xml = await readFile('./package/responsive.xml', { encoding: 'utf8' });
+  xml = xml.replace(/{{version}}/g, version);
 
   await writeFile('./package/responsive.xml', xml, { encoding: 'utf8' });
 
@@ -28,8 +28,8 @@ const { version } = require('./package.json');
   // Update the version, docs
   ['docs/_coverpage.txt', 'docs/installation.txt', 'docs/update.txt'].forEach(async file => {
     let cont = await readFile(file, { encoding: 'utf8' });
-    cont = cont.replace('{{version}}', version);
-    cont = cont.replace('{{download}}', `[Download](dist/plg_responsive_${version}.zip ':ignore')`);
+    cont = cont.replace(/{{version}}/g, version);
+    cont = cont.replace(/{{download}}/g, `[Download](dist/plg_responsive_${version}.zip ':ignore')`);
 
     const ext = file === 'docs/update.txt' ? '.xml' : '.md';
     await writeFile(file.replace('.txt', ext), cont, { encoding: 'utf8' });

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Image\Image;
+use Joomla\CMS\Image\Image;
 use Joomla\Registry\Registry;
 
 /**
@@ -28,12 +28,13 @@ class Helper {
    * Takes an image tag and returns the picture tag
    *
    * @param string $image the image tag
+   * @param array $breakpoints the breakpoint
    *
    * @return string
    *
    * @throws \Exception
    */
-  public function transformImage($image) {
+  public function transformImage($image, $breakpoints) {
     if ($this->baseDir === '') {
       $this->baseDir = JPATH_ROOT . '/' . Factory::getApplication('site')->getParams('com_media')->get('file_path', 'images');
     }
@@ -47,6 +48,10 @@ class Helper {
     $this->quality     = $this->quality === '' ? (int) $this->params->get('quality', '85') : $this->quality;
     $this->scaleUp     = $this->scaleUp === '' ? (bool) ($this->params->get('scaleUp', '0') == '1') : $this->scaleUp;
     $this->scaleMethod = $this->scaleMethod === '' ? $this->params->get('scaleMethod', 'inside') : $this->scaleUp;
+
+    if (is_array($breakpoints)) {
+      $validSize = $breakpoints;
+    }
 
     switch ($this->scaleMethod) {
       case 'SCALE_FILL':
@@ -140,10 +145,11 @@ class Helper {
     if (!empty($breakpoints)) {
       for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
         $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . $breakpoints[$i];
+        $type = in_array($extension, ['jpg', 'jpeg']) ? 'jpeg' : $extension;
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.' . $extension)) {
           $srcset[$breakpoints[$i]][$fileSrc . '.' . $extension] = array(
             'media' => '(min-width: ' . $breakpoints[$i]. 'px)',
-            'type' => 'image/' . $extension,
+            'type' => 'image/' . $type,
           );
         }
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.webp')) {
