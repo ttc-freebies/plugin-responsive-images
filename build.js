@@ -29,7 +29,7 @@ const { version } = require('./package.json');
   ['docs/_coverpage.txt', 'docs/installation.txt', 'docs/update.txt'].forEach(async file => {
     let cont = await readFile(file, { encoding: 'utf8' });
     cont = cont.replace(/{{version}}/g, version);
-    cont = cont.replace(/{{download}}/g, `[Download](dist/plg_responsive_${version}.zip ':ignore')`);
+    cont = cont.replace(/{{download}}/g, `[Download v${version}](dist/plg_responsive_${version}.zip ':ignore')`);
 
     const ext = file === 'docs/update.txt' ? '.xml' : '.md';
     await writeFile(file.replace('.txt', ext), cont, { encoding: 'utf8' });
