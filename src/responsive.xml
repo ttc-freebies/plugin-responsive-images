@@ -8,15 +8,11 @@
   <authorEmail>d.grammatiko@gmail.com</authorEmail>
   <version>{{version}}</version>
   <description>Responsive images</description>
-
-  <!-- Runs on install/uninstall/update; -->
-  <scriptfile>script.responsive.php</scriptfile>
-
+  <scriptfile>script.php</scriptfile>
   <files>
     <filename plugin="responsive">responsive.php</filename>
     <filename>helper.php</filename>
   </files>
-
   <config>
     <fields name="params">
       <fieldset name="basic">

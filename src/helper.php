@@ -27,8 +27,8 @@ class Helper {
   /**
    * Takes an image tag and returns the picture tag
    *
-   * @param string $image the image tag
-   * @param array $breakpoints the breakpoint
+   * @param string  $image        the image tag
+   * @param array   $breakpoints  the breakpoints
    *
    * @return string
    *
@@ -167,14 +167,14 @@ class Helper {
   /**
    * Create the thumbs
    *
-   * @param array   $breakpoints  the different breakpoints
-   * @param string  $dirname      the folder name
-   * @param string  $filename     the file name
-   * @param string  $extension    the file extension
-   * @param integer $quality      the quality of the generated image
-   * @param boolen  $scaleUp      switch for upscalling or not an image
-   * @param string  $scaleMethod  the method for the scale up
-   * @param string  $sizeSplitt   the string used for the notation
+   * @param array    $breakpoints  the different breakpoints
+   * @param string   $dirname      the folder name
+   * @param string   $filename     the file name
+   * @param string   $extension    the file extension
+   * @param integer  $quality      the quality of the generated image
+   * @param boolean  $scaleUp      switch for upscalling or not an image
+   * @param string   $scaleMethod  the method for the scale up
+   * @param string   $sizeSplitt   the string used for the notation
    *
    * @return void
    *
@@ -193,6 +193,11 @@ class Helper {
 
       // Skip if the width is less or equal to the required
       if ($properties->width <= (int) $breakpoints[0]) {
+        return;
+      }
+
+      // Do some memory checking
+      if (!self::checkMemoryLimit($properties, $dirname . '/' .$filename . '.' . $extension)) {
         return;
       }
 
@@ -242,5 +247,40 @@ class Helper {
         }
       }
     }
+  }
+
+  /**
+   * Check memory boundaries
+   *
+   * @param object  $properties   the Image properties object
+   * @param string  $imagePath    the image path
+   *
+   * @return boolean
+   *
+   * @since  3.0.3
+   * 
+   * @author  Niels Nuebel: https://github.com/nielsnuebel
+   */
+  protected static function checkMemoryLimit($properties, $imagePath) {
+    $memorycheck = ($properties->width * $properties->height * $properties->bits);
+    $memorycheck_text = $memorycheck / (1024 * 1024);
+    $memory_limit = ini_get('memory_limit');
+
+    if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
+      if ($matches[2] == 'M') {
+        $memory_limit_value = $matches[1] * 1024 * 1024; // nnnM -> nnn MB
+      } else if ($matches[2] == 'K') {
+        $memory_limit_value = $matches[1] * 1024; // nnnK -> nnn KB
+      }
+    }
+
+    if (isset($memory_limit_value) && $memorycheck > $memory_limit_value) {
+      $app =JFactory::getApplication();
+      $app->enqueueMessage(JText::sprintf('Image too big to be processed' ,$imagePath, $memorycheck_text, $memory_limit), 'error');
+
+      return false;
+    }
+
+    return true;
   }
 }

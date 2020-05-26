@@ -15,14 +15,14 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
   /**
    * Plugin that adds srcset to all content images, also creates all the image sizes on the fly
    *
-   * @param string $context The context of the content being passed to the plugin.
-   * @param object   &$row The article object.  Note $article->text is also available
-   * @param mixed    &$params The article params
-   * @param integer $page The 'page' number
+   * @param  string   $context  The context of the content being passed to the plugin.
+   * @param  object   &$row     The article object.  Note $article->text is also available
+   * @param  mixed    &$params  The article params
+   * @param  integer  $page     The 'page' number
    *
    * @return  mixed  Always returns void or true
    *
-   * @throws Exception
+   * @throws  Exception
    *
    * @since   1.0
    */
@@ -63,7 +63,7 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
         // Make sure we have a src but no loading attribute
         if (strpos($img, ' src=') !== false && strpos($img, '//') === false) {
           $helper = new Ttc\Freebies\Responsive\Helper;
-          $row->text = str_replace($img, $helper->transformImage($img), $row->text);
+          $row->text = str_replace($img, $helper->transformImage($img, array(200, 320, 480, 768, 992, 1200, 1600, 1920)), $row->text);
         }
       }
     }
