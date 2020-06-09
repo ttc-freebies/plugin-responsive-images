@@ -19,7 +19,7 @@
   "homepage": "https://github.com/ttc-freebies/plugin-responsive-images#readme",
   "dependencies": {
     "adm-zip": "0.4.14",
-    "fs-extra": "9.0.0",
+    "fs-extra": "9.0.1",
     "rimraf": "3.0.2"
   }
 }
