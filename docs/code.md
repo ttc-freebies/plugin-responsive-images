@@ -30,7 +30,7 @@ if (JPluginHelper::isEnabled('content', 'responsive')) {
 ```
 - This code essentially checks if the plugin is enabled and if so it will pass the variable `$img` to the internals and finally replace the variable with the new picture element
 
-- The `array(200, 320, 480, 768, 992, 1200, 1600, 1920)` can be used to reduce the sizes that will be written. This is extremely useful and in reality is a comuflaged way to create sufficient thumbnails in any layout! 👌🏻
+- The `array(200, 320, 480, 768, 992, 1200, 1600, 1920)` can be used to reduce the sizes that will be written. This is extremely useful and in reality is a camouflaged way to create sufficient thumbnails in any layout! 👌🏻
 
 - Finally echo the image so it can be displayed, if the plugin gets disabled or uninstalled the site will continue functioning since the previous step will not be executed
 ```php
