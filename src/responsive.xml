@@ -27,7 +27,7 @@
           <option value="SCALE_FILL">Fill</option>
           <option value="SCALE_FIT">Fit</option>
         </field>
-        <field name="cleanup" type="radio" default="0" class="btn-group btn-group-yesno" label="Cleanup on uninstall" description="Set to YES if the uninstall process should delete the generated files when you uninstall this plug in">
+        <field name="cleanup" type="radio" default="0" class="btn-group btn-group-yesno" label="Cleanup on uninstall" description="Set to YES if the uninstall process should delete the generated files when you uninstall this plugin">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
