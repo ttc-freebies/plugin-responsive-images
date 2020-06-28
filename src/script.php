@@ -57,7 +57,7 @@ class PlgContentResponsiveInstallerScript  extends \Joomla\CMS\Installer\Install
       // user decided to cleanup on uninstall!
       $this->removeFiles();
     } elseif (Folder::exists(JPATH_ROOT . '/media/cached-resp-images')) {
-      $error = "<p><strong>Responsive content images</strong><br />This plugin have created the folder '/media/cached-resp-images' to store the generated images. To save web space you could delete this folder if you do not need this files. If you reinstall this plug in, it will create the folder and the needed images again.</p>";
+      $error = "<p><strong>Responsive content images</strong><br />This plugin has created the folder '/media/cached-resp-images' to store the generated images. To save web space you could delete this folder if you do not need this files. If you reinstall this plug in, it will create the folder and the needed images again.</p>";
       Log::add($error, Log::WARNING, 'jerror');
     }
   }
