@@ -72,6 +72,7 @@ class Helper {
     // Get the original path
     preg_match('/src\s*=\s*"(.+?)"/', $image, $match);
     $originalImagePath = $match[1];
+    $originalImagePath = str_replace(\Joomla\CMS\Uri\Uri::base(), '', $originalImagePath);
     $path = realpath(JPATH_ROOT . (substr($originalImagePath, 0, 1) === '/' ? $originalImagePath : '/'. $originalImagePath));
 
     if (strpos($path, $this->baseDir) !== 0 || strpos($path, $this->baseDir) === false) {
