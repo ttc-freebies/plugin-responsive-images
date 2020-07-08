@@ -75,14 +75,14 @@ class Helper {
     $path = realpath(JPATH_ROOT . (substr($originalImagePath, 0, 1) === '/' ? $originalImagePath : '/'. $originalImagePath));
 
     if (strpos($path, $this->baseDir) !== 0 || strpos($path, $this->baseDir) === false) {
-      return '';
+      return $image;
     }
 
     $originalImagePathInfo = pathinfo($originalImagePath);
 
     // Bail out if no images supported
     if (!in_array(mb_strtolower($originalImagePathInfo['extension']), $validExt) || !file_exists(JPATH_ROOT . '/' . $originalImagePath)) {
-      return '';
+      return $image;
     }
 
     if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'])) {
@@ -101,7 +101,7 @@ class Helper {
       $srcSets = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
 
       if (empty($srcSets)) {
-        return '';
+        return $image;
       }
 
       $srcSets = array_reverse($srcSets);
