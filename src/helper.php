@@ -11,8 +11,9 @@ namespace Ttc\Freebies\Responsive;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Image\Image;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 
 /**
@@ -285,8 +286,8 @@ class Helper {
     }
 
     if (isset($memory_limit_value) && $memorycheck > $memory_limit_value) {
-      $app =JFactory::getApplication();
-      $app->enqueueMessage(JText::sprintf('Image too big to be processed' ,$imagePath, $memorycheck_text, $memory_limit), 'error');
+      $app = Factory::getApplication();
+      $app->enqueueMessage(Text::sprintf('Image too big to be processed' ,$imagePath, $memorycheck_text, $memory_limit), 'error');
 
       return false;
     }
