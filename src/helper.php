@@ -25,6 +25,16 @@ class Helper {
   private $scaleMethod = '';
 
   /**
+   * Cropping constants
+   */
+	const SCALE_FILL = 1;
+	const SCALE_INSIDE = 2;
+	const SCALE_OUTSIDE = 3;
+	const CROP = 4;
+	const CROP_RESIZE = 5;
+	const SCALE_FIT = 6;
+
+  /**
    * Takes an image tag and returns the picture tag
    *
    * @param string  $image        the image tag
@@ -47,7 +57,7 @@ class Helper {
     $validSize         = array(200, 320, 480, 768, 992, 1200, 1600, 1920);
     $this->quality     = $this->quality === '' ? (int) $this->params->get('quality', '85') : $this->quality;
     $this->scaleUp     = $this->scaleUp === '' ? (bool) ($this->params->get('scaleUp', '0') == '1') : $this->scaleUp;
-    $this->scaleMethod = $this->scaleMethod === '' ? $this->params->get('scaleMethod', 'inside') : $this->scaleUp;
+    $this->scaleMethod = $this->scaleMethod === '' ? $this->params->get('scaleMethod', 'SCALE_INSIDE') : $this->scaleUp;
 
     if (is_array($breakpoints)) {
       $validSize = $breakpoints;
