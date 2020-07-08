@@ -27,12 +27,12 @@ class Helper {
   /**
    * Cropping constants
    */
-	const SCALE_FILL = 1;
-	const SCALE_INSIDE = 2;
-	const SCALE_OUTSIDE = 3;
-	const CROP = 4;
-	const CROP_RESIZE = 5;
-	const SCALE_FIT = 6;
+  const SCALE_FILL = 1;
+  const SCALE_INSIDE = 2;
+  const SCALE_OUTSIDE = 3;
+  const CROP = 4;
+  const CROP_RESIZE = 5;
+  const SCALE_FIT = 6;
 
   /**
    * Takes an image tag and returns the picture tag
