@@ -33,9 +33,9 @@ class PlgContentResponsiveInstallerScript  extends \Joomla\CMS\Installer\Install
       // Installed plug in version
       $oldRelease = $this->getParameter('manifest_cache', 'version');
       // Installing plug in version as per manifest file
-      $newRelease = $adapter->get('manifest')->version;
+      $newRelease = strval($adapter->manifest->version);
 
-      $doCleanup = (bool)((version_compare($oldRelease, '3.0.0', '<=') && version_compare(‌‌strval($newRelease), '3.0.0', '>')) && function_exists('imagewebp'));
+      $doCleanup = (bool)((version_compare($oldRelease, '3.0.0', '<=') && version_compare($newRelease, '3.0.0', '>')) && function_exists('imagewebp'));
 
       if ($doCleanup === true) {
         // Info message to remove generated folder, because the file name syntax is new

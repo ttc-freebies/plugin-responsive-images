@@ -8,7 +8,7 @@
 
 namespace Ttc\Freebies\Responsive;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die();
 
 require_once 'vendor/autoload.php';
 

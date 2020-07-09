@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.5" type="plugin" group="content" method="upgrade">
+<extension version="3.9" type="plugin" group="content" method="upgrade">
   <name>Responsive content images</name>
   <author>Dimitrios Grammatikogiannis</author>
   <creationDate>2017</creationDate>
@@ -31,4 +31,7 @@
       </fieldset>
     </fields>
   </config>
+  <updateservers>
+    <server type="extension" priority="1" name="Responsive content images">https://raw.githubusercontent.com/ttc-freebies/updates/master/responsive/updates.xml</server>
+  </updateservers>
 </extension>

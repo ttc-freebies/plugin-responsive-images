@@ -15,10 +15,10 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
   /**
    * Plugin that adds srcset to all content images, also creates all the image sizes on the fly
    *
-   * @param string $context The context of the content being passed to the plugin.
-   * @param object   &$row The article object.  Note $article->text is also available
-   * @param mixed    &$params The article params
-   * @param integer $page The 'page' number
+   * @param string   $context  The context of the content being passed to the plugin.
+   * @param object   &$row     The article object.  Note $article->text is also available
+   * @param mixed    &$params  The article params
+   * @param integer  $page     The 'page' number
    *
    * @return  mixed  Always returns void or true
    *
