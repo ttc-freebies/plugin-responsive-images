@@ -1,6 +1,6 @@
 {
   "name": "plugin-responsive-images",
-  "version": "3.1.0",
+  "version": "3.5.0",
   "private": true,
   "description": "A tiny content plugin that create a few different sized images on the fly and also update the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {

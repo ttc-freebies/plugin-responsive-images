@@ -15,14 +15,14 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
   /**
    * Plugin that adds srcset to all content images, also creates all the image sizes on the fly
    *
-   * @param  string   $context  The context of the content being passed to the plugin.
-   * @param  object   &$row     The article object.  Note $article->text is also available
-   * @param  mixed    &$params  The article params
-   * @param  integer  $page     The 'page' number
+   * @param string $context The context of the content being passed to the plugin.
+   * @param object   &$row The article object.  Note $article->text is also available
+   * @param mixed    &$params The article params
+   * @param integer $page The 'page' number
    *
    * @return  mixed  Always returns void or true
    *
-   * @throws  Exception
+   * @throws Exception
    *
    * @since   1.0
    */
@@ -34,8 +34,7 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
       $canProceed = false;
     }
 
-    if (!$canProceed)
-    {
+    if (!$canProceed) {
       return;
     }
 
@@ -44,28 +43,32 @@ class PlgContentResponsive extends \Joomla\CMS\Plugin\CMSPlugin {
       if (strpos($row->text, '<img') === false) {
         return;
       }
-      if (!preg_match_all('/<img\s[^>]+>/', $row->text, $matches)) {
+      if (!preg_match_all('#<img\s[^>]+>#', $row->text, $matches)) {
         return;
       }
     } else if ($context === 'com_content.category' && !empty($row->introtext)) {
       if (strpos($row->introtext, '<img') === false) {
         return;
       }
-      if (!preg_match_all('/<img\s[^>]+>/', $row->introtext, $matches)) {
+      if (!preg_match_all('#<img\s[^>]+>#', $row->introtext, $matches)) {
         return;
       }
     }
 
     if (count($matches)) {
-      JLoader::register('Ttc\Freebies\Responsive\Helper', __DIR__ . '/helper.php', true);
+      JLoader::register('Ttc\Freebies\Responsive\Helper', __DIR__ . '/helper.php');
 
       foreach ($matches[0] as $img) {
-        // Make sure we have a src but no loading attribute
+        // Make sure we have a src
         if (strpos($img, ' src=') !== false && strpos($img, '//') === false) {
-          $helper = new Ttc\Freebies\Responsive\Helper;
-          $row->text = str_replace($img, $helper->transformImage($img, array(200, 320, 480, 768, 992, 1200, 1600, 1920)), $row->text);
+          $processed = (new Ttc\Freebies\Responsive\Helper)->transformImage($img, array(200, 320, 480, 768, 992, 1200, 1600, 1920));
+
+          if ($img !== $processed) {
+            $row->text = str_replace($img, $processed, $row->text);
+          }
         }
       }
+      return true;
     }
   }
 }
