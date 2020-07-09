@@ -56,8 +56,8 @@ class Helper {
     $validSize = array(200, 320, 480, 768, 992, 1200, 1600, 1920);
     $validExt = array('jpg', 'jpeg', 'png');
 
-    if (is_array($breakpoints)) {
-      $validSize = $breakpoints;
+    if (!is_array($breakpoints)) {
+      return;
     }
 
     // Get the original path
@@ -108,7 +108,7 @@ class Helper {
       )
     ) {
       $srcSets = self::buildSrcset(
-        $validSize,
+        $breakpoints,
         $originalImagePathInfo['dirname'],
         $originalImagePathInfo['filename'],
         $originalImagePathInfo['extension'],
@@ -157,6 +157,8 @@ class Helper {
       $output .= '</picture>';
 
       return $output;
+    } else {
+      return $image;
     }
   }
 
@@ -229,20 +231,16 @@ class Helper {
 
     // Create the images with width = breakpoint
     $manager = new ImageManager(array('driver' => $driver));
+
+    // Getting the image info
     $info = @getimagesize(JPATH_ROOT . '/' . $dirname . '/' .$filename . '.' . $extension);
 
-    if( empty($info) ) {
-      throw new \Exception( sprintf('ERROR: getimagesize("%s") returned: %s', $filename, print_r($info, true)) );
+    if (empty($info)) {
+      return;
     }
 
     $imageWidth = $info[0];
     $imageHeight = $info[1];
-
-    if(!isset($info['bits'])) {
-      $bits = 16;
-    } else {
-      $bits = $info['bits'];
-    }
 
     // Skip if the width is less or equal to the required
     if ($imageWidth <= (int) $breakpoints[0]) {
@@ -250,12 +248,24 @@ class Helper {
     }
 
     // Check if we support the given image
-    if (!in_array(str_replace('image/','', mb_strtolower($info['mime'])), array('jpeg', 'jpg', 'png', 'webp'))) {
+    if (!in_array($info['mime'], array('image/jpeg', 'image/jpg', 'image/png'))) {
       return;
     }
 
+    $channels = $info['channels'];
+
+    if ($info['mime'] == 'image/png') {
+      $channels = 4;
+    }
+
+    if (!isset($info['bits'])) {
+      $info['bits'] = 16;
+    }
+
+    $imageBits = ($info['bits'] / 8) * $channels;
+
     // Do some memory checking
-    if (!self::checkMemoryLimit(array('width' => $imageWidth, 'height' => $imageHeight, 'bits' => $bits), $dirname . '/' .$filename . '.' . $extension)) {
+    if (!self::checkMemoryLimit(array('width' => $imageWidth, 'height' => $imageHeight, 'bits' => $imageBits), $dirname . '/' .$filename . '.' . $extension)) {
       return;
     }
 
@@ -285,6 +295,8 @@ class Helper {
             'webp'
           );
         }
+
+        $image->destroy();
       }
     }
   }
