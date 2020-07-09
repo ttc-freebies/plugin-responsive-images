@@ -8,10 +8,12 @@
 
 namespace Ttc\Freebies\Responsive;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die();
 
+require_once 'vendor/autoload.php';
+
+use Intervention\Image\ImageManager;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Image\Image;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
@@ -20,20 +22,25 @@ use Joomla\Registry\Registry;
  * Content responsive images plugin
  */
 class Helper {
+  private $sizeSplit   = '_';
   private $baseDir     = '';
-  private $quality     = '';
-  private $scaleUp     = '';
-  private $scaleMethod = '';
+  private $quality     = 85;
+  private $scaleUp     = false;
 
-  /**
-   * Cropping constants
-   */
-  const SCALE_FILL = 1;
-  const SCALE_INSIDE = 2;
-  const SCALE_OUTSIDE = 3;
-  const CROP = 4;
-  const CROP_RESIZE = 5;
-  const SCALE_FIT = 6;
+  public function __construct() {
+    if ($this->baseDir === '') {
+      $this->baseDir = JPATH_ROOT . '/' .
+        Factory::getApplication('site')
+          ->getParams('com_media')
+          ->get('file_path', 'images');
+    }
+
+    $plugin            = PluginHelper::getPlugin('content', 'responsive');
+    $this->params      = new Registry($plugin->params);
+    $this->quality     = (int) $this->params->get('quality', 85);
+    $this->scaleUp     = (bool) $this->params->get('scaleUp', 0);
+    $this->sizeSplit   = '_';
+  }
 
   /**
    * Takes an image tag and returns the picture tag
@@ -46,38 +53,11 @@ class Helper {
    * @throws \Exception
    */
   public function transformImage($image, $breakpoints) {
-    if ($this->baseDir === '') {
-      $this->baseDir = JPATH_ROOT . '/' . Factory::getApplication('site')->getParams('com_media')->get('file_path', 'images');
-    }
-
-    $plugin = PluginHelper::getPlugin('content', 'responsive');
-    $this->params = new Registry($plugin->params);
-
-    $validExt          = array('jpg', 'jpeg', 'png');
-    $sizeSplit         = '_';
-    $validSize         = array(200, 320, 480, 768, 992, 1200, 1600, 1920);
-    $this->quality     = $this->quality === '' ? (int) $this->params->get('quality', '85') : $this->quality;
-    $this->scaleUp     = $this->scaleUp === '' ? (bool) ($this->params->get('scaleUp', '0') == '1') : $this->scaleUp;
-    $this->scaleMethod = $this->scaleMethod === '' ? $this->params->get('scaleMethod', 'SCALE_INSIDE') : $this->scaleUp;
+    $validSize = array(200, 320, 480, 768, 992, 1200, 1600, 1920);
+    $validExt = array('jpg', 'jpeg', 'png');
 
     if (is_array($breakpoints)) {
       $validSize = $breakpoints;
-    }
-
-    switch ($this->scaleMethod) {
-      case 'SCALE_FILL':
-        $scaleMethod = Image::SCALE_FILL;
-        break;
-      case 'SCALE_OUTSIDE':
-        $scaleMethod = Image::SCALE_OUTSIDE;
-        break;
-      case 'SCALE_FIT':
-        $scaleMethod = Image::SCALE_FIT;
-        break;
-      case 'SCALE_INSIDE':
-      default:
-        $scaleMethod = Image::SCALE_INSIDE;
-        break;
     }
 
     // Get the original path
@@ -97,19 +77,43 @@ class Helper {
     }
 
     if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'])) {
-      if (!@mkdir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'], 0755, true) && !is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname']) ) {
-        throw new RuntimeException('There was a file permissions problem in folder \'media\'');
+      if (
+        !@mkdir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'], 0755, true)
+        && !is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'])
+      ) {
+        throw new \RuntimeException('There was a file permissions problem in folder \'media\'');
       }
     }
 
-    // If responsive image doesn't exist we will create it
-    if (!file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'])) {
-      self::createImages($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $this->quality, $this->scaleUp, $scaleMethod, $sizeSplit);
+    // If the responsive image doesn't exist we will create it
+    if (
+      !file_exists(
+        JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
+        $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
+      )
+    ) {
+      self::createImages(
+        $validSize,
+        $originalImagePathInfo['dirname'],
+        $originalImagePathInfo['filename'],
+        $originalImagePathInfo['extension']
+      );
     }
 
-    // If responsive image exists use it
-    if (file_exists(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'])) {
-      $srcSets = self::buildSrcset($validSize, $originalImagePathInfo['dirname'], $originalImagePathInfo['filename'], $originalImagePathInfo['extension'], $sizeSplit);
+    // If the responsive image exists use it
+    if (
+      file_exists(
+        JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
+        $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
+      )
+    ) {
+      $srcSets = self::buildSrcset(
+        $validSize,
+        $originalImagePathInfo['dirname'],
+        $originalImagePathInfo['filename'],
+        $originalImagePathInfo['extension'],
+        $this->sizeSplit
+      );
 
       if (empty($srcSets)) {
         return $image;
@@ -117,16 +121,35 @@ class Helper {
 
       $srcSets = array_reverse($srcSets);
       $output = '<picture class="responsive-image">';
+      $baseType = array('sizes' => array(), 'srcset' => array(), 'type' => '');
+      $webpType = array('sizes' => array(), 'srcset' => array());
 
       foreach ($srcSets as $srcset) {
         foreach ($srcset as $src => $more) {
-          $type = $more['type'] === 'jpeg' ? 'jpg' : $more['type'];
-          $output .= '<source type="' . $type . '" media="' . $more['media'] . '" srcset="' . $src . '">';
+          if (in_array($more['type'], ['image/jpeg', 'image/png'])) {
+            array_push($baseType['sizes'], '(min-width: ' . $more['media'] . 'px) ' . $more['media'] . 'px');
+            array_push($baseType['srcset'], $src . ' ' . $more['media'] . 'w');
+            $baseType['type'] = $more['type'];
+          }
+          if ($more['type'] === 'image/webp') {
+            array_push($webpType['sizes'], $more['media']);
+            array_push($webpType['srcset'], $src . ' ' . $more['media'] . 'w');
+          }
         }
       }
 
+      if (count($webpType['sizes'])) {
+        $output .= '<source type="image/webp" sizes="' . implode(', ', $webpType['sizes']) . '" srcset="' . implode(', ', $webpType['srcset']) . '">';
+      }
+
+      $output .= '<source type="' . $baseType['type'] . '" sizes="' . implode(', ', $baseType['sizes']) . '" srcset="' . implode(', ', $baseType['srcset']) . '">';
+
       // Create the fallback img
-      $image = preg_replace('/src\s*=\s*".+?"/', 'src="/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] . $sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'] . '"', $image);
+      $image = preg_replace(
+        '/src\s*=\s*".+?"/',
+        'src="/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] .
+        $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'] . '"',
+        $image);
       if (strpos($image, ' loading=') === false) {
         $image = str_replace('<img ', '<img loading="lazy" ', $image);
       }
@@ -150,22 +173,22 @@ class Helper {
    *
    * @since  1.0
    */
-  private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplitt) {
-    $srcset = [];
+  private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplit) {
+    $srcset = array();
 
     if (!empty($breakpoints)) {
       for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
-        $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . $breakpoints[$i];
-        $type = in_array($extension, ['jpg', 'jpeg']) ? 'jpeg' : $extension;
+        $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplit . $breakpoints[$i];
+        $type = in_array(mb_strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : $extension;
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.' . $extension)) {
           $srcset[$breakpoints[$i]][$fileSrc . '.' . $extension] = array(
-            'media' => '(min-width: ' . $breakpoints[$i]. 'px)',
+            'media' => $breakpoints[$i],
             'type' => 'image/' . $type,
           );
         }
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.webp')) {
           $srcset[$breakpoints[$i]][$fileSrc . '.webp'] = array(
-            'media' => '(max-width: ' . $breakpoints[$i]. 'px)',
+            'media' => $breakpoints[$i],
             'type' => 'image/webp',
           );
         }
@@ -182,79 +205,85 @@ class Helper {
    * @param string   $dirname      the folder name
    * @param string   $filename     the file name
    * @param string   $extension    the file extension
-   * @param integer  $quality      the quality of the generated image
-   * @param boolean  $scaleUp      switch for upscalling or not an image
-   * @param string   $scaleMethod  the method for the scale up
-   * @param string   $sizeSplitt   the string used for the notation
    *
    * @return void
    *
    * @since  1.0
    */
-  private static function createImages($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $quality, $scaleUp,  $scaleMethod, $sizeSplitt) {
-    if (!empty($breakpoints)) {
-      // Create the images with width = breakpoint
-      $image = new Image;
+  private function createImages($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension) {
+    if (!count($breakpoints)) {
+      return;
+    }
 
-      // Load the file
-      $image->loadFile(JPATH_ROOT . '/' . $dirname . '/' .$filename . '.' . $extension);
+    if (extension_loaded('gd')){
+      $driver = 'gd';
+    }
 
-      // Get the properties
-      $properties = $image->getImageFileProperties(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
+    if (extension_loaded('imagick')){
+      $driver = 'imagick';
+    }
 
-      // Skip if the width is less or equal to the required
-      if ($properties->width <= (int) $breakpoints[0]) {
-        return;
-      }
+    if (!$driver) {
+      return;
+    }
 
-      // Do some memory checking
-      if (!self::checkMemoryLimit($properties, $dirname . '/' .$filename . '.' . $extension)) {
-        return;
-      }
+    // Create the images with width = breakpoint
+    $manager = new ImageManager(array('driver' => $driver));
+    $info = @getimagesize(JPATH_ROOT . '/' . $dirname . '/' .$filename . '.' . $extension);
 
-      // Get the image type
-      $type = str_replace('image/','', mb_strtolower($properties->mime));
+    if( empty($info) ) {
+      throw new \Exception( sprintf('ERROR: getimagesize("%s") returned: %s', $filename, print_r($info, true)) );
+    }
 
-      switch ($type) {
-        case 'jpeg':
-        case 'jpg':
-          $imageType = 'IMAGETYPE_JPEG';
-          break;
-        case 'png':
-          $imageType = 'IMAGETYPE_PNG';
-          break;
-        default:
-          $imageType = '';
-          break;
-      }
+    $imageWidth = $info[0];
+    $imageHeight = $info[1];
 
-      if (!in_array($imageType, array('IMAGETYPE_JPEG', 'IMAGETYPE_PNG'))) {
-        return;
-      }
+    if(!isset($info['bits'])) {
+      $bits = 16;
+    } else {
+      $bits = $info['bits'];
+    }
 
-      $aspectRatio = $properties->width / $properties->height;
+    // Skip if the width is less or equal to the required
+    if ($imageWidth <= (int) $breakpoints[0]) {
+      return;
+    }
 
-      for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
-        if ($scaleUp or ($properties->width >= (int) $breakpoints[$i])) {
-          // Resize the image
-          $newImg = $image->resize((int) $breakpoints[$i], (int) $breakpoints[$i] / $aspectRatio, true, $scaleMethod);
+    // Check if we support the given image
+    if (!in_array(str_replace('image/','', mb_strtolower($info['mime'])), array('jpeg', 'jpg', 'png', 'webp'))) {
+      return;
+    }
 
-          $newImg->toFile(
-            JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension,
-            $imageType,
-            array('quality' => (int) $quality)
+    // Do some memory checking
+    if (!self::checkMemoryLimit(array('width' => $imageWidth, 'height' => $imageHeight, 'bits' => $bits), $dirname . '/' .$filename . '.' . $extension)) {
+      return;
+    }
+
+    for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
+      if ($this->scaleUp || ($imageWidth >= (int) $breakpoints[$i])) {
+        // Load the image
+        $image = $manager->make(JPATH_ROOT . '/' . $dirname . '/' .$filename . '.' . $extension);
+        // Resize the image
+        $image->resize($breakpoints[$i], null, function ($constraint) {
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        });
+
+        // Save the image
+        $image->save(
+          JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
+            $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
+          $this->quality,
+          $extension);
+
+        if (function_exists('imagewebp')) {
+          // Save the image as webp
+          $image->save(
+            JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
+            $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
+            $this->quality,
+            'webp'
           );
-
-          if (function_exists('imagewebp')) {
-            if (function_exists('imagecreatefromjpeg') && $imageType === 'IMAGETYPE_JPEG') {
-              $webp_resource = @imagecreatefromjpeg(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
-            } elseif (function_exists('imagecreatefrompng') && $imageType === 'IMAGETYPE_PNG') {
-              $webp_resource = @imagecreatefrompng(JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . $extension);
-            }
-            if ($webp_resource) {
-              @imagewebp($webp_resource, JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplitt . (int) $breakpoints[$i] . '.' . 'webp', (int) $quality);
-            }
-          }
         }
       }
     }
@@ -269,11 +298,11 @@ class Helper {
    * @return boolean
    *
    * @since  3.0.3
-   * 
+   *
    * @author  Niels Nuebel: https://github.com/nielsnuebel
    */
   protected static function checkMemoryLimit($properties, $imagePath) {
-    $memorycheck = ($properties->width * $properties->height * $properties->bits);
+    $memorycheck = ($properties['width'] * $properties['height'] * $properties['bits']);
     $memorycheck_text = $memorycheck / (1024 * 1024);
     $memory_limit = ini_get('memory_limit');
 
