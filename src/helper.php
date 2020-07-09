@@ -122,7 +122,7 @@ class Helper {
       $srcSets = array_reverse($srcSets);
       $output = '<picture class="responsive-image">';
       $baseType = array('sizes' => array(), 'srcset' => array(), 'type' => '');
-      $webpType = array('sizes' => array(), 'srcset' => array());
+      $webpType = array('sizes' => array(), 'srcset' => array(), 'type' => 'image/webp');
 
       foreach ($srcSets as $srcset) {
         foreach ($srcset as $src => $more) {
