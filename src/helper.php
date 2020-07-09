@@ -132,7 +132,7 @@ class Helper {
             $baseType['type'] = $more['type'];
           }
           if ($more['type'] === 'image/webp') {
-            array_push($webpType['sizes'], $more['media']);
+            array_push($baseType['sizes'], '(min-width: ' . $more['media'] . 'px) ' . $more['media'] . 'px');
             array_push($webpType['srcset'], $src . ' ' . $more['media'] . 'w');
           }
         }
