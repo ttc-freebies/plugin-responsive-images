@@ -87,10 +87,10 @@ class Helper {
 
     // If the responsive image doesn't exist we will create it
     if (
-      !file_exists(
-        JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
-        $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
-      )
+    !file_exists(
+      JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
+      $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
+    )
     ) {
       self::createImages(
         $validSize,
@@ -102,10 +102,10 @@ class Helper {
 
     // If the responsive image exists use it
     if (
-      file_exists(
-        JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
-        $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
-      )
+    file_exists(
+      JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
+      $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
+    )
     ) {
       $srcSets = self::buildSrcset(
         $breakpoints,
@@ -115,44 +115,31 @@ class Helper {
         $this->sizeSplit
       );
 
-      if (empty($srcSets)) {
+      if (empty($srcSets['base']['srcset'])) {
         return $image;
       }
 
-      $srcSets = array_reverse($srcSets);
+      $type = in_array(mb_strtolower($originalImagePathInfo['extension']), ['jpg', 'jpeg']) ? 'jpeg' : $originalImagePathInfo['extension'];
+
       $output = '<picture class="responsive-image">';
-      $baseType = array('sizes' => array(), 'srcset' => array(), 'type' => '');
-      $webpType = array('sizes' => array(), 'srcset' => array(), 'type' => 'image/webp');
 
-      foreach ($srcSets as $srcset) {
-        foreach ($srcset as $src => $more) {
-          if (in_array($more['type'], ['image/jpeg', 'image/png'])) {
-            array_push($baseType['sizes'], '(min-width: ' . $more['media'] . 'px) ' . $more['media'] . 'px');
-            array_push($baseType['srcset'], $src . ' ' . $more['media'] . 'w');
-            $baseType['type'] = $more['type'];
-          }
-          if ($more['type'] === 'image/webp') {
-            array_push($webpType['sizes'], '(min-width: ' . $more['media'] . 'px) ' . $more['media'] . 'px');
-            array_push($webpType['srcset'], $src . ' ' . $more['media'] . 'w');
-          }
-        }
+      if ($srcSets['webp']['sizes']) {
+        $output .= '<source type="image/webp" sizes="' . implode(', ', array_reverse($srcSets['webp']['sizes'])) . '" srcset="' . implode(', ', array_reverse($srcSets['webp']['srcset'])) . '">';
       }
 
-      if (count($webpType['sizes'])) {
-        $output .= '<source type="image/webp" sizes="' . implode(', ', $webpType['sizes']) . '" srcset="' . implode(', ', $webpType['srcset']) . '">';
-      }
-
-      $output .= '<source type="' . $baseType['type'] . '" sizes="' . implode(', ', $baseType['sizes']) . '" srcset="' . implode(', ', $baseType['srcset']) . '">';
+      $output .= '<source type="image/' . $type . '" sizes="' . implode(', ', array_reverse($srcSets['base']['sizes'])). '" srcset="' . implode(', ', array_reverse($srcSets['base']['srcset'])) . '">';
 
       // Create the fallback img
       $image = preg_replace(
         '/src\s*=\s*".+?"/',
         'src="/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' . $originalImagePathInfo['filename'] .
         $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension'] . '"',
-        $image);
+        $image
+      );
+
       if (strpos($image, ' loading=') === false) {
         $image = str_replace('<img ', '<img loading="lazy" ', $image);
-      }
+    }
       $output .= $image;
       $output .= '</picture>';
 
@@ -176,23 +163,28 @@ class Helper {
    * @since  1.0
    */
   private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplit) {
-    $srcset = array();
+    $srcset = array(
+      'base' => array(
+        'srcset' => array(),
+        'sizes' => array(),
+      ),
+      'webp' => array(
+        'srcset' => array(),
+        'sizes' => array(),
+      )
+    );
 
     if (!empty($breakpoints)) {
       for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
         $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplit . $breakpoints[$i];
-        $type = in_array(mb_strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : $extension;
+
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.' . $extension)) {
-          $srcset[$breakpoints[$i]][$fileSrc . '.' . $extension] = array(
-            'media' => $breakpoints[$i],
-            'type' => 'image/' . $type,
-          );
+          array_push($srcset['base']['srcset'], $fileSrc . '.' . $extension . ' ' . $breakpoints[$i] . 'w');
+          array_push($srcset['base']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
         }
         if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.webp')) {
-          $srcset[$breakpoints[$i]][$fileSrc . '.webp'] = array(
-            'media' => $breakpoints[$i],
-            'type' => 'image/webp',
-          );
+          array_push($srcset['webp']['srcset'], $fileSrc . '.webp ' . $breakpoints[$i] . 'w');
+          array_push($srcset['webp']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
         }
       }
     }
@@ -282,12 +274,24 @@ class Helper {
         // Save the image
         $image->save(
           JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
-            $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
+          $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
           $this->quality,
           $extension);
 
-        if (function_exists('imagewebp')) {
+        if ($driver === 'gd' && function_exists('imagewebp')) {
           // Save the image as webp
+          $image->encode('webp', $this->quality);
+          $image->save(
+            JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
+            $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
+            $this->quality,
+            'webp'
+          );
+        }
+
+        if ($driver === 'imagick' && \Imagick::queryFormats('WEBP')) {
+          // Save the image as webp
+          $image->encode('webp', $this->quality);
           $image->save(
             JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
             $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
