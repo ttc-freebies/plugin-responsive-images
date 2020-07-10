@@ -16,6 +16,7 @@ use Intervention\Image\ImageManager;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 /**
@@ -63,6 +64,7 @@ class Helper {
     // Get the original path
     preg_match('/src\s*=\s*"(.+?)"/', $image, $match);
     $originalImagePath = $match[1];
+    $originalImagePath = str_replace(Uri::base(), '', $originalImagePath);
     $path = realpath(JPATH_ROOT . (substr($originalImagePath, 0, 1) === '/' ? $originalImagePath : '/'. $originalImagePath));
 
     if (strpos($path, $this->baseDir) !== 0 || strpos($path, $this->baseDir) === false) {
