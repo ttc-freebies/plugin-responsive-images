@@ -282,12 +282,24 @@ class Helper {
         // Save the image
         $image->save(
           JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
-            $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
+          $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
           $this->quality,
           $extension);
 
-        if (function_exists('imagewebp')) {
+        if ($driver === 'gd' && function_exists('imagewebp')) {
           // Save the image as webp
+          $image->encode('webp', $this->quality);
+          $image->save(
+            JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
+            $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
+            $this->quality,
+            'webp'
+          );
+        }
+
+        if ($driver === 'imagick' && \Imagick::queryFormats('WEBP')) {
+          // Save the image as webp
+          $image->encode('webp', $this->quality);
           $image->save(
             JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
             $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
