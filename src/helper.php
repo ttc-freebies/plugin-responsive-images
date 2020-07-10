@@ -83,7 +83,7 @@ class Helper {
         !@mkdir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'], 0755, true)
         && !is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'])
       ) {
-        throw new \RuntimeException('There was a file permissions problem in folder \'media\'');
+        return $image;
       }
     }
 
@@ -109,12 +109,13 @@ class Helper {
       $originalImagePathInfo['filename'] . $this->sizeSplit . $validSize[0] . '.' . $originalImagePathInfo['extension']
     )
     ) {
-      $srcSets = self::buildSrcset(
+      $srcSets = $this->buildSrcset(
         $breakpoints,
-        $originalImagePathInfo['dirname'],
-        $originalImagePathInfo['filename'],
-        $originalImagePathInfo['extension'],
-        $this->sizeSplit
+        array(
+          'dirname' => $originalImagePathInfo['dirname'],
+          'filename' => $originalImagePathInfo['filename'],
+          'extension' => $originalImagePathInfo['extension'],
+        )
       );
 
       if (empty($srcSets['base']['srcset'])) {
@@ -141,7 +142,8 @@ class Helper {
 
       if (strpos($image, ' loading=') === false) {
         $image = str_replace('<img ', '<img loading="lazy" ', $image);
-    }
+      }
+
       $output .= $image;
       $output .= '</picture>';
 
@@ -155,16 +157,13 @@ class Helper {
    * Build the srcset string
    *
    * @param  array   $breakpoints  the different breakpoints
-   * @param  string  $dirname      the folder name
-   * @param  string  $filename     the file name
-   * @param  string  $extension    the file extension
-   * @param  string  $sizeSplitt   the string used for the notation
+   * @param  array   $image        the image attributes, expects dirname, filename, extension
    *
    * @return array
    *
    * @since  1.0
    */
-  private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplit) {
+  private  function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $image) {
     $srcset = array(
       'base' => array(
         'srcset' => array(),
@@ -177,17 +176,19 @@ class Helper {
     );
 
     if (!empty($breakpoints)) {
-      for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
-        $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplit . $breakpoints[$i];
+      return $srcset;
+    }
 
-        if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.' . $extension)) {
-          array_push($srcset['base']['srcset'], $fileSrc . '.' . $extension . ' ' . $breakpoints[$i] . 'w');
-          array_push($srcset['base']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
-        }
-        if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.webp')) {
-          array_push($srcset['webp']['srcset'], $fileSrc . '.webp ' . $breakpoints[$i] . 'w');
-          array_push($srcset['webp']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
-        }
+    for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
+      $fileSrc = 'media/cached-resp-images/' . $image['dirname'] . '/' . $image['filename'] . $this->sizeSplit . $breakpoints[$i];
+
+      if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.' . $image['extension'])) {
+        array_push($srcset['base']['srcset'], $fileSrc . '.' . $image['extension'] . ' ' . $breakpoints[$i] . 'w');
+        array_push($srcset['base']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
+      }
+      if (file_exists(JPATH_ROOT . '/' . $fileSrc . '.webp')) {
+        array_push($srcset['webp']['srcset'], $fileSrc . '.webp ' . $breakpoints[$i] . 'w');
+        array_push($srcset['webp']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
       }
     }
 
