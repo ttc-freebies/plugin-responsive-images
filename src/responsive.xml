@@ -32,6 +32,6 @@
     </fields>
   </config>
   <updateservers>
-    <server type="extension" priority="1" name="Responsive content images">https://raw.githubusercontent.com/ttc-freebies/updates/master/responsive/updates.xml</server>
+    <server type="extension" priority="1" name="Responsive content images">https://ttc-freebies.github.io/plugin-responsive-images/update.xml</server>
   </updateservers>
 </extension>
