@@ -10,7 +10,7 @@
 - 🎉 [NEW] Use the code in any Layout
 
 [GitHub](https://github.com/ttc-freebies/plugin-responsive-images/)
-[Download v3.5.5](/dist/plg_responsive_3.5.5.zip ':ignore')
+[Download v3.5.5](/plugin-responsive-images/dist/plg_responsive_3.5.5.zip ':ignore')
 [Get Started](/installation)
 
 <!-- background color -->
