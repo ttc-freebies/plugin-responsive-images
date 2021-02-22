@@ -41,7 +41,7 @@ const { version } = require("./package.json");
       cont = cont.replace(/{{version}}/g, version);
       cont = cont.replace(
         /{{download}}/g,
-        `[Download v${version}](dist/plg_responsive_${version}.zip ' :target=_blank')`
+        `[Download v${version}](/dist/plg_responsive_${version}.zip ':ignore')`
       );
 
       const ext = file === "docs/update.txt" ? ".xml" : ".md";
