@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
+use \Joomla\CMS\Installer\Adapter\PluginAdapter;
 use Joomla\CMS\Log\Log;
 
 class PlgContentResponsiveInstallerScript  extends \Joomla\CMS\Installer\InstallerScript {
@@ -48,9 +49,9 @@ class PlgContentResponsiveInstallerScript  extends \Joomla\CMS\Installer\Install
   /**
    * Called on uninstallation
    *
-   * @param  JAdapterInstance  $adapter  The object responsible for running this script
+   * @param  PluginAdapter  $adapter  The object responsible for running this script
    */
-  public function uninstall(JAdapterInstance $adapter) {
+  public function uninstall(PluginAdapter $adapter) {
     $cleanup = (bool)($this->getParameter('params', 'cleanup') == '1');
 
     if ($cleanup===true) {

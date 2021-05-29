@@ -1,8 +1,8 @@
 {
   "name": "plugin-responsive-images",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "private": true,
-  "description": "A tiny content plugin that create a few different sized images on the fly and also update the markup to use the well established and supported HTML5 image tag srcset",
+  "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
     "build": "node build.js",
     "serve": "npx serve docs"
@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/ttc-freebies/plugin-responsive-images#readme",
   "dependencies": {
-    "adm-zip": "0.4.16",
-    "fs-extra": "9.0.1",
+    "adm-zip": "0.5.5",
+    "fs-extra": "10.0.0",
     "rimraf": "3.0.2"
   }
 }
