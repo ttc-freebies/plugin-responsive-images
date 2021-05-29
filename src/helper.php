@@ -77,39 +77,6 @@ class Helper {
       return $image;
     }
 
-<<<<<<< ours
-    if (file_exists(JPATH_ROOT . '/media/cached-resp-images-data/' . $originalImagePathInfo['dirname'] . '/' .$originalImagePathInfo['filename'] . '.json')) {
-      $fileInfo = @\file_get_contents(
-        JPATH_ROOT . '/media/cached-resp-images-data/' .
-        $originalImagePathInfo['dirname'] . '/' .
-        $originalImagePathInfo['filename'] . '.json'
-      );
-
-      if ($fileInfo === 'false') {
-        return $image;
-      }
-
-      $fileInfo = \json_decode($fileInfo);
-
-      if (!$fileInfo) {
-        return $image;
-      }
-
-      return
-        $this->buildSrcsetFromCache(
-          $breakpoints,
-          $fileInfo,
-          $image
-        );
-    }
-
-    $created = self::createImages(
-      $this->validSizes,
-      $originalImagePathInfo['dirname'],
-      $originalImagePathInfo['filename'],
-      $originalImagePathInfo['extension']
-    );
-=======
     if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'])) {
       if (
         !@mkdir(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'], 0755, true)
@@ -176,7 +143,6 @@ class Helper {
     }
       $output .= $image;
       $output .= '</picture>';
->>>>>>> theirs
 
     if (!$created) {
       return $image;
@@ -201,13 +167,8 @@ class Helper {
    *
    * @since  1.0
    */
-<<<<<<< ours
-  private function buildSrcsetFromCache($breakpoints, $fileInfo, $image) {
-    $srcSets = array(
-=======
-  private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplit) {
+   private static function buildSrcset($breakpoints = array(200, 320, 480, 768, 992, 1200, 1600, 1920), $dirname, $filename, $extension, $sizeSplit) {
     $srcset = array(
->>>>>>> theirs
       'base' => array(
         'srcset' => array(),
         'sizes' => array(),
@@ -218,17 +179,6 @@ class Helper {
       )
     );
 
-<<<<<<< ours
-    for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
-      if ($fileInfo->srcsetBase->{$breakpoints[$i]}) {
-        array_push($srcSets['base']['srcset'], $fileInfo->srcsetBase->{$breakpoints[$i]});
-        array_push($srcSets['base']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
-      }
-
-      if ($fileInfo->srcsetWebp->{$breakpoints[$i]}) {
-        array_push($srcSets['webp']['srcset'], $fileInfo->srcsetWebp->{$breakpoints[$i]});
-        array_push($srcSets['webp']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
-=======
     if (!empty($breakpoints)) {
       for ($i = 0, $l = count($breakpoints); $i < $l; $i++) {
         $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $sizeSplit . $breakpoints[$i];
@@ -241,7 +191,6 @@ class Helper {
           array_push($srcset['webp']['srcset'], $fileSrc . '.webp ' . $breakpoints[$i] . 'w');
           array_push($srcset['webp']['sizes'], '(min-width: ' . $breakpoints[$i] . 'px) ' . $breakpoints[$i] . 'px');
         }
->>>>>>> theirs
       }
     }
 
@@ -383,12 +332,8 @@ class Helper {
 
         // Save the image
         $image->save(
-<<<<<<< ours
-          JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename . $this->sizeSplit . $breakpoints[$i]. '.' . $extension,
-=======
           JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
           $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
->>>>>>> theirs
           $this->quality,
           $extension
         );
@@ -397,8 +342,6 @@ class Helper {
           $this->sizeSplit . $breakpoints[$i]. '.' . $extension . '?' . $data->hash . ' ' . $breakpoints[$i] . 'w';
 
         if ($driver === 'gd' && function_exists('imagewebp')) {
-<<<<<<< ours
-=======
           // Save the image as webp
           $image->encode('webp', $this->quality);
           $image->save(
@@ -410,7 +353,6 @@ class Helper {
         }
 
         if ($driver === 'imagick' && \Imagick::queryFormats('WEBP')) {
->>>>>>> theirs
           // Save the image as webp
           $image->encode('webp', $this->quality);
           $image->save(
