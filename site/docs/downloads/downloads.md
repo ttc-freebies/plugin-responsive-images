@@ -10,7 +10,7 @@ title: Downloads
 ## Versions
 
 {% for dl in downloads %}
-- [{{dl.version}}]({{ metainfo.url }}/downloads/{{dl.name}})
+- [{{dl.version}}]({{ metainfo.url }}/dist/{{dl.name}})
 {% else %}
 - If you see this message the site is broken, please report it.
 {% endfor %}

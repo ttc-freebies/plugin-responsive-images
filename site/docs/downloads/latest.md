@@ -6,6 +6,6 @@ title: Downloads
 # Latest Version
 {% assign fff = downloads | first%}
 
-[{{fff.version}}]({{ metainfo.url }}/downloads/{{fff.name}})
+[{{fff.version}}]({{ metainfo.url }}/dist/{{fff.name}})
 
 {% img %}
