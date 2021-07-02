@@ -1,6 +1,6 @@
 {
   "name": "plugin-responsive-images",
-  "version": "4.0.0-rc1",
+  "version": "4.0.0-rc.2",
   "private": true,
   "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
@@ -33,7 +33,8 @@
     "markdown-it-anchor": "^8.0.1",
     "nunjucks": "^3.2.3",
     "postcss": "^8.3.0",
-    "postcss-cli": "^8.3.1"
+    "postcss-cli": "^8.3.1",
+    "semver": "^7.3.5"
   },
   "data": {
     "repo": "ooo"

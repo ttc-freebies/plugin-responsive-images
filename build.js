@@ -49,7 +49,7 @@ const zipExtension = async (path, name, type) => {
     if (dir === 'libraries') {
       const zipped = getDirectories(`${process.cwd()}/src/libraries`)
       zipped.forEach(lib => {
-        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib}`, lib, 'libraries'));
+        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib.toLowerCase()}`, lib, 'libraries'));
       })
     }
     if (dir === 'plugins') {
@@ -67,7 +67,7 @@ const zipExtension = async (path, name, type) => {
   const zip = new admZip();
   globalThis.zips.forEach(z => {
     const pre = z.type === `libraries` ? 'lib_' : `plg_${z.type}`;
-    zip.addFile(`packages/${pre}${z.name}_${version}.zip`, z.data);
+    zip.addFile(`packages/${pre}${z.name.toLowerCase()}_${version}.zip`, z.data);
   });
   zip.addLocalFile('src/package/pkg_script.php');
   let xmlContent = await getCurrentXml('src/package', 'pkg_responsive');
