@@ -2,6 +2,7 @@
 eleventyNavigation:
   key: Home
   url: '/'
+  order: 1
 permalink: /
 layout: base.njk
 title: Responsive Images

@@ -2,6 +2,7 @@
 eleventyNavigation:
   key: FAQ
   url: '/faq/index.html'
+  order: 5
 permalink: faq/index.html
 layout: base.njk
 title: Settings
