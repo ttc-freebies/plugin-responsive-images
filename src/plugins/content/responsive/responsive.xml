@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.9" type="plugin" group="content" method="upgrade">
+  <name>PLG_CONTENT_RESPONSIVE_NAME</name>
+  <author>Dimitrios Grammatikogiannis</author>
+  <creationDate>2017</creationDate>
+  <copyright>Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <version>{{version}}</version>
+  <description>PLG_CONTENT_RESPONSIVE_DESC</description>
+  <files>
+    <folder>language</folder>
+    <filename plugin="responsive">responsive.php</filename>
+    <filename>components.xml</filename>
+  </files>
+  <config>
+    <fields name="params">
+      <fieldset name="basics">
+        <field
+          name="components"
+          type="subform"
+          formsource="plugins/content/responsive/components.xml"
+          label="PLG_PLUGINS_BASIC_FIELDSET_COMPONENTS_LABEL"
+          multiple="true"
+          default="{&quot;__field10&quot;:{&quot;component_name&quot;:&quot;com_content&quot;,&quot;component_view&quot;:&quot;article,category,featured&quot;,&quot;component_db_column&quot;:&quot;introtext,fulltext,text&quot;},&quot;__field11&quot;:{&quot;component_name&quot;:&quot;mod_articles_category&quot;,&quot;component_view&quot;:&quot;content&quot;,&quot;component_db_column&quot;:&quot;introtext,fulltext,text&quot;}}"
+
+        />
+      </fieldset>
+      <fieldset name="more">
+        <field
+          name="excludeFolders"
+          type="textarea"
+          default="images/example-1-dir,images/example-2-dir"
+          label="PLG_PLUGINS_MORE_FIELDSET_EXCLUDED_DIRS_LABEL"
+          description="PLG_PLUGINS_MORE_FIELDSET_EXCLUDED_DIRS_DESC"
+          required="true"
+        />
+        <field
+          name="note01"
+          type="note"
+          class="alert alert-danger"
+          hiddenLabel="true"
+          description="PLG_PLUGINS_MORE_FIELDSET_NOTE01_DESC"
+        />
+        <field
+          name="separator"
+          type="text"
+          maxlength="1"
+          pattern="[-_@]$"
+          default="_"
+          required="true"
+          label="PLG_PLUGINS_MORE_FIELDSET_SEPARATOR_LABEL"
+          description="PLG_PLUGINS_MORE_FIELDSET_SEPARATOR_DESC"
+        />
+        <field
+          name="sizes"
+          type="text"
+          default="200, 320, 480, 768, 992, 1200, 1600, 1920"
+          required="true"
+          label="PLG_PLUGINS_MORE_FIELDSET_SIZES_LABEL"
+          description="PLG_PLUGINS_MORE_FIELDSET_SIZES_DESC"
+        />
+        <field
+          name="cleanup"
+          type="radio"
+          layout="joomla.form.field.radio.switcher"
+          default="0"
+          label="PLG_PLUGINS_MORE_FIELDSET_UNINSTALL_LABEL"
+          description="PLG_PLUGINS_MORE_FIELDSET_UNINSTALL_DESC"
+        >
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+      </fieldset>
+      <fieldset name="quality">
+        <field
+          name="qualityJPG"
+          type="number"
+          default="85"
+          label="PLG_PLUGINS_QUALITY_FIELDSET_JPG_LABEL"
+          min="1"
+          max="100"
+          step="1"
+          required="true"
+          validate="number"
+          description="PLG_PLUGINS_QUALITY_FIELDSET_JPG_DESC"
+        />
+        <field
+          name="enableWEBP"
+          type="radio"
+          layout="joomla.form.field.radio.switcher"
+          default="1"
+          label="PLG_PLUGINS_QUALITY_FIELDSET_ENABLE_WEBP_LABEL"
+          description="PLG_PLUGINS_QUALITY_FIELDSET_ENABLE_WEBP_DESC"
+        >
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field
+          name="qualityWEBP"
+          type="number"
+          default="60"
+          label="PLG_PLUGINS_QUALITY_FIELDSET_WEBP_LABEL"
+          min="1"
+          max="100"
+          step="1"
+          required="true"
+          validate="number"
+          description="PLG_PLUGINS_QUALITY_FIELDSET_WEBP_LABEL"
+          showon="enableWEBP:1"
+        />
+        <field
+          name="enableAVIF"
+          type="radio"
+          layout="joomla.form.field.radio.switcher"
+          default="0"
+          label="PLG_PLUGINS_QUALITY_FIELDSET_ENABLE_AVIF_LABEL"
+          description="PLG_PLUGINS_QUALITY_FIELDSET_ENABLE_AVIF_DESC"
+        >
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field
+          name="qualityAVIF"
+          type="number"
+          default="40"
+          label="PLG_PLUGINS_QUALITY_FIELDSET_AVIF_LABEL"
+          min="1"
+          max="100"
+          step="1"
+          required="true"
+          validate="number"
+          description="PLG_PLUGINS_QUALITY_FIELDSET_AVIF_DESC"
+          showon="enableAVIF:1"
+        />
+      </fieldset>
+      <fieldset name="scalling" desc="Quality">
+        <field
+          name="scaleUp"
+          type="radio"
+          layout="joomla.form.field.radio.switcher"
+          default="0"
+          label="PLG_PLUGINS_SCALLING_FIELDSET_SCALE_LABEL"
+          description="PLG_PLUGINS_SCALLING_FIELDSET_SCALE_DESC"
+        >
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+  <updateservers>
+    <server type="extension" priority="1" name="Responsive content images">https://ttc-freebies.github.io/plugin-responsive-images/update.xml</server>
+  </updateservers>
+</extension>

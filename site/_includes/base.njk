@@ -1,0 +1,31 @@
+{%- if description -%}
+  {%- set desc = description | safe -%}
+{%- else -%}
+  {%- set desc = metainfo.description | safe -%}
+{%- endif -%}
+{%- set css %}
+  {%- include "xcss/base.min.css" -%}
+{% endset -%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{% if title %}{{ title }}{% endif %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ desc }}">
+    <meta name="twitter:card" content="summary">
+    <link rel=icon href='data:image/svg+xml;utf8,<svg xmlns="w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎆</text></svg>'>
+    <meta name="twitter:creator" content="@dgrammatiko">
+    <meta name="twitter:image" content="{{ metainfo.url }}/static/images/android-chrome-512x512.png">
+    <meta property="og:image" content="{{ metainfo.url }}/static/images/android-chrome-512x512.png">
+    <meta property="og:url" content="{{ metainfo.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ metainfo.title }}">
+    <meta property="og:description" content="{{ desc }}">
+    <style>{{ css | safe }}</style>
+  </head>
+  <body class="grid-it">
+    <header>{% include "components/header.njk" %}</header>
+    <main>{{ layoutContent | safe }}</main>
+    <footer>{% include "components/footer.njk" %}</footer>
+  </body>
+</html>

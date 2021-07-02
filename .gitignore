@@ -1,5 +1,3 @@
 node_modules
-package
-dist/
-!docs/dist/
-skip
+_site
+media_src

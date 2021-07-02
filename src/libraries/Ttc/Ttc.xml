@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="4.0">
+  <libraryname>Ttc</libraryname>
+  <name>TTC Common Library</name>
+  <author>Dimitrios Grammatikogiannis</author>
+  <authorUrl>dgrammatiko.dev</authorUrl>
+  <creationDate>2021</creationDate>
+  <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <version>{{version}}</version>
+  <description>TTC Common Library</description>
+  <files folder="libraries">
+    <folder>Freebies</folder>
+    <folder>vendor</folder>
+    <folder>vendor_prefixed</folder>
+    <filename>license.txt</filename>
+  </files>
+</extension>

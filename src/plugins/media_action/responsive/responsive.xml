@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="media-action" method="upgrade">
+  <name>PLG_MEDIA_ACTION_RESPONSIVE_NAME</name>
+  <author>Dimitrios Grammatikogiannis</author>
+  <creationDate>June 2021</creationDate>
+  <copyright>(C) 2021 Dimitrios Grammatikogiannis</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <authorUrl>dgrammatiko.dev</authorUrl>
+  <version>{{version}}</version>
+  <description>PLG_MEDIA_ACTION_RESPONSIVE_DESC</description>
+  <files>
+    <folder>language</folder>
+    <filename plugin="responsive">responsive.php</filename>
+  </files>
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field
+          name="note01"
+          type="note"
+          class="alert alert-info"
+          label="PLG_MEDIA_ACTION_RESPONSIVE_FORM_LABEL"
+          description="PLG_MEDIA_ACTION_RESPONSIVE_FORM_DESC"
+        />
+      </fieldset>
+    </fields>
+  </config>
+</extension>

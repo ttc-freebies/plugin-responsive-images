@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset name="components" label="Components">
+    <field
+        name="component_name"
+        type="text"
+        required="true"
+        label="PLG_PLUGINS_BASIC_FIELDSET_COMPONENTS_COMPONENT_NAME_LABEL"
+    />
+    <field
+      name="component_view"
+      type="text"
+      required="true"
+      label="PLG_PLUGINS_BASIC_FIELDSET_COMPONENTS_COMPONENT_VIEWS_LABEL"
+    />
+    <field
+      name="component_db_column"
+      type="text"
+      required="true"
+      label="PLG_PLUGINS_BASIC_FIELDSET_COMPONENTS_COMPONENT_DB_COLS_LABEL"
+    />
+  </fieldset>
+</form>

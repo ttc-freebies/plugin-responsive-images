@@ -1,0 +1,18 @@
+<nav class="menu" id="a11y-menu" role="navigation" aria-label="Main menu">
+{{ collections.all | eleventyNavigation | eleventyNavigationToHtml({
+    listElement: "ul",
+    listItemElement: "li",
+
+    listClass: "nav level-1 list-reset",
+    listItemClass: "has-subnav",
+    listItemHasChildrenClass: "level-2 list-reset",
+    activeListItemClass: "",
+
+    anchorClass: "",
+    activeAnchorClass: "",
+    activeKey: "",
+    showExcerpt: false
+}) | safe }}
+</nav>
+
+

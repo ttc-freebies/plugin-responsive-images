@@ -1,51 +1,78 @@
-const {
-  copy,
-  exists,
-  mkdir,
-  readFile,
-  unlink: unl,
-  writeFile,
-} = require("fs-extra");
-const util = require("util");
-const rimRaf = util.promisify(require("rimraf"));
-const { version } = require("./package.json");
+const { readFile } = require('fs').promises;
+const { readdirSync, existsSync } = require('fs');
+const admZip = require('adm-zip');
+const { version } = require('./package.json');
+
+globalThis.zips = [];
+const getDirectories = source =>
+    readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
+const getCurrentXml = async (path, name) => {
+  let xml;
+  if (existsSync(`${path !== '' ? path + '/' : ''}${name}.xml`)) {
+    xml = await readFile(`${path !== '' ? path + '/' : ''}${name}.xml`, {
+      encoding: 'utf8',
+    });
+
+    return xml.replace(/{{version}}/g, version);
+  }
+}
+
+const zipExtension = async (path, name, type) => {
+  const noRoot = path.replace(`${process.cwd()}/`, '');
+  xml = await getCurrentXml(path, name);
+  const zip = new admZip();
+  readdirSync(path, { withFileTypes: true }).forEach(file => {
+    if (file.isDirectory()) {
+      zip.addLocalFolder(`${noRoot}/${file.name}`, file.name);
+    } else if (file.name === `${name}.xml`) {
+      zip.addFile(file.name, xml);
+    } else if (!['composer.json', 'composer.lock'].includes(file.name)) {
+      zip.addLocalFile(`${noRoot}/${file.name}`, false);
+    }
+  });
+
+  zip.addLocalFile('license.txt', false);
+
+  globalThis.zips.push({name: name, data: zip.toBuffer(), type: type});
+}
 
 (async function exec() {
-  await rimRaf("./dist");
-  await rimRaf("./package");
-  await copy("./src", "./package");
-
-  if (!(await exists("./dist"))) {
-    await mkdir("./dist");
-  }
-
-  let xml = await readFile("./package/responsive.xml", { encoding: "utf8" });
-  xml = xml.replace(/{{version}}/g, version);
-
-  await writeFile("./package/responsive.xml", xml, { encoding: "utf8" });
-  await unl("./package/composer.json");
-  await unl("./package/composer.lock");
-
-  // Package it
-  const zip = new (require("adm-zip"))();
-  zip.addLocalFolder("package", false);
-  zip.writeZip(`dist/plg_responsive_${version}.zip`);
-
-  await rimRaf("./docs/dist");
-  await copy("./dist", "./docs/dist");
-
-  // Update the version, docs
-  ["docs/_coverpage.txt", "docs/installation.txt", "docs/update.txt"].forEach(
-    async (file) => {
-      let cont = await readFile(file, { encoding: "utf8" });
-      cont = cont.replace(/{{version}}/g, version);
-      cont = cont.replace(
-        /{{download}}/g,
-        `[Download v${version}](/plugin-responsive-images/dist/plg_responsive_${version}.zip ':ignore')`
-      );
-
-      const ext = file === "docs/update.txt" ? ".xml" : ".md";
-      await writeFile(file.replace(".txt", ext), cont, { encoding: "utf8" });
+  const processes = [];
+  console.log(getDirectories(`${process.cwd()}/src`));
+  getDirectories(`${process.cwd()}/src`).forEach(dir => {
+    if (dir === 'package') {
+      return;
     }
-  );
+    if (dir === 'libraries') {
+      const zipped = getDirectories(`${process.cwd()}/src/libraries`)
+      zipped.forEach(lib => {
+        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib}`, lib, 'libraries'));
+      })
+    }
+    if (dir === 'plugins') {
+      const plgTypes = getDirectories(`${process.cwd()}/src/plugins`);
+      plgTypes.forEach(type => {
+        const plugins = getDirectories(`${process.cwd()}/src/plugins/${type}`);
+        plugins.forEach(lib => {
+          processes.push(zipExtension(`${process.cwd()}/src/plugins/${type}/${lib}`, lib, `${type}_`));
+        })
+      })
+    }
+  });
+
+  await Promise.all(processes);
+  const zip = new admZip();
+  globalThis.zips.forEach(z => {
+    const pre = z.type === `libraries` ? 'lib_' : `plg_${z.type}`;
+    zip.addFile(`packages/${pre}${z.name}_${version}.zip`, z.data);
+  });
+  zip.addLocalFile('src/package/pkg_script.php');
+  let xmlContent = await getCurrentXml('src/package', 'pkg_responsive');
+  zip.addFile('pkg_responsive.xml', xmlContent);
+  zip.addLocalFile('license.txt');
+
+  zip.writeZip(`site/dist/pkg_responsive_${version}.zip`);
 })();

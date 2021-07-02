@@ -1,0 +1,10 @@
+{
+  "require": {
+    "intervention/image": "^2.5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ttc\\Image\\": "src/"
+    }
+  }
+}

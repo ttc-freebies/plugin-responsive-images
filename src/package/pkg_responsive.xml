@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="4.0" method="upgrade">
+  <name>Responsive Images Package</name>
+  <packagename>responsive</packagename>
+  <author>Dimitrios Grammatikogiannis</author>
+  <creationDate>20-06-2021</creationDate>
+  <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see license.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <version>{{version}}</version>
+  <description>Responsive Images Package</description>
+  <blockChildUninstall>true</blockChildUninstall>
+  <update>https://responsive-images.dgrammatiko.dev/update.xml</update>
+  <scriptfile>pkg_script.php</scriptfile>
+  <files folder="packages">
+    <file type="library" id="Ttc">lib_ttc_{{version}}.zip</file>
+    <file type="plugin" id="responsive" group="content">plg_content_responsive_{{version}}.zip</file>
+    <file type="plugin" id="responsive" group="media-action">plg_media_action_responsive_{{version}}.zip</file>
+  </files>
+</extension>
