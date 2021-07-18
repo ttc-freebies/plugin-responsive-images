@@ -146,7 +146,7 @@ class Helper
     $type   = in_array(mb_strtolower($image['extension']), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image['extension']);
     $output = '<picture class="responsive-image">';
 
-    if (count(get_object_vars($srcSets->avif->srcset)) > 0) {
+    if (!empty($srcSets->avif) && count(get_object_vars($srcSets->avif->srcset)) > 0) {
       $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
       if ($srcSetAvif !== '') {
         $output .= '<source type="image/avif" sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '" srcset="' . $srcSetAvif . '">';
