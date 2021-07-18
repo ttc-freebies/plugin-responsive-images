@@ -153,7 +153,7 @@ class Helper
       }
     }
 
-    if (count(get_object_vars($srcSets->webp->srcset)) > 0) {
+    if (!empty($srcSets->webp) && count(get_object_vars($srcSets->webp->srcset)) > 0) {
       $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
       if ($srcSetWebp !== '') {
         $output .= '<source type="image/webp" sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '" srcset="' . $srcSetWebp . '">';
