@@ -282,7 +282,7 @@ class Helper {
         // Save the image
         $image->save(
           JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
-          $this->sizeSplit . (int) $breakpoints[$i]. '.' . $extension,
+          trim($this->sizeSplit) . (int) $breakpoints[$i]. '.' . $extension,
           $this->quality,
           $extension);
 
@@ -291,7 +291,7 @@ class Helper {
           $image->encode('webp', $this->quality);
           $image->save(
             JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
-            $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
+            trim($this->sizeSplit) . (int) $breakpoints[$i]. '.webp',
             $this->quality,
             'webp'
           );
@@ -302,7 +302,7 @@ class Helper {
           $image->encode('webp', $this->quality);
           $image->save(
             JPATH_ROOT . '/media/cached-resp-images/' . $dirname . '/' . $filename .
-            $this->sizeSplit . (int) $breakpoints[$i]. '.webp',
+            trim($this->sizeSplit) . (int) $breakpoints[$i]. '.webp',
             $this->quality,
             'webp'
           );

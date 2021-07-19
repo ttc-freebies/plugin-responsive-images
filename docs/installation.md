@@ -2,7 +2,7 @@
 
 Installation is an easy process:
 
-- Download the latest version from here: [Download v3.5.5](/plugin-responsive-images/dist/plg_responsive_3.5.5.zip ':ignore')
+- Download the latest version from here: [Download v3.5.6](/plugin-responsive-images/dist/plg_responsive_3.5.6.zip ':ignore')
 - Drag and Drop the zipped file in the installation extension of the Joomla Extension Manager
 
 # Setup
