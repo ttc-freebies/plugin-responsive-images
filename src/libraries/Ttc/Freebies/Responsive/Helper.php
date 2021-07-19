@@ -258,7 +258,7 @@ class Helper
       if ($this->scaleUp || ($imageWidth >= (int) $this->validSizes[$i])) {
         // Load the image
         $image = $manager->make(JPATH_ROOT . '/' . $dirname . '/' . $filename . '.' . $extension);
-        $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . $this->separator . $this->validSizes[$i];
+        $fileSrc = 'media/cached-resp-images/' . $dirname . '/' . $filename . trim($this->separator) . trim($this->validSizes[$i]);
 
         // Resize the image
         $image->resize($this->validSizes[$i], null, function ($constraint) {
