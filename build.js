@@ -3,6 +3,7 @@ const { readdirSync, existsSync } = require('fs');
 const admZip = require('adm-zip');
 const { version } = require('./package.json');
 
+globalThis.doNotZip = [`system/responsiveplgoverrides`];
 globalThis.zips = [];
 const getDirectories = source =>
     readdirSync(source, { withFileTypes: true })
@@ -57,6 +58,15 @@ const zipExtension = async (path, name, type) => {
       plgTypes.forEach(type => {
         const plugins = getDirectories(`${process.cwd()}/src/plugins/${type}`);
         plugins.forEach(lib => {
+          let shallZip = true;
+          globalThis.doNotZip.forEach(dontZip => {
+            if (`${type}/${lib}`.startsWith(dontZip)) {
+              shallZip = false;
+            }
+          });
+          if (!shallZip) {
+            return;
+          }
           processes.push(zipExtension(`${process.cwd()}/src/plugins/${type}/${lib}`, lib, `${type}_`));
         })
       })

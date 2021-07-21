@@ -3,9 +3,6 @@
 {%- else -%}
   {%- set desc = metainfo.description | safe -%}
 {%- endif -%}
-{%- set css %}
-  {%- include "xcss/base.min.css" -%}
-{% endset -%}
 <!doctype html>
 <html lang="en">
   <head>
@@ -23,7 +20,7 @@
     <meta property="og:url" content="{{ metainfo.url }}{{ page.url }}">
     <meta property="og:title" content="{{ metainfo.title }}">
     <meta property="og:description" content="{{ desc }}">
-    <style>{{ css | safe }}</style>
+    <style>{{ assets | safe }}</style>
   </head>
   <body class="grid-it">
     <header>{% include "components/header.njk" %}</header>

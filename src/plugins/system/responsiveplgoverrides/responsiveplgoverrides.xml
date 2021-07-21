@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="4.0" type="plugin" group="system" method="install">
+  <name>Overrides for the Responsive Images Plugin</name>
+  <author>Dimitrios Grammatikogiannis</author>
+  <creationDate>2021</creationDate>
+  <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <authorUrl>https://dgrammatiko.dev</authorUrl>
+  <version>0.0.1</version>
+  <description>Install Template Overrides for the Responsive images Plugin</description>
+  <scriptfile>script.php</scriptfile>
+  <files>
+    <filename plugin="responsiveplgoverrides">responsiveplgoverrides.php</filename>
+    <folder>html</folder>
+  </files>
+</extension>

@@ -25,14 +25,22 @@ async function imageShortcode(src, alt, sizes) {
   return Image.generateHTML(metadata, imageAttributes);
 }
 
-let nunjucksEnvironment = new Nunjucks.Environment(
-  new Nunjucks.FileSystemLoader('./site/_includes')
-);
+// let nunjucksEnvironment = new Nunjucks.Environment(
+//   new Nunjucks.FileSystemLoader('./site/_includes')
+// );
 
 module.exports = function (eleventyConfig) {
-  eleventyConfig.setLibrary('njk', nunjucksEnvironment);
-  eleventyConfig.setDataDeepMerge(true);
+  let liquidJs = require("liquidjs");
+  let options = {
+    extname: ".liquid",
+    dynamicPartials: true,
+    strictFilters: false, // renamed from `strict_filters` in Eleventy 1.0
+    root: ["site/_includes"]
+  };
 
+  eleventyConfig.setLibrary("liquid", liquidJs(options));
+  // eleventyConfig.setLibrary('njk', nunjucksEnvironment);
+  eleventyConfig.setDataDeepMerge(true);
   eleventyConfig.addPassthroughCopy({ "site/images": "images" });
   eleventyConfig.addPassthroughCopy({ "site/dist": "dist" });
 

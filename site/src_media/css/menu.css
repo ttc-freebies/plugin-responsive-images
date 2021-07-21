@@ -1,0 +1,23 @@
+header {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Top level nav */
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* Top level nav items */
+.nav li > a {
+	padding: 10px 15px;
+	text-decoration: none;
+}
+
+.list-reset {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+

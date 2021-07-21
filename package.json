@@ -4,7 +4,7 @@
   "private": true,
   "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
-    "build": "postcss site/_includes/css/base.css -o site/_includes/xcss/base.min.css && node build.js",
+    "build": "node build.js",
     "build:site": "eleventy",
     "serve": "eleventy --serve"
   },
@@ -18,23 +18,27 @@
     "url": "https://github.com/ttc-freebies/plugin-responsive-images/issues"
   },
   "homepage": "https://github.com/ttc-freebies/plugin-responsive-images#readme",
-  "dependencies": {
-    "@11ty/eleventy-img": "^0.9.0",
-    "adm-zip": "0.5.5",
-    "fs-extra": "10.0.0",
-    "naf-css": "^3.0.0-alpha",
-    "postcss-import": "^14.0.2",
-    "rimraf": "3.0.2"
-  },
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1",
+    "@11ty/eleventy-img": "^0.9.0",
     "@11ty/eleventy-navigation": "^0.3.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.2",
+    "@rollup/plugin-node-resolve": "^13.0.2",
+    "@zip.js/zip.js": "^2.3.7",
+    "adm-zip": "0.5.5",
+    "fs-extra": "10.0.0",
     "markdown-it-anchor": "^8.0.1",
+    "naf-css": "^3.0.0-alpha",
     "nunjucks": "^3.2.3",
     "postcss": "^8.3.0",
     "postcss-cli": "^8.3.1",
-    "semver": "^7.3.5"
+    "postcss-import": "^14.0.2",
+    "rimraf": "3.0.2",
+    "rollup": "^2.53.2",
+    "rollup-plugin-html-literals": "^1.1.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "semver": "^7.3.5",
+    "uhtml": "^2.7.6"
   },
   "data": {
     "repo": "ooo"

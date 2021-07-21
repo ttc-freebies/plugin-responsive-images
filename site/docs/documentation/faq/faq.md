@@ -1,13 +1,12 @@
 ---
-eleventyNavigation:
-  key: FAQ
-  url: '/faq/index.html'
-  order: 5
-permalink: faq/index.html
+permalink: documentation/faq/index.html
 layout: base.njk
 title: Settings
 description: FAQ for responsive images
 ---
+
+{% include "components/docsmenu.njk" %}
+
 # Frequently Aske Questions
 
 - Why the plugin doesn't use the existing `media/cache` folder?

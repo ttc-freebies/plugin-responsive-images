@@ -1,13 +1,12 @@
 ---
-eleventyNavigation:
-  key: Installation
-  url: '/installation/index.html'
-  order: 2
-permalink: installation/index.html
+permalink: documentation/installation/index.html
 layout: base.njk
 title: Installation
 description: Responsive images installation
 ---
+
+{% include "components/docsmenu.njk" %}
+
 # Installation
 
 {% assign fff = downloads | first %}

@@ -45,7 +45,7 @@ class PlgContentResponsive extends CMSPlugin {
    *
    * @since   4.0.0
    */
-  public function onContentAfterSave($context, &$article, &$params, $page) {
+  public function onContentAfterSave($context, &$article, &$params) {
     $this->mainLogic($context, $article, false);
   }
 
