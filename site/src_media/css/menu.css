@@ -11,7 +11,7 @@ header {
 
 /* Top level nav items */
 .nav li > a {
-	paddingg: 15px 15px;
+	padding: 15px 15px;
 	text-decoration: none;
 }
 
