@@ -12,7 +12,19 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
   {
     $this->minimumJoomla = '4.0';
     $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
-    $this->deleteFolders = ['/media/cached-resp-images'];
+    $this->deleteFolders = ['layouts/ttc'];
+  }
+
+  public function install(PackageAdapter $parent)
+  {
+    $parentInstance = $parent->getParent()->getInstance();
+    $paths = $parentInstance->get('paths');
+    if (is_file($paths['source'] . '/image.php')) {
+      if (!is_dir(JPATH_ROOT . '/layouts/ttc')) {
+        mkdir(JPATH_ROOT . '/layouts/ttc');
+      }
+      File::copy($paths['source'] . '/image.php', JPATH_ROOT . '/layouts/ttc/image.php');
+    }
   }
 
   public function postflight($type, $parent)
@@ -96,11 +108,12 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
 
     if ($cleanup === true) {
       // user decided to cleanup on uninstall!
-      $this->removeFiles();
+      $this->deleteFolders[] = '/media/cached-resp-images';
     } elseif (Folder::exists(JPATH_ROOT . '/media/cached-resp-images')) {
       $error = "<p><strong>Responsive content images</strong><br />This plugin has created the folder '/media/cached-resp-images' to store the generated images. To save web space you could delete this folder if you do not need this files. If you reinstall this plug in, it will create the folder and the needed images again.</p>";
       Log::add($error, Log::WARNING, 'jerror');
     }
+    $this->removeFiles();
   }
 
   /**

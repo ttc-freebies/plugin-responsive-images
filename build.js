@@ -80,6 +80,7 @@ const zipExtension = async (path, name, type) => {
     zip.addFile(`packages/${pre}${z.name.toLowerCase()}_${version}.zip`, z.data);
   });
   zip.addLocalFile('src/package/pkg_script.php');
+  zip.addLocalFile('src/plugins/system/responsiveplgoverrides/html/layouts/ttc/image.php');
   let xmlContent = await getCurrentXml('src/package', 'pkg_responsive');
   zip.addFile('pkg_responsive.xml', xmlContent);
   zip.addLocalFile('license.txt');
