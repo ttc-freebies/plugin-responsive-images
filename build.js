@@ -50,7 +50,7 @@ const zipExtension = async (path, name, type) => {
     if (dir === 'libraries') {
       const zipped = getDirectories(`${process.cwd()}/src/libraries`)
       zipped.forEach(lib => {
-        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib.toLowerCase()}`, lib, 'libraries'));
+        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib}`, lib, 'libraries'));
       })
     }
     if (dir === 'plugins') {
