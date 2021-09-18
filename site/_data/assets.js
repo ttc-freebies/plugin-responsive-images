@@ -40,7 +40,7 @@ module.exports = async () => {
         require('postcss-import')({
         path: ['site/src_media/css']}),
       ]
-    ).process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})));
+    ).process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})), {from: undefined, to: undefined});
 
     if (result) {
       return result;

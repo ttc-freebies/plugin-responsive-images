@@ -33,7 +33,7 @@ if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 						echo LayoutHelper::render(
 							'ttc.image',
 							[
-								'img' => '<img src="' . HTMLHelper::cleanImageURL($item->getParams()->get('image')) . '" alt="' . htmlspecialchars($item->getParams()->get('image_alt'), ENT_COMPAT, 'UTF-8') . '"/>',
+								'img' => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($item->getParams()->get('image')))->url,  ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($item->getParams()->get('image_alt'), ENT_COMPAT, 'UTF-8') . '"/>',
 								'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
 							]
 						);

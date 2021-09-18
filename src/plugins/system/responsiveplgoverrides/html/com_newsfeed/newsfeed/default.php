@@ -63,7 +63,7 @@ use Joomla\CMS\Layout\FileLayout;
 				echo LayoutHelper::render(
 					'ttc.image',
 					[
-						'img' => '<img src="' . HTMLHelper::cleanImageURL(htmlspecialchars($images->image_first, ENT_COMPAT, 'UTF-8')) . '" ' . $alt . '/>',
+						'img' => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($images->image_first))->url,  ENT_QUOTES, 'UTF-8') . '" ' . $alt . '/>',
 						'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
 					]
 				);

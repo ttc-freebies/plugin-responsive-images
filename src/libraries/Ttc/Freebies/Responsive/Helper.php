@@ -38,8 +38,8 @@ class Helper
       $this->qualityAVIF = (int) $this->params->get('qualityAVIF', 40);
       $this->scaleUp     = (bool) $this->params->get('scaleUp', false);
       $this->separator   = $this->params->get('separator', '_');
-      $excludeFolders    = explode(',', $this->params->get('excludeFolders'));
-      $sizes             = explode(',', $this->params->get('sizes'));
+      $excludeFolders    = preg_split('/[\s,]+/', $this->params->get('excludeFolders'));
+      $sizes             = preg_split('/[\s,]+/', $this->params->get('sizes'));
 
 
       if (!is_array($sizes)) {

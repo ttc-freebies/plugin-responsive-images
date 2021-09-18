@@ -20,7 +20,7 @@ $alt    = empty($value['alt_text']) && empty($value['alt_empty']) ? '' : ' alt="
 echo LayoutHelper::render(
   'ttc.image',
   [
-    'img'         => '<img src="' . $img . '"' . $alt . $class . ' />',
+    'img'         => '<img src="' . $imgUrl . '"' . $alt . $class . ' />',
     'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
   ]
 );

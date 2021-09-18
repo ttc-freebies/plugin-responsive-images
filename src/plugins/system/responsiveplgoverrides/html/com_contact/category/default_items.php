@@ -96,7 +96,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 												echo LayoutHelper::render(
 													'ttc.image',
 													[
-														'img' => '<img src="' . HTMLHelper::cleanImageURL($item->image) . '" alt="" class="contact-thumbnail img-thumbnail" />',
+														'img' => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($item->image))->url, ENT_QUOTES, 'UTF-8') . '" alt="" class="contact-thumbnail img-thumbnail" />',
 														'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
 													]
 												);

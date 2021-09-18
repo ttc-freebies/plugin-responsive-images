@@ -24,7 +24,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 			LayoutHelper::render(
 				'ttc.image',
 				[
-					'img'         => '<img src="' . HTMLHelper::cleanImageURL($item->imageSrc). '" alt="' . $item->imageAlt  . '"/>',
+					'img'         => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($item->imageSrc))->url,  ENT_QUOTES, 'UTF-8') . '" alt="' . $item->imageAlt  . '"/>',
 					'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
 				]
 			);

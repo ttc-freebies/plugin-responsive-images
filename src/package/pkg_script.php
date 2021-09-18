@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
 
 class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScript

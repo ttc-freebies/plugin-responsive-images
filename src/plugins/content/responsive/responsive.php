@@ -83,7 +83,7 @@ class PlgContentResponsive extends CMSPlugin {
     }
 
     foreach ($pluginComponents as $key => $component) {
-      $views = explode(',', $component->component_view);
+      $views = preg_split('/[\s,]+/', $component->component_view);
       if ($views === '') {
         continue;
       }
@@ -93,7 +93,7 @@ class PlgContentResponsive extends CMSPlugin {
           continue;
         }
 
-        $columns = explode(',', $component->component_db_column);
+        $columns = preg_split('/[\s,]+/', $component->component_db_column);
         if ($columns === '') {
           continue;
         }
