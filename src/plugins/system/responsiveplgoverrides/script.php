@@ -24,8 +24,8 @@ class plgSystemResponsiveplgoverridesInstallerScript extends InstallerScript
       // Check if the plugin is installed and enabled
       if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
         // Load the library helper
-        if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/ttc')) {
-          JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/ttc');
+        if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
+          JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
         }
 
         if (class_exists('\Ttc\Freebies\Responsive\Helper')) {

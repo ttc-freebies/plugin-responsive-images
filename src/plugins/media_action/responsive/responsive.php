@@ -17,8 +17,8 @@ class PlgMediaActionResponsive extends \Joomla\Component\Media\Administrator\Plu
   public function __construct()
   {
     // Bail out if the helper isn't loaded
-    if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive') && !class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/ttc')) {
-      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/ttc');
+    if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive') && !class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
+      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
       if (!class_exists('\Ttc\Freebies\Responsive\Helper')) {
         return;
       }

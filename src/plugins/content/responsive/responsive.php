@@ -65,8 +65,8 @@ class PlgContentResponsive extends CMSPlugin {
    */
   private function mainLogic($context, &$row, $replaceTags = false) {
     // Bail out if the helper isn't loaded
-    if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/ttc')) {
-      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/ttc');
+    if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
+      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
       if (!class_exists('\Ttc\Freebies\Responsive\Helper')) {
         return;
       }
