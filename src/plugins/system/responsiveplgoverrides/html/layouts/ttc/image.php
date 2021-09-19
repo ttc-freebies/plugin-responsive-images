@@ -1,23 +1,41 @@
 <?php
-/**
- * @copyright   (C) 2021 Dimitrios Grammatikogiannis
- * @license     GNU General Public License version 2 or later
- */
-
 defined('_JEXEC') or die;
 
-extract($displayData);
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\Utilities\ArrayHelper;
 
-/** @var $img          string  the original image tag*/
-/** @var $breakpoints  array   the breakpoints */
+$params  = $displayData->params;
+$images  = json_decode($displayData->images);
 
-if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
-  if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/ttc')) {
-    JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/ttc');
-  }
-
-  if (class_exists('\Ttc\Freebies\Responsive\Helper')) {
-    $img = (new \Ttc\Freebies\Responsive\Helper)->transformImage($img, $breakpoints);
-  }
+if (empty($images->image_fulltext)) {
+  return;
 }
-return $img;
+
+$imgclass  = empty($images->float_fulltext) ? $params->get('float_fulltext') : $images->float_fulltext;
+$extraAttr = '';
+$img       = HTMLHelper::cleanImageURL($images->image_fulltext);
+$alt       = empty($images->image_fulltext_alt) && empty($images->image_fulltext_alt_empty) ? '' : 'alt="' . htmlspecialchars($images->image_fulltext_alt, ENT_COMPAT, 'UTF-8') . '"';
+$caption   = '';
+
+// Set lazyloading only for images which have width and height attributes
+if ((isset($img->attributes['width']) && (int) $img->attributes['width'] > 0)
+  && (isset($img->attributes['height']) && (int) $img->attributes['height'] > 0)
+) {
+  $extraAttr = ArrayHelper::toString($img->attributes) . ' loading="lazy"';
+}
+
+if ($images->image_fulltext_caption !== '') {
+  $caption = '<figcaption class="caption">' . htmlspecialchars($images->image_fulltext_caption, ENT_COMPAT, 'UTF-8') . '</figcaption>';
+}
+
+echo '<figure class="' . htmlspecialchars($imgclass, ENT_COMPAT, 'UTF-8') . ' item-image">'
+  . LayoutHelper::render(
+      'ttc.image',
+      [
+        'img'         => '<img src="' . htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8') . '"' . $alt . $extraAttr . '/>',
+        'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
+      ]
+    )
+  . $caption
+  . '</figure>';
