@@ -20,4 +20,5 @@ if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
     $img = (new \Ttc\Freebies\Responsive\Helper)->transformImage($img, $breakpoints);
   }
 }
-return $img;
+
+echo $img;
