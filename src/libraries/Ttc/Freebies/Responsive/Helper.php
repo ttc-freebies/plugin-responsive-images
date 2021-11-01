@@ -132,7 +132,7 @@ class Helper
     }
 
     try {
-      $srcSets = json_decode(
+      $srcSets = \json_decode(
         @file_get_contents(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image['dirname'] . '/' . $image['filename'] . '.json')
       );
     } catch (\Exception $e) {
@@ -288,7 +288,7 @@ class Helper
       }
     }
 
-    $this->createFileAndPaths(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/' . $filename . '.json', json_encode($srcSets));
+    $this->createFileAndPaths(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/' . $filename . '.json', \json_encode($srcSets));
   }
 
   /**
