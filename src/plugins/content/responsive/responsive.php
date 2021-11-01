@@ -73,7 +73,7 @@ class PlgContentResponsive extends CMSPlugin {
     }
 
     try {
-      $pluginComponents = json_decode($this->params->get('components'));
+      $pluginComponents = $this->params->get('components');
     } catch (\Exception $e) {
       return;
     }
