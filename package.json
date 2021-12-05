@@ -27,7 +27,7 @@
     "@zip.js/zip.js": "2.3.19",
     "adm-zip": "0.5.9",
     "fs-extra": "10.0.0",
-    "markdown-it-anchor": "8.0.1",
+    "markdown-it-anchor": "8.4.1",
     "naf-css": "3.0.0-beta",
     "nunjucks": "3.2.3",
     "postcss": "8.3.0",
