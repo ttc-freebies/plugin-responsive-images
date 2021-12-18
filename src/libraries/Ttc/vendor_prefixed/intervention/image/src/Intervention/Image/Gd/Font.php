@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Gd;
 
@@ -82,6 +82,13 @@ class Font extends \Ttc\Intervention\Image\AbstractFont
         $box = [];
 
         if ($this->hasApplicableFontFile()) {
+
+            // imagettfbbox() converts numeric entities to their respective
+            // character. Preserve any originally double encoded entities to be
+            // represented as is.
+            // eg: &amp;#160; will render &#160; rather than its character.
+            $this->text = preg_replace('/&(#(?:x[a-fA-F0-9]+|[0-9]+);)/', '&#38;\1', $this->text);
+            $this->text = mb_encode_numericentity($this->text, array(0x0080, 0xffff, 0, 0xffff), 'UTF-8');
 
             // get bounding box with angle 0
             $box = imagettfbbox($this->getPointSize(), 0, $this->file, $this->text);
@@ -254,4 +261,18 @@ class Font extends \Ttc\Intervention\Image\AbstractFont
             imagestring($image->getCore(), $this->getInternalFont(), $posx, $posy, $this->text, $color->getInt());
         }
     }
+
+    /**
+     * Set text kerning
+     *
+     * @param  string $kerning
+     * @return void
+     */
+    public function kerning($kerning)
+    {
+        throw new \Ttc\Intervention\Image\Exception\NotSupportedException(
+            "Kerning is not supported by GD driver."
+        );
+    }
+
 }

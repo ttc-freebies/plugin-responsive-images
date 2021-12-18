@@ -10,6 +10,7 @@ namespace Ttc\Freebies\Responsive;
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
@@ -77,7 +78,7 @@ class Helper
     preg_match('/src\s*=\s*"(.+?)"/', $image, $match);
     $originalImagePath = $match[1];
     $originalImagePath = str_replace(Uri::base(), '', $originalImagePath);
-    $path = realpath(JPATH_ROOT . (substr($originalImagePath, 0, 1) === '/' ? $originalImagePath : '/' . $originalImagePath));
+    $path = realpath(JPATH_ROOT . (substr(MediaHelper::getCleanMediaFieldValue($originalImagePath), 0, 1) === '/' ? $originalImagePath : '/' . $originalImagePath));
 
     // Valid root path and not excluded path
     if (strpos($path, JPATH_ROOT) !== 0 || strpos($path, JPATH_ROOT) === false || in_array(dirname($path), $this->excludeFolders)) {

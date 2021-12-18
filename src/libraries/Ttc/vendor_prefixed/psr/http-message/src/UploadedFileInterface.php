@@ -1,6 +1,6 @@
-<?php
+<?php /* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
-namespace Psr\Http\Message;
+namespace Ttc\Psr\Http\Message;
 
 /**
  * Value object representing a file uploaded through an HTTP request.

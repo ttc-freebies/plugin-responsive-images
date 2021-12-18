@@ -4,28 +4,22 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita72abb1b78fd03007e4b5893683ea07a
+class ComposerStaticInit5700711c5cfb2a8dc06e5273d7bd7281
 {
     public static $files = array (
         '2a78107b393d28465e371e9bbd0c941d' => __DIR__ . '/../..' . '/vendor_prefixed/ralouphie/getallheaders/src/getallheaders.php',
-        '2daa78d4192ede4b7c7a2d00430d76ac' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/functions_include.php',
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Psr\\Http\\Message\\MessageInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/MessageInterface.php',
-        'Psr\\Http\\Message\\RequestInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/RequestInterface.php',
-        'Psr\\Http\\Message\\ResponseInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/ResponseInterface.php',
-        'Psr\\Http\\Message\\ServerRequestInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/ServerRequestInterface.php',
-        'Psr\\Http\\Message\\StreamInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/StreamInterface.php',
-        'Psr\\Http\\Message\\UploadedFileInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/UploadedFileInterface.php',
-        'Psr\\Http\\Message\\UriInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/UriInterface.php',
         'Ttc\\GuzzleHttp\\Psr7\\AppendStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/AppendStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\BufferStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/BufferStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\CachingStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/CachingStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\DroppingStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/DroppingStream.php',
+        'Ttc\\GuzzleHttp\\Psr7\\Exception\\MalformedUriException' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/Exception/MalformedUriException.php',
         'Ttc\\GuzzleHttp\\Psr7\\FnStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/FnStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\Header' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/Header.php',
+        'Ttc\\GuzzleHttp\\Psr7\\HttpFactory' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/HttpFactory.php',
         'Ttc\\GuzzleHttp\\Psr7\\InflateStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/InflateStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\LazyOpenStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/LazyOpenStream.php',
         'Ttc\\GuzzleHttp\\Psr7\\LimitStream' => __DIR__ . '/../..' . '/vendor_prefixed/guzzlehttp/psr7/src/LimitStream.php',
@@ -174,12 +168,25 @@ class ComposerStaticInita72abb1b78fd03007e4b5893683ea07a
         'Ttc\\Intervention\\Image\\Point' => __DIR__ . '/../..' . '/vendor_prefixed/intervention/image/src/Intervention/Image/Point.php',
         'Ttc\\Intervention\\Image\\Response' => __DIR__ . '/../..' . '/vendor_prefixed/intervention/image/src/Intervention/Image/Response.php',
         'Ttc\\Intervention\\Image\\Size' => __DIR__ . '/../..' . '/vendor_prefixed/intervention/image/src/Intervention/Image/Size.php',
+        'Ttc\\Psr\\Http\\Message\\MessageInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/MessageInterface.php',
+        'Ttc\\Psr\\Http\\Message\\RequestFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/RequestFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\RequestInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/RequestInterface.php',
+        'Ttc\\Psr\\Http\\Message\\ResponseFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/ResponseFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\ResponseInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/ResponseInterface.php',
+        'Ttc\\Psr\\Http\\Message\\ServerRequestFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/ServerRequestFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\ServerRequestInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/ServerRequestInterface.php',
+        'Ttc\\Psr\\Http\\Message\\StreamFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/StreamFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\StreamInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/StreamInterface.php',
+        'Ttc\\Psr\\Http\\Message\\UploadedFileFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/UploadedFileFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\UploadedFileInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/UploadedFileInterface.php',
+        'Ttc\\Psr\\Http\\Message\\UriFactoryInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-factory/src/UriFactoryInterface.php',
+        'Ttc\\Psr\\Http\\Message\\UriInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/http-message/src/UriInterface.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInita72abb1b78fd03007e4b5893683ea07a::$classMap;
+            $loader->classMap = ComposerStaticInit5700711c5cfb2a8dc06e5273d7bd7281::$classMap;
 
         }, null, ClassLoader::class);
     }

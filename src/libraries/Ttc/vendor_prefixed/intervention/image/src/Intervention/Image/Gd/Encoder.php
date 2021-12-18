@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Gd;
 
@@ -58,6 +58,11 @@ class Encoder extends \Ttc\Intervention\Image\AbstractEncoder
         return $buffer;
     }
 
+    /**
+     * Processes and returns encoded image as WEBP string
+     *
+     * @return string
+     */
     protected function processWebp()
     {
         if ( ! function_exists('imagewebp')) {
@@ -67,28 +72,14 @@ class Encoder extends \Ttc\Intervention\Image\AbstractEncoder
         }
 
         ob_start();
+        imagepalettetotruecolor($this->image->getCore());
+        imagealphablending($this->image->getCore(), true);
+        imagesavealpha($this->image->getCore(), true);
         imagewebp($this->image->getCore(), null, $this->quality);
         $this->image->mime = defined('IMAGETYPE_WEBP') ? image_type_to_mime_type(IMAGETYPE_WEBP) : 'image/webp';
         $buffer = ob_get_contents();
         ob_end_clean();
-
-        return $buffer;
-    }
-
-    protected function processAvif()
-    {
-        if ( ! function_exists('imageavif')) {
-            throw new NotSupportedException(
-                "Avif format is not supported by PHP installation."
-            );
-        }
-
-        ob_start();
-        imageavif($this->image->getCore(), null, $this->quality);
-        $this->image->mime = defined('IMAGETYPE_AVIF') ? image_type_to_mime_type(IMAGETYPE_AVIF) : 'image/avif';
-        $buffer = ob_get_contents();
-        ob_end_clean();
-
+        
         return $buffer;
     }
 
@@ -111,9 +102,19 @@ class Encoder extends \Ttc\Intervention\Image\AbstractEncoder
      */
     protected function processBmp()
     {
-        throw new NotSupportedException(
-            "BMP format is not supported by Gd Driver."
-        );
+        if ( ! function_exists('imagebmp')) {
+            throw new NotSupportedException(
+                "BMP format is not supported by PHP installation."
+            );
+        }
+
+        ob_start();
+        imagebmp($this->image->getCore());
+        $this->image->mime = defined('IMAGETYPE_BMP') ? image_type_to_mime_type(IMAGETYPE_BMP) : 'image/bmp';
+        $buffer = ob_get_contents();
+        ob_end_clean();
+        
+        return $buffer;
     }
 
     /**
@@ -137,6 +138,44 @@ class Encoder extends \Ttc\Intervention\Image\AbstractEncoder
     {
         throw new NotSupportedException(
             "PSD format is not supported by Gd Driver."
+        );
+    }
+
+    /**
+     * Processes and returns encoded image as AVIF string
+     *
+     * @return string
+     */
+    protected function processAvif()
+    {
+	    if ( ! function_exists('imageavif')) {
+		    throw new NotSupportedException(
+		      "AVIF format is not supported by PHP installation."
+		    );
+	    }
+
+	    ob_start();
+        $resource = $this->image->getCore();
+	    imagepalettetotruecolor($resource);
+	    imagealphablending($resource, true);
+	    imagesavealpha($resource, true);
+	    imageavif($resource, null, $this->quality);
+	    $this->image->mime = defined('IMAGETYPE_AVIF') ? image_type_to_mime_type(IMAGETYPE_AVIF) : 'image/avif';
+	    $buffer = ob_get_contents();
+	    ob_end_clean();
+
+	    return $buffer;
+    }
+
+    /**
+     * Processes and returns encoded image as HEIC string
+     *
+     * @return string
+     */
+    protected function processHeic()
+    {
+        throw new NotSupportedException(
+            "HEIC format is not supported by Gd Driver."
         );
     }
 }

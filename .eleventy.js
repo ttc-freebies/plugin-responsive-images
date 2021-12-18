@@ -25,12 +25,12 @@ async function imageShortcode(src, alt, sizes) {
   return Image.generateHTML(metadata, imageAttributes);
 }
 
-// let nunjucksEnvironment = new Nunjucks.Environment(
-//   new Nunjucks.FileSystemLoader('./site/_includes')
-// );
+let nunjucksEnvironment = new Nunjucks.Environment(
+  new Nunjucks.FileSystemLoader('./site/_includes')
+);
 
 module.exports = function (eleventyConfig) {
-  let liquidJs = require("liquidjs");
+  const { Liquid } = require('liquidjs');
   let options = {
     extname: ".liquid",
     dynamicPartials: true,
@@ -38,7 +38,7 @@ module.exports = function (eleventyConfig) {
     root: ["site/_includes"]
   };
 
-  eleventyConfig.setLibrary("liquid", liquidJs(options));
+  eleventyConfig.setLibrary("liquid", new Liquid(options));
   // eleventyConfig.setLibrary('njk', nunjucksEnvironment);
   eleventyConfig.setDataDeepMerge(true);
   eleventyConfig.addPassthroughCopy({ "site/images": "images" });

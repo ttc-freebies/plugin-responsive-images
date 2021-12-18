@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
@@ -339,8 +339,8 @@ class Size
             case 'middle':
             case 'center-center':
             case 'middle-middle':
-                $x = intval($this->width / 2);
-                $y = intval($this->height / 2);
+                $x = intval($this->width / 2) + $offset_x;
+                $y = intval($this->height / 2) + $offset_y;
                 break;
 
             default:

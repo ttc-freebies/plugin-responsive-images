@@ -1,32 +1,34 @@
-<?php /* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+<?php
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
+
+declare(strict_types=1);
 
 namespace Ttc\GuzzleHttp\Psr7;
 
-use Psr\Http\Message\StreamInterface;
+use Ttc\Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator that begins dropping data once the size of the underlying
  * stream becomes too full.
- *
- * @final
  */
-class DroppingStream implements StreamInterface
+final class DroppingStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
+    /** @var int */
     private $maxLength;
 
     /**
      * @param StreamInterface $stream    Underlying stream to decorate.
      * @param int             $maxLength Maximum size before dropping data.
      */
-    public function __construct(StreamInterface $stream, $maxLength)
+    public function __construct(StreamInterface $stream, int $maxLength)
     {
         $this->stream = $stream;
         $this->maxLength = $maxLength;
     }
 
-    public function write($string)
+    public function write($string): int
     {
         $diff = $this->maxLength - $this->stream->getSize();
 

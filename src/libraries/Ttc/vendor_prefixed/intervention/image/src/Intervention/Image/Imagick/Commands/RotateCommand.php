@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Imagick\Commands;
 
@@ -21,7 +21,7 @@ class RotateCommand extends AbstractCommand
         $color = new Color($color);
 
         // restrict rotations beyond 360 degrees, since the end result is the same
-        $angle %= 360;
+        $angle = fmod($angle, 360);
 
         // rotate image
         $image->getCore()->rotateImage($color->getPixel(), ($angle * -1));

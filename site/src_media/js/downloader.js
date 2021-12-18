@@ -31,7 +31,7 @@ class ComponentCreator extends HTMLElement {
       throw new Error('Data is missing...')
     }
 
-    this.store.files = files.files;
+    this.store.files = files;
 
     this.renderEl();
   }

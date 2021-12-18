@@ -1,12 +1,12 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
 use Ttc\Intervention\Image\Exception\NotWritableException;
 use Ttc\Intervention\Image\Exception\RuntimeException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use Ttc\Psr\Http\Message\ResponseInterface;
+use Ttc\Psr\Http\Message\StreamInterface;
 
 /**
  * @method \Intervention\Image\Image backup(string $name = 'default')                                                                                                     Backups current image state as fallback for reset method under an optional name. Overwrites older state on every call, unless a different name is passed.

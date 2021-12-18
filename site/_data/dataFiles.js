@@ -40,7 +40,5 @@ module.exports = async function() {
 
   await Promise.all(processes);
 
-  return {
-    files,
-  };
+  return JSON.stringify(files);
 }

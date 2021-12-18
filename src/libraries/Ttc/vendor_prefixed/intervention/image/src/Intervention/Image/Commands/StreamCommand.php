@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Commands;
 
@@ -16,11 +16,25 @@ class StreamCommand extends AbstractCommand
     {
         $format = $this->argument(0)->value();
         $quality = $this->argument(1)->between(0, 100)->value();
+        $data = $image->encode($format, $quality)->getEncoded();
 
-        $this->setOutput(\Ttc\GuzzleHttp\Psr7\stream_for(
-            $image->encode($format, $quality)->getEncoded()
-        ));
+        $this->setOutput($this->getStream($data));
 
         return true;
+    }
+
+    /**
+     * Create stream from given data
+     *
+     * @param  string $data
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    protected function getStream($data)
+    {
+        if (class_exists(\Ttc\GuzzleHttp\Psr7\Utils::class)) {
+            return \Ttc\GuzzleHttp\Psr7\Utils::streamFor($data); // guzzlehttp/psr7 >= 2.0
+        }
+
+        return \Ttc\GuzzleHttp\Psr7\stream_for($data); // guzzlehttp/psr7 < 2.0
     }
 }

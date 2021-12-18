@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
@@ -63,7 +63,7 @@ class Response
 
         } elseif (class_exists('\Symfony\Component\HttpFoundation\Response')) {
 
-            $response = SymfonyResponse::create($data);
+            $response = new SymfonyResponse($data);
             $response->headers->set('Content-Type', $mime);
             $response->headers->set('Content-Length', $length);
 

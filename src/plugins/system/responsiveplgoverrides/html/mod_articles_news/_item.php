@@ -8,26 +8,27 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 	<?php $item_heading = $params->get('item_heading', 'h4'); ?>
 	<<?php echo $item_heading; ?> class="newsflash-title">
-	<?php if ($item->link !== '' && $params->get('link_titles')) : ?>
-		<a href="<?php echo $item->link; ?>">
+		<?php if ($item->link !== '' && $params->get('link_titles')) : ?>
+			<a href="<?php echo $item->link; ?>">
+				<?php echo $item->title; ?>
+			</a>
+		<?php else : ?>
 			<?php echo $item->title; ?>
-		</a>
-	<?php else : ?>
-		<?php echo $item->title; ?>
-	<?php endif; ?>
+		<?php endif; ?>
 	</<?php echo $item_heading; ?>>
 <?php endif; ?>
 
 <?php if ($params->get('img_intro_full') !== 'none' && !empty($item->imageSrc)) : ?>
 	<figure class="newsflash-image">
 		<?php
-			LayoutHelper::render(
-				'ttc.image',
-				[
-					'img'         => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($item->imageSrc))->url,  ENT_QUOTES, 'UTF-8') . '" alt="' . $item->imageAlt  . '"/>',
-					'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
-				]
-			);
+		$images = json_decode($item->images);
+		echo LayoutHelper::render(
+			'ttc.image',
+			[
+				'img'         => '<img src="' . htmlspecialchars((HTMLHelper::cleanImageURL($images->image_intro))->url,  ENT_QUOTES, 'UTF-8') . '" alt="' . $images->image_intro_alt  . '"/>',
+				'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
+			]
+		);
 		?>
 		<?php if (!empty($item->imageCaption)) : ?>
 			<figcaption>

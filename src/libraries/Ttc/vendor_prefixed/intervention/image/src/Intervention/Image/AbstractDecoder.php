@@ -1,11 +1,11 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
 use Ttc\GuzzleHttp\Psr7\Stream;
 use Ttc\Intervention\Image\Exception\NotReadableException;
-use Psr\Http\Message\StreamInterface;
+use Ttc\Psr\Http\Message\StreamInterface;
 
 abstract class AbstractDecoder
 {
@@ -70,6 +70,7 @@ abstract class AbstractDecoder
         $options = [
             'http' => [
                 'method'=>"GET",
+                'protocol_version'=>1.1, // force use HTTP 1.1 for service mesh environment with envoy
                 'header'=>"Accept-language: en\r\n".
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2\r\n"
           ]
@@ -139,6 +140,10 @@ abstract class AbstractDecoder
     {
         if (is_resource($this->data)) {
             return (get_resource_type($this->data) == 'gd');
+        }
+
+        if ($this->data instanceof \GdImage) {
+            return true;
         }
 
         return false;
@@ -291,7 +296,7 @@ abstract class AbstractDecoder
         }
 
         $pattern = "/^data:(?:image\/[a-zA-Z\-\.]+)(?:charset=\".+\")?;base64,(?P<data>.+)$/";
-        preg_match($pattern, $data_url, $matches);
+        preg_match($pattern, str_replace(["\n", "\r"], '', $data_url), $matches);
 
         if (is_array($matches) && array_key_exists('data', $matches)) {
             return base64_decode($matches['data']);

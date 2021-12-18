@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Commands;
 
@@ -37,6 +37,8 @@ class IptcCommand extends AbstractCommand
                 $data['Category'] = isset($iptc["2#015"][0]) ? $iptc["2#015"][0] : null;
                 $data['Subcategories'] = isset($iptc["2#020"][0]) ? $iptc["2#020"][0] : null;
                 $data['Keywords'] = isset($iptc["2#025"][0]) ? $iptc["2#025"] : null;
+                $data['ReleaseDate'] = isset($iptc["2#030"][0]) ? $iptc["2#030"][0] : null;
+                $data['ReleaseTime'] = isset($iptc["2#035"][0]) ? $iptc["2#035"][0] : null;
                 $data['SpecialInstructions'] = isset($iptc["2#040"][0]) ? $iptc["2#040"][0] : null;
                 $data['CreationDate'] = isset($iptc["2#055"][0]) ? $iptc["2#055"][0] : null;
                 $data['CreationTime'] = isset($iptc["2#060"][0]) ? $iptc["2#060"][0] : null;

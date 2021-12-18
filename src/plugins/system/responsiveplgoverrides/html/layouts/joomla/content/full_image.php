@@ -8,8 +8,7 @@ use Joomla\Utilities\ArrayHelper;
 $params  = $displayData->params;
 $images  = json_decode($displayData->images);
 
-if (empty($images->image_fulltext))
-{
+if (empty($images->image_fulltext)) {
   return;
 }
 
@@ -21,8 +20,8 @@ $caption   = '';
 
 // Set lazyloading only for images which have width and height attributes
 if ((isset($img->attributes['width']) && (int) $img->attributes['width'] > 0)
-&& (isset($img->attributes['height']) && (int) $img->attributes['height'] > 0))
-{
+  && (isset($img->attributes['height']) && (int) $img->attributes['height'] > 0)
+) {
   $extraAttr = ArrayHelper::toString($img->attributes) . ' loading="lazy"';
 }
 
@@ -34,9 +33,9 @@ echo '<figure class="' . htmlspecialchars($imgclass, ENT_COMPAT, 'UTF-8') . ' it
   . LayoutHelper::render(
       'ttc.image',
       [
-        'img'         => '<img src="' . htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8') . '"' . $alt . $extraAttr . '/>',
+        'img' => '<img src="' . htmlspecialchars($img->url,  ENT_QUOTES, 'UTF-8') . '" ' . $alt . '/>',
         'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
       ]
-  )
+   )
   . $caption
   . '</figure>';

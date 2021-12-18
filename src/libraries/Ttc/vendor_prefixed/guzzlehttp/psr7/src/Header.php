@@ -1,4 +1,7 @@
-<?php /* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+<?php
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
+
+declare(strict_types=1);
 
 namespace Ttc\GuzzleHttp\Psr7;
 
@@ -11,10 +14,8 @@ final class Header
      * contains a key, this function will inject a key with a '' string value.
      *
      * @param string|array $header Header to parse into components.
-     *
-     * @return array Returns the parsed header values.
      */
-    public static function parse($header)
+    public static function parse($header): array
     {
         static $trimmed = "\"'  \n\t\r";
         $params = $matches = [];
@@ -44,10 +45,8 @@ final class Header
      * headers into an array of headers with no comma separated values.
      *
      * @param string|array $header Header to normalize.
-     *
-     * @return array Returns the normalized header field values.
      */
-    public static function normalize($header)
+    public static function normalize($header): array
     {
         if (!is_array($header)) {
             return array_map('trim', explode(',', $header));

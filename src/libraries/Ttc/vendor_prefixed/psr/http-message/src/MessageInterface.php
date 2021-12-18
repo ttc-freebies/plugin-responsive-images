@@ -1,6 +1,6 @@
-<?php
+<?php /* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
-namespace Psr\Http\Message;
+namespace Ttc\Psr\Http\Message;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

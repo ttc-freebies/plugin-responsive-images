@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
@@ -35,7 +35,7 @@ abstract class AbstractEncoder
      * @var int
      */
     public $quality;
-
+    
     /**
      * Processes and returns encoded image as JPEG string
      *
@@ -90,7 +90,14 @@ abstract class AbstractEncoder
      *
      * @return string
      */
-     abstract protected function processAvif();
+    abstract protected function processAvif();
+
+    /**
+     * Processes and returns image as Heic encoded string
+     *
+     * @return string
+     */
+    abstract protected function processHeic();
 
     /**
      * Process a given image
@@ -125,9 +132,12 @@ abstract class AbstractEncoder
 
             case 'jpg':
             case 'jpeg':
+            case 'jfif':
+            case 'image/jp2':
             case 'image/jpg':
             case 'image/jpeg':
             case 'image/pjpeg':
+            case 'image/jfif':
                 $this->result = $this->processJpeg();
                 break;
 
@@ -140,7 +150,6 @@ abstract class AbstractEncoder
                 $this->result = $this->processTiff();
                 break;
 
-            case 'bmp':
             case 'bmp':
             case 'ms-bmp':
             case 'x-bitmap':
@@ -177,14 +186,20 @@ abstract class AbstractEncoder
                 $this->result = $this->processWebp();
                 break;
 
-             case 'avif':
-             case 'image/avif':
-                 $this->result = $this->processAvif();
-                 break;
+            case 'avif':
+            case 'image/avif':
+                $this->result = $this->processAvif();
+                break;
 
+            case 'heic':
+            case 'image/heic':
+            case 'image/heif':
+                $this->result = $this->processHeic();
+                break;
+                
             default:
                 throw new NotSupportedException(
-                    "Encoding format ({$format}) is not supported."
+                    "Encoding format ({$this->format}) is not supported."
                 );
         }
 

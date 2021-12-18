@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image\Gd\Commands;
 
@@ -17,8 +17,9 @@ class ResetCommand extends AbstractCommand
     public function execute($image)
     {
         $backupName = $this->argument(0)->value();
-
-        if (is_resource($backup = $image->getBackup($backupName))) {
+        $backup = $image->getBackup($backupName);
+        
+        if (is_resource($backup) || $backup instanceof \GdImage) {
 
             // destroy current resource
             imagedestroy($image->getCore());

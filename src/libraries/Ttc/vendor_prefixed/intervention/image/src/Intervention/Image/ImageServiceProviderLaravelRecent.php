@@ -1,5 +1,5 @@
 <?php
-/* This file has been prefixed by <PHP-Prefixer> for "PHP-Prefixer Getting Started" */
+/* This file has been prefixed by <PHP-Prefixer> for "Responsive Images" */
 
 namespace Ttc\Intervention\Image;
 
@@ -78,7 +78,7 @@ class ImageServiceProviderLaravelRecent extends ServiceProvider
         // imagecache route
         if (is_string(config('imagecache.route'))) {
 
-            $filename_pattern = '[ \w\\.\\/\\-\\@\(\)]+';
+            $filename_pattern = '[ \w\\.\\/\\-\\@\(\)\=]+';
 
             // route to access template applied image file
             $app['router']->get(config('imagecache.route').'/{template}/{filename}', [
