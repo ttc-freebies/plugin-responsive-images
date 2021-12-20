@@ -54,10 +54,10 @@ class PlgMediaActionResponsive extends \Joomla\Component\Media\Administrator\Plu
       return;
     }
 
-    if (is_file(JPATH_ROOT . '/' . str_replace('local-', '', $item->adapter) . $item->path . '/' . $item->name)) {
+    if (is_file(JPATH_ROOT . '/' . str_replace('local-', '', $item->adapter) . $item->path . $item->name)) {
       (new \Ttc\Freebies\Responsive\Helper)
         ->transformImage(
-          '<img src="' . str_replace('local-', '', $item->adapter) . $item->path . '/' . $item->name . '">',
+          '<img src="' . str_replace('local-', '', $item->adapter) . $item->path . $item->name . '">',
           $this->validSizes
         );
     }
@@ -79,7 +79,7 @@ class PlgMediaActionResponsive extends \Joomla\Component\Media\Administrator\Plu
       return;
     }
 
-    $originalImagePathInfo = pathinfo(str_replace('local-', '', $item->adapter) . $item->path . '/' . $item->name);
+    $originalImagePathInfo = pathinfo(str_replace('local-', '', $item->adapter) . $item->path . $item->name);
     for ($i = 0, $l = count($this->validSizes); $i < $l; $i++) {
       if (is_file(JPATH_ROOT . '/media/cached-resp-images/' . $originalImagePathInfo['dirname'] . '/' .
         $originalImagePathInfo['filename'] . $this->separator . $this->validSizes[$i] . '.avif')) {
