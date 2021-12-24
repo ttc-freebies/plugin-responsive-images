@@ -3,7 +3,7 @@ const { readdirSync, existsSync } = require('fs');
 const admZip = require('adm-zip');
 const { version } = require('./package.json');
 
-globalThis.doNotZip = [`system/responsiveplgoverrides`];
+globalThis.doNotZip = [`system/responsiveplgoverrides`, '.DS_Store'];
 globalThis.zips = [];
 const getDirectories = source =>
     readdirSync(source, { withFileTypes: true })
@@ -25,18 +25,24 @@ const zipExtension = async (path, name, type) => {
   const noRoot = path.replace(`${process.cwd()}/`, '');
   xml = await getCurrentXml(path, name);
   const zip = new admZip();
-  readdirSync(path, { withFileTypes: true }).forEach(file => {
+  readdirSync(path, { withFileTypes: true })
+  .filter(item => !/(^|\/)\.[^/.]/g.test(item.name))
+  .forEach(file => {
     if (file.isDirectory()) {
-      zip.addLocalFolder(`${noRoot}/${file.name}`, file.name);
+      zip.addLocalFolder(`${noRoot}/${file.name}`, file.name, /^(?!\.DS_Store)/);
     } else if (file.name === `${name}.xml`) {
       zip.addFile(file.name, xml);
-    } else if (!['composer.json', 'composer.lock'].includes(file.name)) {
+    } else if (!['composer.json', 'composer.lock', '.DS_Store'].includes(file.name)) {
       zip.addLocalFile(`${noRoot}/${file.name}`, false);
     }
   });
 
   zip.addLocalFile('license.txt', false);
-
+    zip.getEntries().forEach(entry => {
+      if (/^\.DS_Store/.test(entry.entryName)) {
+        zip.deleteFile(entry.entryName);
+      }
+    });
   globalThis.zips.push({name: name, data: zip.toBuffer(), type: type});
 }
 

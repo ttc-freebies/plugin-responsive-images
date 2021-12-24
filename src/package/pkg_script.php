@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ttc-freebies.plugin-responsive-images
+ *
+ * @copyright   Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
@@ -82,7 +88,7 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
         try {
           $db->execute();
         } catch (\Exception $e) {
-          var_dump($e);
+          // var_dump($e);
         }
       }
 

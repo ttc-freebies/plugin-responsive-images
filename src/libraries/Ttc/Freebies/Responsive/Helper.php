@@ -11,7 +11,6 @@ defined('_JEXEC') || die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -319,8 +318,7 @@ class Helper
     }
 
     if (isset($memory_limit_value) && $memorycheck > $memory_limit_value) {
-      $app = Factory::getApplication();
-      $app->enqueueMessage(Text::sprintf('Image too big to be processed', $imagePath, $memorycheck_text, $memory_limit), 'error');
+      Factory::getApplication()->enqueueMessage('Image too big to be processed', 'error'); //, $imagePath, $memorycheck_text, $memory_limit
 
       return false;
     }

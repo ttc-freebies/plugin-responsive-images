@@ -2,6 +2,7 @@
 <extension version="3.9" type="plugin" group="content" method="upgrade">
   <name>PLG_CONTENT_RESPONSIVE_NAME</name>
   <author>Dimitrios Grammatikogiannis</author>
+  <authorUrl>dgrammatiko.dev</authorUrl>
   <creationDate>2017</creationDate>
   <copyright>Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
@@ -13,6 +14,10 @@
     <filename plugin="responsive">responsive.php</filename>
     <filename>components.xml</filename>
   </files>
+  <languages>
+    <language tag="en-GB">language/en-GB/plg_content_responsive.ini</language>
+    <language tag="en-GB">language/en-GB/plg_content_responsive.sys.ini</language>
+  </languages>
   <config>
     <fields name="params">
       <fieldset name="basics">
@@ -134,7 +139,7 @@
           showon="enableAVIF:1"
         />
       </fieldset>
-      <fieldset name="scalling" desc="Quality">
+      <fieldset name="scalling">
         <field
           name="scaleUp"
           type="radio"
@@ -149,7 +154,4 @@
       </fieldset>
     </fields>
   </config>
-  <updateservers>
-    <server type="extension" priority="1" name="Responsive content images">https://ttc-freebies.github.io/plugin-responsive-images/update.xml</server>
-  </updateservers>
 </extension>

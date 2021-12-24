@@ -2,6 +2,7 @@
 <extension version="4.0" type="plugin" group="system" method="install">
   <name>Overrides for the Responsive Images Plugin</name>
   <author>Dimitrios Grammatikogiannis</author>
+  <authorUrl>dgrammatiko.dev</authorUrl>
   <creationDate>2021</creationDate>
   <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>

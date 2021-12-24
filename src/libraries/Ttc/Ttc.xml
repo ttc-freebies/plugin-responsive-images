@@ -10,7 +10,7 @@
   <authorEmail>d.grammatiko@gmail.com</authorEmail>
   <version>{{version}}</version>
   <description>TTC Common Library</description>
-  <files folder="libraries">
+  <files>
     <folder>Freebies</folder>
     <folder>vendor</folder>
     <folder>vendor_prefixed</folder>

@@ -3,6 +3,7 @@
   <name>Responsive Images Package</name>
   <packagename>responsive</packagename>
   <author>Dimitrios Grammatikogiannis</author>
+  <authorUrl>dgrammatiko.dev</authorUrl>
   <creationDate>20-06-2021</creationDate>
   <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see license.txt</license>
@@ -17,4 +18,7 @@
     <file type="plugin" id="responsive" group="content">plg_content_responsive_{{version}}.zip</file>
     <file type="plugin" id="responsive" group="media-action">plg_media_action_responsive_{{version}}.zip</file>
   </files>
+  <updateservers>
+    <server type="collection" priority="1" name="Responsive content images">https://responsive-images.dgrammatiko.dev/update.xml</server>
+  </updateservers>
 </extension>
