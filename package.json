@@ -28,7 +28,7 @@
     "adm-zip": "0.5.5",
     "fs-extra": "10.0.0",
     "markdown-it-anchor": "8.4.1",
-    "naf-css": "3.0.0-beta",
+    "naf-css": "3.0.0-beta2",
     "nunjucks": "3.2.3",
     "postcss": "8.4.5",
     "postcss-cli": "9.1.0",
