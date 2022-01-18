@@ -17,8 +17,13 @@
         "guzzlehttp/psr7": "~1.1 || ^2.0"
     },
     "require-dev": {
+<<<<<<< Updated upstream
         "phpunit/phpunit": "9.5.11",
         "mockery/mockery": "1.4.4"
+=======
+        "phpunit/phpunit": "^4.8 || ^5.7 || ^7.5.15",
+        "mockery/mockery": "~0.9.2"
+>>>>>>> Stashed changes
     },
     "suggest": {
         "ext-gd": "to use GD library based image processing.",
