@@ -1,11 +1,7 @@
 {
     "require": {
         "php": "^7.2.5 || ^8.0",
-<<<<<<< Updated upstream
         "friendsofphp/php-cs-fixer": "3.5.0"
-=======
-        "friendsofphp/php-cs-fixer": "3.2.1"
->>>>>>> Stashed changes
     },
     "config": {
         "preferred-install": "dist"

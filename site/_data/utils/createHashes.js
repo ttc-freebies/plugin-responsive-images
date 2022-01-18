@@ -1,7 +1,7 @@
 const { createHash } = require('crypto');
 const { createReadStream } = require('fs');
 
-modules.export.checksum = (location, algorithm = 'sha256') => {
+module.exports.checksum = (location, algorithm = 'sha256') => {
   return new Promise(function(resolve, reject){
     if (!location) {
       reject(new Error('No location provided'));

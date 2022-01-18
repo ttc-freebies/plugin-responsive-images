@@ -17,28 +17,34 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
 {
   public function __construct()
   {
-    $this->minimumJoomla = '4.0';
+    $this->minimumJoomla = '4.0.6';
     $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
     $this->deleteFolders = ['layouts/ttc'];
   }
 
   public function install(PackageAdapter $parent)
   {
+    $directory = JPATH_ROOT . '/templates';
+    $scanned_directory = array_diff(scandir($directory), ['..', '.', 'system', '.DS_Store', 'index.html']);
     $parentInstance = $parent->getParent()->getInstance();
     $paths = $parentInstance->get('paths');
     if (is_file($paths['source'] . '/image.php')) {
-      if (!is_dir(JPATH_ROOT . '/layouts/ttc')) {
-        mkdir(JPATH_ROOT . '/layouts/ttc');
+      foreach($scanned_directory as $template) {
+        $templatePath = $directory . '/' . $template . '/html/layouts/joomla/html';
+        if (!is_dir($templatePath)) {
+          Folder::create($templatePath);
+        }
+        if (is_file($templatePath . '/image.php')) {
+          File::move($templatePath . '/image.php', $templatePath . '/image.php.bak');
+        }
+        File::copy($paths['source'] . '/image.php', $templatePath . '/image.php');
       }
-      File::copy($paths['source'] . '/image.php', JPATH_ROOT . '/layouts/ttc/image.php');
     }
   }
 
   public function postflight($type, $parent)
   {
     if ($type === 'install' || $type === 'discover_install') {
-      $db = Factory::getDbo();
-
       $db = Factory::getDbo();
 
       $list = [
