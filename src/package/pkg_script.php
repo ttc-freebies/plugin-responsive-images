@@ -41,7 +41,11 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
       }
     }
     if (is_file($paths['source'] . '/image2.php')) {
-      File::copy($paths['source'] . '/image2.php', JPATH_ROOT . '/layouts/ttc/image.php');
+      $tempPath = JPATH_ROOT . '/layouts/ttc';
+      if (!is_dir($tempPath)) {
+        Folder::create($tempPath);
+      }
+      File::copy($paths['source'] . '/image2.php', $tempPath . '/image.php');
     }
   }
 
