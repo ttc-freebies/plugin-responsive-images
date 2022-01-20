@@ -47,3 +47,5 @@ echo LayoutHelper::render(
 
 ### A note for people updating to version 4:
 ### The old code will not work, you have to edit all your instanses.
+
+### Since version 4.0.6 there is no need for custom overrides for the core views. The plugin will handle it automatically.

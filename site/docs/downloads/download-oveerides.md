@@ -15,6 +15,8 @@ Type your template name and then press the button `Get it!`. You will end up wit
 
 **A note that these overrides are for templates that are using the standard Joomla overriding system**. If your template uses it's own overriding system the overrides probably won't work, so check your template before...
 
+### Since Joomla 4.0.6 there is only one override `layouts/joomla/html/image.php` but for B/C reasons the `layouts/ttc/image.php` it's still there.
+
 <create-joomla-plugin style="display: block;">
 <noscript>
 <h1>No Javascript? No Joy for you then...</h1>
