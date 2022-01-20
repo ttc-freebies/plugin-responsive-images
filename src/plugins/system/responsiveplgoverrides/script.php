@@ -64,7 +64,7 @@ class plgSystemResponsiveplgoverridesInstallerScript extends InstallerScript
                 $dest = JPATH_ROOT . '/templates/' . $templateName . '/html/' . $file;
                 $path = pathinfo($dest);
                 if (!file_exists($path['dirname'])) {
-                  mkdir($path['dirname'], 0777, true);
+                  mkdir($path['dirname'], 0755, true);
                 }
                 @copy(JPATH_ROOT . '/plugins/system/responsiveplgoverrides/html/' . $file, JPATH_ROOT . '/templates/' . $templateName . '/html/' . $file);
               }

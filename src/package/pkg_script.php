@@ -40,6 +40,9 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
         File::copy($paths['source'] . '/image.php', $templatePath . '/image.php');
       }
     }
+    if (is_file($paths['source'] . '/image2.php')) {
+      File::copy($paths['source'] . '/image2.php', JPATH_ROOT . '/layouts/ttc/image.php');
+    }
   }
 
   public function postflight($type, $parent)
