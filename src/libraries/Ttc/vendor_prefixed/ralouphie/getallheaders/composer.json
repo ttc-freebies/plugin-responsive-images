@@ -12,7 +12,7 @@
 		"php": ">=5.6"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "9.5.12",
+		"phpunit/phpunit": "9.5.13",
 		"php-coveralls/php-coveralls": "2.5.2"
 	},
 	"autoload": {
