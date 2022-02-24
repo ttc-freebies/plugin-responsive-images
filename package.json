@@ -20,7 +20,7 @@
   "homepage": "https://github.com/ttc-freebies/plugin-responsive-images#readme",
   "devDependencies": {
     "@11ty/eleventy": "1.0.0",
-    "@11ty/eleventy-img": "1.0.0",
+    "@11ty/eleventy-img": "1.1.0",
     "@11ty/eleventy-navigation": "0.3.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "4.0.0",
     "@rollup/plugin-node-resolve": "13.1.3",
