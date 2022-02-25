@@ -288,7 +288,7 @@ class Helper
       }
     }
 
-    $this->createFileAndPaths(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/' . $filename . '.json', \json_encode($srcSets));
+    $this->createFileAndPaths(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/', $filename . '.json', \json_encode($srcSets));
   }
 
   /**
@@ -332,15 +332,10 @@ class Helper
    * @param $dir
    * @param $contents
    */
-  private function createFileAndPaths($dir, $contents)
+  private function createFileAndPaths($dir, $file, $contents)
   {
-    $parts = explode('/', $dir);
-    $file  = array_pop($parts);
-    $dir   = '';
-    foreach ($parts as $part) {
-      if ('' !== $part && !is_dir($dir .= "/$part")) {
-        mkdir($dir);
-      }
+    if (!is_dir($dir)) {
+      mkdir($dir, 0777, true);
     }
     file_put_contents("$dir/$file", $contents);
   }
