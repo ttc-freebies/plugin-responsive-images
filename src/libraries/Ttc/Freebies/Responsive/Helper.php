@@ -288,7 +288,11 @@ class Helper
       }
     }
 
-    $this->createFileAndPaths(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/', $filename . '.json', \json_encode($srcSets));
+    
+    if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname)) {
+      mkdir(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname, 0755, true);
+    }
+    file_put_contents(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname . '/' . $filename . '.json', \json_encode($srcSets));
   }
 
   /**
@@ -324,20 +328,6 @@ class Helper
     }
 
     return true;
-  }
-
-  /**
-   * Create file and any missing dirs
-   *
-   * @param $dir
-   * @param $contents
-   */
-  private function createFileAndPaths($dir, $file, $contents)
-  {
-    if (!is_dir($dir)) {
-      mkdir($dir, 0777, true);
-    }
-    file_put_contents("$dir/$file", $contents);
   }
 
   /**
