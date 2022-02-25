@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="4.0" method="upgrade">
-  <name>Package - Responsive Images Package</name>
+  <name>pkg_responsive</name>
   <packagename>responsive</packagename>
   <author>Dimitrios Grammatikogiannis</author>
   <authorUrl>dgrammatiko.dev</authorUrl>
-  <creationDate>Jan 2022</creationDate>
+  <creationDate>Feb 2022</creationDate>
   <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see license.txt</license>
   <authorEmail>d.grammatiko@gmail.com</authorEmail>

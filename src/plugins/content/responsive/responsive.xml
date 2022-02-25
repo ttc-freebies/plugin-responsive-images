@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="plugin" group="content" method="upgrade">
-  <name>PLG_CONTENT_RESPONSIVE_NAME</name>
+  <name>plg_content_responsive</name>
   <author>Dimitrios Grammatikogiannis</author>
   <authorUrl>dgrammatiko.dev</authorUrl>
   <creationDate>Jan 2022</creationDate>

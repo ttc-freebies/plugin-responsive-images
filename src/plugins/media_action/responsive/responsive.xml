@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="media-action" method="upgrade">
-  <name>PLG_MEDIA_ACTION_RESPONSIVE_NAME</name>
+  <name>plg_media_action_responsive</name>
   <author>Dimitrios Grammatikogiannis</author>
   <authorUrl>dgrammatiko.dev</authorUrl>
   <creationDate>Jan 2022</creationDate>

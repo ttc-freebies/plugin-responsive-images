@@ -1,4 +1,4 @@
-const { readFile } = require('fs').promises;
+const { readFile, rm } = require('fs').promises;
 const { readdirSync, existsSync } = require('fs');
 const admZip = require('adm-zip');
 const { version } = require('./package.json');
@@ -93,4 +93,7 @@ const zipExtension = async (path, name, type) => {
   zip.addLocalFile('license.txt');
 
   zip.writeZip(`site/dist/pkg_responsive_${version}.zip`);
+
+  if (existsSync('src/libraries/Ttc/vendor')) await rm('src/libraries/Ttc/vendor', { recursive: true });
+  if (existsSync('src/libraries/Ttc/vendor_prefixed')) await rm('src/libraries/Ttc/vendor_prefixed', { recursive: true });
 })();
