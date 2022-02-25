@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="library" method="upgrade" version="4.0">
-  <name>Ttc</name>
+  <name>lib_ttc</name>
   <libraryname>Ttc</libraryname>
   <author>Dimitrios Grammatikogiannis</author>
   <authorUrl>dgrammatiko.dev</authorUrl>
