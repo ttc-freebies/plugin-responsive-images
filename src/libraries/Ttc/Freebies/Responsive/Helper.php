@@ -173,7 +173,6 @@ class Helper
       $image['tag']
     );
 
-    $fallBack = str_replace('<img ', '<img loading="lazy" width="' . $srcSets->base->width . '" height="' . $srcSets->base->height . '"', $fallBack);
     $output .= $fallBack . '</picture>';
 
     return  $output;
