@@ -167,11 +167,30 @@ class Helper
 
     // Create the fallback img
     $fallBack = preg_replace(
-      '/src\s*=\s*".+?"/',
-      'src="/media/cached-resp-images/' . $image['dirname'] . '/' . $image['filename'] .
-        $this->separator . $this->validSizes[count($this->validSizes) - 1] . '.' . $image['extension'] . '?version=' . $srcSets->base->version . '"',
+      [
+        '/src\s*=\s*".+?"/',
+        '/width\s*=\s*".+?"/',
+        '/height\s*=\s*".+?"/',
+      ],
+      [
+        'src="/media/cached-resp-images/' . $image['dirname'] . '/' . $image['filename'] . $this->separator . $this->validSizes[count($this->validSizes) - 1] . '.' . $image['extension'] . '?version=' . $srcSets->base->version . '"',
+        'width="' . $srcSets->base->width . '"',
+        'height="' . $srcSets->base->height . '"',
+      ],      
       $image['tag']
     );
+
+    if (preg_match('/width\s*=\s*".+?"/', $fallBack) === 0) {
+      $fallBack = str_replace('<img ', '<img width="' . $srcSets->base->width . '" ', $fallBack);
+    }
+
+    if (preg_match('/height\s*=\s*".+?"/', $fallBack) === 0) {
+      $fallBack = str_replace('<img ', '<img height="' . $srcSets->base->height . '" ', $fallBack);
+    }
+
+    if (preg_match('/loading\s*=\s*".+?"/', $fallBack) === 0) {
+      $fallBack = str_replace('<img ', '<img loading="lazy" ', $fallBack);
+    }
 
     $output .= $fallBack . '</picture>';
 
