@@ -5,5 +5,12 @@
   "automerge": true,
   "major": {
     "automerge": true
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^image"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
 }
