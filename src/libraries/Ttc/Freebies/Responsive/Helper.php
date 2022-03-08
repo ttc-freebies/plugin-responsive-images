@@ -33,6 +33,8 @@ class Helper
     if ($this->enabled) {
       $plugin            = PluginHelper::getPlugin('content', 'responsive');
       $this->params      = new Registry($plugin->params);
+      $this->enableWEBP  = (bool) $this->params->get('enableWEBP', 1);
+      $this->enableAVIF  = (bool) $this->params->get('enableAVIF', 0);
       $this->qualityJPG  = (int) $this->params->get('qualityJPG', 75);
       $this->qualityWEBP = (int) $this->params->get('qualityWEBP', 60);
       $this->qualityAVIF = (int) $this->params->get('qualityAVIF', 40);
@@ -176,7 +178,7 @@ class Helper
         'src="/media/cached-resp-images/' . $image['dirname'] . '/' . $image['filename'] . $this->separator . $this->validSizes[count($this->validSizes) - 1] . '.' . $image['extension'] . '?version=' . $srcSets->base->version . '"',
         'width="' . $srcSets->base->width . '"',
         'height="' . $srcSets->base->height . '"',
-      ],      
+      ],
       $image['tag']
     );
 
@@ -192,9 +194,7 @@ class Helper
       $fallBack = str_replace('<img ', '<img loading="lazy" ', $fallBack);
     }
 
-    $output .= $fallBack . '</picture>';
-
-    return  $output;
+    return  $output . $fallBack . '</picture>';
   }
 
   /**
@@ -292,12 +292,12 @@ class Helper
         );
         $srcSets->base->srcset[$this->validSizes[$i]] = $fileSrc . '.' . $extension . '?version=' . $hash . ' ' . $this->validSizes[$i] . 'w';
 
-        if (($driver === 'imagick' && \Imagick::queryFormats('WEBP')) || ($driver === 'gd' && function_exists('imagewebp'))) {
+        if ($this->enableWEBP && (($driver === 'imagick' && \Imagick::queryFormats('WEBP')) || ($driver === 'gd' && function_exists('imagewebp')))) {
           // Save the image as webp
           $this->createImage($image, $fileSrc, 'webp', $this->qualityWEBP, $srcSets, $hash, $this->validSizes[$i]);
         }
 
-        if ($driver === 'imagick' && \Imagick::queryFormats('AVIF')  || ($driver === 'gd' && function_exists('imageavif'))) {
+        if ($this->enableAVIF && (($driver === 'imagick' && \Imagick::queryFormats('AVIF')) || ($driver === 'gd' && function_exists('imageavif')))) {
           // Save the image as avif
           $this->createImage($image, $fileSrc, 'avif', $this->qualityAVIF, $srcSets, $hash, $this->validSizes[$i]);
         }
@@ -306,7 +306,7 @@ class Helper
       }
     }
 
-    
+
     if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname)) {
       mkdir(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $dirname, 0755, true);
     }
