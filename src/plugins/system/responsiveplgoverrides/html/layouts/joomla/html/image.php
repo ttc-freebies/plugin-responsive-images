@@ -43,6 +43,10 @@ if (isset($displayData['breakpoints']) && is_array($displayData['breakpoints']))
   unset($displayData['breakpoints']);
 }
 
+if (empty($displayData['decoding'])) {
+  $displayData['decoding'] = 'async';
+}
+
 $img = '<img ' . ArrayHelper::toString($displayData) . '>';
 
 if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
