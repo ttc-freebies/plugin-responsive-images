@@ -37,7 +37,7 @@
     "rollup": "2.70.1",
     "rollup-plugin-html-literals": "1.1.5",
     "rollup-plugin-terser": "7.0.2",
-    "semver": "7.3.5",
+    "semver": "7.3.6",
     "uhtml": "2.8.1"
   },
   "data": {
