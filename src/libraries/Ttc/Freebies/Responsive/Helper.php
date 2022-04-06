@@ -303,6 +303,9 @@ class Helper
         }
 
         $image->destroy();
+        
+        // Force GC
+        \gc_collect_cycles();
       }
     }
 
