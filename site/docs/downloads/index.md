@@ -3,7 +3,7 @@ eleventyNavigation:
   key: Downloads
   url: '/downloads/index.html'
   order: 4
-permalink: downloads/index.html
+permalink: dist/index.html
 layout: base.njk
 title: Downloads
 ---
