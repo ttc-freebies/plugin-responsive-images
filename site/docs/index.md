@@ -27,7 +27,7 @@ A rock solid solution for creating and using responsive images with Joomla 4 fro
 
 
 ### Latest Version
-For the latest Version or any previous vesrion please go to : [Downloads](/dist)
+For the latest Version or any previous vesrion please go to : [Downloads](/downloads)
 
 ### What it does
 
