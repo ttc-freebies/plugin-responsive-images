@@ -5,15 +5,16 @@
  * @copyright   Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Component\Media\Administrator\Plugin\MediaActionPlugin;
 use Joomla\Registry\Registry;
 
 /**
  * Media Manager Responsive Action
  */
-class PlgMediaActionResponsive extends \Joomla\Component\Media\Administrator\Plugin\MediaActionPlugin
+class PlgMediaActionResponsive extends MediaActionPlugin
 {
   private   $separator  = '_';
   private   $validSizes = [200, 320, 480, 768, 992, 1200, 1600, 1920];
@@ -23,25 +24,22 @@ class PlgMediaActionResponsive extends \Joomla\Component\Media\Administrator\Plu
   public function __construct()
   {
     // Bail out if the helper isn't loaded
-    if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive') && !class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
-      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
-      if (!class_exists('\Ttc\Freebies\Responsive\Helper')) {
-        return;
-      }
-
-      $plugin          = PluginHelper::getPlugin('content', 'responsive');
-      $this->params    = new Registry($plugin->params);
-      $this->enabled   = true;
-      $this->separator = $this->params->get('separator', '_');
-      $sizes           = explode(',', $this->params->get('sizes'));
-
-      if (!is_array($sizes)) {
-        $sizes = [200, 320, 480, 768, 992, 1200, 1600, 1920];
-      }
-
-      asort($sizes);
-      $this->validSizes = $sizes;
+    if (PluginHelper::isEnabled('content', 'responsive') || !class_exists('\Ttc\Freebies\Responsive\Helper')) {
+      return;
     }
+
+    $plugin          = PluginHelper::getPlugin('content', 'responsive');
+    $this->params    = new Registry($plugin->params);
+    $this->enabled   = true;
+    $this->separator = $this->params->get('separator', '_');
+    $sizes           = explode(',', $this->params->get('sizes'));
+
+    if (!is_array($sizes)) {
+      $sizes = [200, 320, 480, 768, 992, 1200, 1600, 1920];
+    }
+
+    asort($sizes);
+    $this->validSizes = $sizes;
   }
 
   /**

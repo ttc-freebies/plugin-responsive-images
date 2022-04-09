@@ -17,7 +17,7 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
 {
   public function __construct()
   {
-    $this->minimumJoomla = '4.0.6';
+    $this->minimumJoomla = '4.1.0';
     $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
     $this->deleteFolders = ['layouts/ttc'];
   }

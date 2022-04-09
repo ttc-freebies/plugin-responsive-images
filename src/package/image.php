@@ -15,12 +15,13 @@
 defined('_JEXEC') || die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
+use Ttc\Freebies\Responsive\Helper as ResponsiveHelper;
 
 $breakpoints = [200, 320, 480, 768, 992, 1200, 1600, 1920];
-$imgOriginal = HTMLHelper::_('cleanImageURL', $displayData['src']);
-$displayData['src'] = $this->escape($imgOriginal->url);
 
+// Handle the alt attribute
 if (isset($displayData['alt'])) {
   if ($displayData['alt'] === false) {
     unset($displayData['alt']);
@@ -28,35 +29,27 @@ if (isset($displayData['alt'])) {
     $displayData['alt'] = $this->escape($displayData['alt']);
   }
 }
-
-if ($imgOriginal->attributes['width'] > 0 && $imgOriginal->attributes['height'] > 0) {
-  $displayData['width']  = $imgOriginal->attributes['width'];
-  $displayData['height'] = $imgOriginal->attributes['height'];
-
-  if (empty($displayData['loading'])) {
-    $displayData['loading'] = 'lazy';
+// Handle the breakpoins
+if (isset($displayData['breakpoints'])) {
+  if (is_array($displayData['breakpoints'])) {
+    $breakpoints = $displayData['breakpoints'];
   }
-}
-
-if (isset($displayData['breakpoints']) && is_array($displayData['breakpoints'])) {
-  $breakpoints = $displayData['breakpoints'];
   unset($displayData['breakpoints']);
 }
-
+// Handle the decoding attribute
 if (empty($displayData['decoding'])) {
   $displayData['decoding'] = 'async';
+}
+// Handle the loading attribute
+if (empty($displayData['loading'])) {
+  $displayData['loading'] = 'lazy';
 }
 
 $img = '<img ' . ArrayHelper::toString($displayData) . '>';
 
-if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
-  if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/ttc')) {
-    JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/ttc');
-  }
-
-  if (class_exists('\Ttc\Freebies\Responsive\Helper')) {
-    $img = (new \Ttc\Freebies\Responsive\Helper)->transformImage($img, $breakpoints);
-  }
+// Respect the plugin state
+if (PluginHelper::isEnabled('content', 'responsive')) {
+	$img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
 }
 
 echo $img;

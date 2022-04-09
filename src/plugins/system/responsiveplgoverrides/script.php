@@ -1,6 +1,6 @@
 
 <?php
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') || die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\PluginAdapter;
@@ -23,11 +23,6 @@ class plgSystemResponsiveplgoverridesInstallerScript extends InstallerScript
     if ($type === 'install' || $type === 'discover_install') {
       // Check if the plugin is installed and enabled
       if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('content', 'responsive')) {
-        // Load the library helper
-        if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
-          JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
-        }
-
         if (class_exists('\Ttc\Freebies\Responsive\Helper')) {
           if (!empty($this->template->name)) {
             $templateName = strtolower($this->template->name);

@@ -27,9 +27,7 @@ A rock solid solution for creating and using responsive images with Joomla 4 fro
 
 
 ### Latest Version
-{% assign fff = downloads | first%}
-
-Latest Version: [Download {{fff.version}}]({{ metainfo.url }}/dist/{{fff.name}})
+For the latest Version or any previous vesrion please go to : [Downloads](/dist)
 
 ### What it does
 

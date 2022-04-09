@@ -1,10 +1,11 @@
 {
   "name": "plugin-responsive-images",
-  "version": "4.0.7",
+  "version": "4.1.0-beta.1",
+  "ttcVersion": "4.1.0-beta.1",
   "private": true,
   "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
-    "build": "node fetch-vendor.js && node build.js",
+    "build": "node fetch-library.js && node build.js",
     "build:site": "eleventy",
     "serve": "eleventy --serve"
   },

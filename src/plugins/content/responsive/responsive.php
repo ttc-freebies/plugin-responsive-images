@@ -5,7 +5,7 @@
  * @copyright   Copyright (C) 2017 Dimitrios Grammatikogiannis. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use Joomla\CMS\Plugin\CMSPlugin;
 
@@ -69,11 +69,8 @@ class PlgContentResponsive extends CMSPlugin
   private function mainLogic($context, &$row, $replaceTags = false)
   {
     // Bail out if the helper isn't loaded
-    if (!class_exists('\Ttc\Freebies\Responsive\Helper') && is_dir(JPATH_LIBRARIES . '/Ttc')) {
-      JLoader::registerNamespace('Ttc', JPATH_LIBRARIES . '/Ttc');
-      if (!class_exists('\Ttc\Freebies\Responsive\Helper')) {
-        return;
-      }
+    if (!class_exists('\Ttc\Freebies\Responsive\Helper')) {
+      return;
     }
 
     $pluginComponents = $this->params->get('components');
@@ -98,7 +95,7 @@ class PlgContentResponsive extends CMSPlugin
         }
 
         foreach ($views as $view) {
-          if ($context !== $component->component_name . '.' . $view) {
+          if ($context !== $component->component_name . '.' . $view && substr($component->component_name, 0, 4) !== "mod_") {
             continue;
           }
 
@@ -129,6 +126,35 @@ class PlgContentResponsive extends CMSPlugin
             }
           };
         };
+
+        if (substr($component->component_name, 0, 4) === "mod_") {
+          $columns = preg_split('/[\s,]+/', $component->component_db_column);
+          if ($columns === '') {
+            continue;
+          }
+
+          foreach ($columns as $currentNeedle) {
+            // $currentNeedle = $component->component_db_columnn;
+            $matches = [];
+            if (!empty($row->{$currentNeedle})) {
+              if (!preg_match_all('#<img\s[^>]+>#', $row->{$currentNeedle}, $matches)) {
+                continue;
+              }
+
+              if (count($matches)) {
+                foreach ($matches[0] as $img) {
+                  // Make sure we have a src
+                  if (strpos($img, ' src=') !== false && strpos($img, '//') === false) {
+                    $processed = (new \Ttc\Freebies\Responsive\Helper)->transformImage($img, [200, 320, 480, 768, 992, 1200, 1600, 1920]);
+                    if ($replaceTags && $processed !== $img) {
+                      $row->{$currentNeedle} = str_replace($img, $processed, $row->{$currentNeedle});
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
       }
     }
     return true;
