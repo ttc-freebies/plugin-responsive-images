@@ -5,10 +5,15 @@ title: All releases
 ---
 
 {% for dl in downloads %}
-<section aria-label="Release: {{dl.version}}">
+<section aria-label="Release: {{dl.version}}" style="padding: 1rem 0;">
   <details>
     <summary>Release: {{dl.version}}</summary>
-      <a href="{{ metainfo.url }}/dist/{{dl.name}}">{{dl.version}}</a>
+
+    <div class="release-notes" style="background-color: var(--secondary-transparent); padding: 1rem 2rem;">
+      <h2 style="text-align: center">
+        <a type="button" href="{{ metainfo.url }}/dist/{{dl.name}}">Download v.{{dl.version}}</a>
+      </h2>
+
       {% for release in releases %}
         {% if release.version == dl.version %}
           <h3>Release type: {{release.type}}</h3>
@@ -50,7 +55,7 @@ title: All releases
         </ul>
       {% endif %}
     {% endfor %}
-
+    </div>
   </details>
 </section>
 {% else %}
