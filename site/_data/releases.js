@@ -85,5 +85,17 @@ module.exports = async () => {
         'Only for testing purposes, not for production. Also if you installed `beta.1` please remove the folder `media/cached-resp-images` to fix the urls',
       ],
     },
+    {
+      version: '4.1.0-beta.3',
+      type: 'Beta',
+      bugs: [
+        'Fixed an issue with `getimagesize` not returnng the channels of PNG images',
+      ],
+      features: [],
+      changes: [],
+      notes: [
+        'Only for testing purposes, not for production.',
+      ],
+    },
   ];
 }
