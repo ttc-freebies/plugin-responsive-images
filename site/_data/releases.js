@@ -73,5 +73,17 @@ module.exports = async () => {
         'Only for testing purposes, not for production',
       ],
     },
+    {
+      version: '4.1.0-beta.2',
+      type: 'Beta',
+      bugs: [
+        'Fixed an issue with the urls containig double slashes',
+      ],
+      features: [],
+      changes: [],
+      notes: [
+        'Only for testing purposes, not for production. Also if you installed `beta.1` please remove the folder `media/cached-resp-images` to fix the urls',
+      ],
+    },
   ];
 }
