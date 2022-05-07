@@ -22,7 +22,7 @@
   "devDependencies": {
     "@11ty/eleventy": "2.0.0-canary.8",
     "@11ty/eleventy-img": "2.0.0",
-    "@11ty/eleventy-navigation": "0.3.2",
+    "@11ty/eleventy-navigation": "0.3.3",
     "@11ty/eleventy-plugin-syntaxhighlight": "4.0.0",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@zip.js/zip.js": "2.4.10",
