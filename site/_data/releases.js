@@ -112,6 +112,16 @@ module.exports = async () => {
         'Switch the library to use PHP namespaces',
       ],
       notes: [],
+    },
+    {
+      version: '4.1.1',
+      type: 'stable',
+      bugs: [
+        'Fixed an issue for the images with spaces in their filename',
+      ],
+      features: [],
+      changes: [],
+      notes: [],
     }
   ];
 }
