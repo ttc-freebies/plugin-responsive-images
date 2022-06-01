@@ -93,6 +93,9 @@ module.exports = function (eleventyConfig) {
   return {
     pathPrefix: "/",
     passthroughFileCopy: true,
+    dataTemplateEngine: 'njk',
+    markdownTemplateEngine: "liquid",
+    htmlTemplateEngine: "njk",
     dir: {
       data: `_data`,
       input: 'site',
