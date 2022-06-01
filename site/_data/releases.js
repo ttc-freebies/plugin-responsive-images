@@ -97,5 +97,21 @@ module.exports = async () => {
         'Only for testing purposes, not for production.',
       ],
     },
+    {
+      version: '4.1.0',
+      type: 'stable',
+      bugs: [
+        'Fixed an issue with the urls containig double slashes',
+        'Fixed an issue with `getimagesize` not returnng the channels of PNG images',
+      ],
+      features: [
+        'Added suppor for the attribute `decoding`, set to `async` by default',
+      ],
+      changes: [
+        'Switch to own tools for the prefixing of the 3rd party libraries',
+        'Switch the library to use PHP namespaces',
+      ],
+      notes: [],
+    }
   ];
 }
