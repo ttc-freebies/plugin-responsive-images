@@ -18,5 +18,8 @@ permalink: /update.xml
     <targetplatform name="joomla" version="4.1"/>
     <element>pkg_responsive</element>
     <type>package</type>
+    <tags>
+      <tag>stable</tag>
+    </tags>
   </update>
 </updates>
