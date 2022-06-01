@@ -14,7 +14,8 @@ permalink: /update.xml
     <downloads>
       <downloadurl type="full" format="zip">{{url}}dist/{{fff.name}}</downloadurl>
     </downloads>
-    <targetplatform name="joomla" version="4.0.6"/>
+    <sha384>{{ fff.sha384 }}</sha384>
+    <targetplatform name="joomla" version="4.1"/>
     <element>pkg_responsive</element>
     <type>package</type>
   </update>
