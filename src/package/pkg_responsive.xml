@@ -19,6 +19,6 @@
     <file type="plugin" id="responsive" group="media-action">plg_media_action_responsive_{{version}}.zip</file>
   </files>
   <updateservers>
-    <server type="collection" priority="1" name="Responsive content images">https://responsive-images.dgrammatiko.dev/update.xml</server>
+    <server type="extension" priority="1" name="Responsive content images">https://responsive-images.dgrammatiko.dev/update.xml</server>
   </updateservers>
 </extension>
