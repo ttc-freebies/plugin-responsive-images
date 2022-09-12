@@ -24,7 +24,7 @@
     "@11ty/eleventy-img": "2.0.1",
     "@11ty/eleventy-navigation": "0.3.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "4.1.0",
-    "@rollup/plugin-node-resolve": "14.0.1",
+    "@rollup/plugin-node-resolve": "14.1.0",
     "@zip.js/zip.js": "2.6.25",
     "adm-zip": "0.5.9",
     "fs-extra": "10.1.0",
