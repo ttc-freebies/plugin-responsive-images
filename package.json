@@ -39,7 +39,7 @@
     "rollup-plugin-html-literals": "1.1.5",
     "rollup-plugin-terser": "7.0.2",
     "semver": "7.3.7",
-    "uhtml": "3.0.2"
+    "uhtml": "3.1.0"
   },
   "data": {
     "repo": "ooo"
