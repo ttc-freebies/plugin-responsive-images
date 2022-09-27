@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     ttc-freebies.plugin-responsive-images
  *
@@ -10,7 +11,9 @@ namespace Joomla\Plugin\Content\Responsive\Extension;
 
 defined('_JEXEC') || die;
 
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Session\Session;
 use Joomla\Event\SubscriberInterface;
 use stdClass;
 
@@ -29,6 +32,7 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
     return [
       'onContentPrepare'   => 'onPrepare',
       'onContentAfterSave' => 'onAfterSave',
+      'onAjaxResponsive'   => 'responsiveAjax',
     ];
   }
 
@@ -58,6 +62,23 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
   public function onAfterSave($event)
   {
     $this->mainLogic($event[0], $event[1], false);
+  }
+
+  /**
+   * System std Event Prepare
+   *
+   * @param  array  $event
+   *
+   * @return  void|true
+   *
+   * @throws Exception
+   */
+  public function responsiveAjax($event)
+  {
+    if (!Session::checkToken('post')) throw new \Exception('Not Allowed');
+    if (is_dir(JPATH_ROOT . '/media/cached-resp-images')) return Folder::delete(JPATH_ROOT . '/media/cached-resp-images');
+
+    return true;
   }
 
   /**
