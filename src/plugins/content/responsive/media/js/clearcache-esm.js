@@ -40,11 +40,20 @@ customElements.define('clear-cache-field', class extends HTMLElement {
       return resp.json();
     })
     .then(resp => {
-      if (resp.success) Joomla.renderMessages({'success': ['Success! 🎉']});
-      else Joomla.renderMessages({'danger': ["We've failed 🤷‍♂️"]});
+      if (resp.success) this.renderMsg({'success': ['Success! 🎉']}, undefined, false, 4000);
+      else this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, null, false);
     })
     .catch(err => {
-      Joomla.renderMessages({'danger': ["We've failed 🤷‍♂️"]});
+      this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, null, false);
      });
+  }
+
+  renderMsg(msg, selector, keepOld, timeout) {
+    scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    Joomla.renderMessages(msg, selector, keepOld, timeout);
   }
 });

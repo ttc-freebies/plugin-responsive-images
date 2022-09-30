@@ -11,6 +11,7 @@ namespace Joomla\Plugin\Content\Responsive\Extension;
 
 defined('_JEXEC') || die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
@@ -75,7 +76,7 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
    */
   public function responsiveAjax($event)
   {
-    if (!Session::checkToken('post')) throw new \Exception('Not Allowed');
+    if (!Session::checkToken('request') || !(Factory::getUser())->authorise('core.edit', 'com_plugins')) throw new \Exception('Not Allowed');
     if (is_dir(JPATH_ROOT . '/media/cached-resp-images')) return Folder::delete(JPATH_ROOT . '/media/cached-resp-images');
 
     return true;

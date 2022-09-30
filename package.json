@@ -42,5 +42,33 @@
   },
   "data": {
     "repo": "ooo"
-  }
+  },
+  "pkgs_": {
+    "responsive": {
+      "files": [
+        {
+          "name": "image2.php",
+          "path": "src/plugins/system/responsiveplgoverrides/html/layouts/joomla/html/image.php"
+        }
+      ],
+      "zips": [
+        {
+          "name": "responsive",
+          "type": "plugins",
+          "subType": "content"
+        },
+        {
+          "name": "responsive",
+          "type": "plugins",
+          "subType": "media-action"
+        },
+        {
+          "name": "Ttc",
+          "type": "libraries",
+          "subType": ""
+        }
+      ]
+    }
+  },
+  "doNotZip": ["system/responsiveplgoverrides", ".DS_Store"]
 }

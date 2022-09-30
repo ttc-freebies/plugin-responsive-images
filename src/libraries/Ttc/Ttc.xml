@@ -13,7 +13,7 @@
   <description>TTC Common Library</description>
   <namespace path="src">Ttc</namespace>
   <files>
-    <folder>language</folder>
+    <folder library="Ttc">language</folder>
     <folder>src</folder>
     <filename>Ttc.xml</filename>
     <filename>license.txt</filename>

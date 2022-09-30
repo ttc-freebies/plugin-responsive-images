@@ -12,22 +12,28 @@
   <scriptfile>script.php</scriptfile>
   <namespace path="src">Joomla\Plugin\Content\Responsive</namespace>
   <files>
-    <folder plugin="responsive">src</folder>
-    <folder>language</folder>
-    <folder>services</folder>
+    <folder plugin="responsive">language</folder>
     <folder>layouts</folder>
+    <folder>services</folder>
+    <folder>src</folder>
     <filename>components.xml</filename>
     <filename>license.txt</filename>
   </files>
   <media folder="media" destination="plg_content_responsive">
     <folder>js</folder>
   </media>
-  <languages>
-    <language tag="en-GB">language/en-GB/plg_content_responsive.ini</language>
-    <language tag="en-GB">language/en-GB/plg_content_responsive.sys.ini</language>
-  </languages>
   <config>
     <fields name="params">
+			<fieldset name="basic" addfieldprefix="Joomla\Plugin\Content\Responsive\Field">
+        <field
+          name="note00"
+          type="note"
+          class="alert alert-danger"
+          hiddenLabel="true"
+          description="PLG_CONTENT_RESPONSIVE_MORE_FIELDSET_NOTE00_DESC"
+        />
+				<field name="clear_cache" type="clearcache" />
+			</fieldset>
       <fieldset name="basics">
         <field
           name="components"
@@ -38,7 +44,7 @@
           default="{&quot;__field10&quot;:{&quot;component_name&quot;:&quot;com_content&quot;,&quot;component_view&quot;:&quot;article,category,featured&quot;,&quot;component_db_column&quot;:&quot;introtext,fulltext,text&quot;},&quot;__field11&quot;:{&quot;component_name&quot;:&quot;mod_articles_category&quot;,&quot;component_view&quot;:&quot;content&quot;,&quot;component_db_column&quot;:&quot;text&quot;}}"
         />
       </fieldset>
-      <fieldset name="more" addfieldprefix="Joomla\Plugin\Content\Responsive\Field">
+      <fieldset name="more">
         <field
           name="excludeFolders"
           type="textarea"
@@ -101,10 +107,6 @@
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
-        <field
-          name="clear_cache"
-          type="clearcache"
-        />
       </fieldset>
       <fieldset name="quality">
         <field
