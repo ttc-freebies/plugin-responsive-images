@@ -70,5 +70,8 @@
       ]
     }
   },
-  "doNotZip": ["system/responsiveplgoverrides", ".DS_Store"]
+  "doNotZip": [
+    "system/responsiveplgoverrides",
+    ".DS_Store"
+  ]
 }

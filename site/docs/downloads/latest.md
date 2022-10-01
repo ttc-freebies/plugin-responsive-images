@@ -4,8 +4,9 @@ layout: base.njk
 title: Downloads
 ---
 # Latest Version
-{% assign fff = downloads | first%}
+{% assign fff = downloads | first %}
 
-[{{fff.version}}]({{ metainfo.url }}/dist/{{fff.name}})
+- {{fff.version}} is the latest version.
+- Download it here: [{{fff.version}}]({{ metainfo.url }}/dist/{{fff.name}})
 
 {% img %}
