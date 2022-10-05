@@ -11,7 +11,9 @@ use Joomla\CMS\Installer\InstallerScript;
 
 class libTtcInstallerScript extends InstallerScript
 {
-  protected $deleteFiles = [];
+  protected $deleteFiles = [
+    '/administrator/languages/en-GB/lib_ttc.sys.ini',
+  ];
   protected $deleteFolders = [
     '/libraries/Ttc/vendor',
     '/libraries/Ttc/vendor_prefixed',
