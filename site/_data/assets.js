@@ -31,16 +31,12 @@ module.exports = async () => {
     // closes the bundle
     await bundle.close();
 
-    if (!existsSync(`${process.cwd()}/site/css`)) {
-      mkdirSync(`${process.cwd()}/site/css`, {recursive: true});
-    }
+    // if (!existsSync(`${process.cwd()}/site/css`)) {
+    //   mkdirSync(`${process.cwd()}/site/css`, {recursive: true});
+    // }
 
-    const result = await postcss(
-      [
-        require('postcss-import')({
-        path: ['site/src_media/css']}),
-      ]
-    ).process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})), {from: undefined, to: undefined});
+    const result = await postcss([ require('postcss-import')({ path: ['site/src_media/css'] }), ])
+    .process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})), {from: undefined, to: undefined});
 
     if (result) {
       return result;

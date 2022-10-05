@@ -1,8 +1,5 @@
 ---
-eleventyNavigation:
-  key: Create Overrides
-  url: '/create-template-overrides/index.html'
-  order: 7
+eleventyExcludeFromCollections: true
 permalink: create-template-overrides/index.html
 layout: base.njk
 title: Create Core Overrides

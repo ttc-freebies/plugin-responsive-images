@@ -12,5 +12,5 @@ module.exports = async () => {
     }
   });
 
-  return rels;
+  return rels.filter(rel => rel.type === 'stable');
 }
