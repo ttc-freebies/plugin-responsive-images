@@ -14,9 +14,8 @@ customElements.define('clear-cache-field', class extends HTMLElement {
   constructor() {
     super();
 
-    const systemPaths = Joomla.getOptions('system.paths');
     this.button = null;
-    this.url = new URL(`${systemPaths.baseFull}index.php?option=com_ajax&type=plugin&plugin=responsive&group=content&method=responsive&format=json&${this.token}=1`);
+    this.systemPaths = Joomla.getOptions('system.paths');
     this.onClick = this.onClick.bind(this);
   }
   connectedCallback() {
@@ -33,18 +32,18 @@ customElements.define('clear-cache-field', class extends HTMLElement {
   }
 
   onClick() {
-    fetch(this.url, {method: 'POST'})
-    .then(resp => {
-      if (resp.statusText !== 'OK' || !resp.ok) throw new Error('Bad Response!')
-
-      return resp.json();
+    fetch(new URL(`${this.systemPaths.baseFull}index.php?option=com_ajax&type=plugin&plugin=responsive&group=content&method=responsive&format=json&${this.token}=1`), {method: 'POST'})
+    .then((response)=>{
+      if (!response.ok) throw new Error("HTTP status " + response.status);
+      return response.json();
     })
     .then(resp => {
       if (resp.success) this.renderMsg({'success': ['Success! 🎉']}, undefined, false, 4000);
-      else this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, null, false);
+      else this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, undefined, false);
     })
     .catch(err => {
-      this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, null, false);
+      console.log(err)
+      this.renderMsg({'danger': ["We've failed 🤷‍♂️"]}, undefined, false);
      });
   }
 
