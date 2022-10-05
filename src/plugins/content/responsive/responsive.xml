@@ -24,7 +24,7 @@
   </media>
   <config>
     <fields name="params">
-			<fieldset name="basic" addfieldprefix="Joomla\Plugin\Content\Responsive\Field">
+      <fieldset name="basic" addfieldprefix="Joomla\Plugin\Content\Responsive\Field">
         <field
           name="note00"
           type="note"
@@ -32,8 +32,8 @@
           hiddenLabel="true"
           description="PLG_CONTENT_RESPONSIVE_MORE_FIELDSET_NOTE00_DESC"
         />
-				<field name="clear_cache" type="clearcache" />
-			</fieldset>
+        <field name="clear_cache" type="clearcache" />
+      </fieldset>
       <fieldset name="basics">
         <field
           name="components"
