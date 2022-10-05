@@ -1,7 +1,6 @@
 .vscode
 node_modules
 _site
-media_src
 !site/dist
 site/js
 site/css
