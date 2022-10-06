@@ -13,8 +13,8 @@ class plgMediaActionResponsiveInstallerScript extends InstallerScript
 {
   protected $deleteFiles = [
     '/plugins/media-action/responsive.php',
-    '/administrator/languages/en-GB/plg_media-action_responsive.sys.ini',
-    '/administrator/languages/en-GB/plg_media-action_responsive.ini'
+    '/administrator/language/en-GB/plg_media-action_responsive.sys.ini',
+    '/administrator/language/en-GB/plg_media-action_responsive.ini'
   ];
   protected $deleteFolders = [];
 

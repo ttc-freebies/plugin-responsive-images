@@ -13,8 +13,8 @@ class plgContentResponsiveInstallerScript extends InstallerScript
 {
   protected $deleteFiles = [
     '/plugins/content/responsive.php',
-    '/administrator/languages/en-GB/plg_content_responsive.sys.ini',
-    '/administrator/languages/en-GB/plg_content_responsive.ini'
+    '/administrator/language/en-GB/plg_content_responsive.sys.ini',
+    '/administrator/language/en-GB/plg_content_responsive.ini'
   ];
   protected $deleteFolders = [];
 
