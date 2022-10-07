@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 module.exports = async () => {
   const dir = 'site/dist';
-  const rels = JSON.parse(fs.readFileSync('releases.json'));
+  let rels = JSON.parse(fs.readFileSync('releases.json'));
   const files = await fs.promises.readdir(dir);
 
   rels.map(rel => {
@@ -12,5 +12,6 @@ module.exports = async () => {
     }
   });
 
-  return rels.filter(rel => rel.type === 'stable');
+  rels = rels.filter(rel => rel.type === 'stable');
+  return rels.reverse();
 }
