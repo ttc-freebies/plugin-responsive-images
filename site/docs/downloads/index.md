@@ -15,7 +15,7 @@ title: Downloads
     <summary>Release: {{dl.version}}</summary>
     <div class="release-notes" style="background-color: var(--secondary-transparent); padding: 1rem 2rem;">
       <h2 style="text-align: center">
-        <a type="button" href="{{ metainfo.url }}/dist/{{dl.name}}">Download v.{{dl.version}}</a>
+        <a type="button" href="/dist/{{dl.name}}">Download v.{{dl.version}}</a>
       </h2>
       <h3>Release type: {{dl.type}}</h3>
       <h3>New feature</h3>
