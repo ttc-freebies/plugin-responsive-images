@@ -16,7 +16,7 @@ extract($displayData);
 /** @var $breakpoints  array   the breakpoints */
 
 if (PluginHelper::isEnabled('content', 'responsive')) {
-	$img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
+  $img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
 }
 
 echo $img;

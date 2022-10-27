@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="4.0">
+  <name>lib_ttc</name>
+  <libraryname>Ttc</libraryname>
+  <author>Dimitrios Grammatikogiannis</author>
+  <authorUrl>dgrammatiko.dev</authorUrl>
+  <creationDate>2021</creationDate>
+  <copyright>Copyright (C) 2021 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>d.grammatiko@gmail.com</authorEmail>
+  <version>{{version}}</version>
+  <scriptfile>script.php</scriptfile>
+  <description>TTC Common Library</description>
+  <namespace path="src">Ttc</namespace>
+  <files>
+    <folder library="Ttc">language</folder>
+    <folder>src</folder>
+    <filename>Ttc.xml</filename>
+    <filename>license.txt</filename>
+  </files>
+</extension>
+

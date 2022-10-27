@@ -1,8 +1,8 @@
 const { readFile } = require('fs').promises;
 const rollup = require('rollup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const { terser } = require("rollup-plugin-terser");
-const template = require("rollup-plugin-html-literals");
+// const { terser } = require("rollup-plugin-terser");
+// const template = require("rollup-plugin-html-literals");
 const { existsSync, mkdirSync } = require('fs');
 const postcss  = require('postcss')
 
@@ -15,9 +15,9 @@ module.exports = async () => {
     const bundle = await rollup.rollup({
         input: `${process.cwd()}/site/src_media/js/downloader.js`,
         plugins: [
-          template(),
+          // template(),
           nodeResolve(),
-          terser()
+          // terser()
         ]
       });
 
@@ -31,16 +31,12 @@ module.exports = async () => {
     // closes the bundle
     await bundle.close();
 
-    if (!existsSync(`${process.cwd()}/site/css`)) {
-      mkdirSync(`${process.cwd()}/site/css`, {recursive: true});
-    }
+    // if (!existsSync(`${process.cwd()}/site/css`)) {
+    //   mkdirSync(`${process.cwd()}/site/css`, {recursive: true});
+    // }
 
-    const result = await postcss(
-      [
-        require('postcss-import')({
-        path: ['site/src_media/css']}),
-      ]
-    ).process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})), {from: undefined, to: undefined});
+    const result = await postcss([ require('postcss-import')({ path: ['site/src_media/css'] }), ])
+    .process((await readFile(`${process.cwd()}/site/src_media/css/base.css`, {encoding: 'utf8'})), {from: undefined, to: undefined});
 
     if (result) {
       return result;

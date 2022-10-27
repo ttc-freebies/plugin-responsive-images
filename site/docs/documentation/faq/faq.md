@@ -19,4 +19,4 @@ No, but don't hold your breath for that.
 
 - I'm not able to create Avif files
 
-Right now you will have to build PHP 8.1 from source as this is the version that introduces this feature.
+You will need either a PHP version greater than 8.1 or the imagick library with support for Avif.

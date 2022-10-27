@@ -19,7 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Ttc\Freebies\Responsive\Helper as ResponsiveHelper;
 
-$breakpoints = [200, 320, 480, 768, 992, 1200, 1600, 1920];
+$breakpoints = [320, 768, 1200];
 
 // Handle the alt attribute
 if (isset($displayData['alt'])) {
@@ -49,7 +49,7 @@ $img = '<img ' . ArrayHelper::toString($displayData) . '>';
 
 // Respect the plugin state
 if (PluginHelper::isEnabled('content', 'responsive')) {
-	$img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
+  $img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
 }
 
 echo $img;

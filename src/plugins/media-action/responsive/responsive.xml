@@ -9,14 +9,14 @@
   <authorEmail>d.grammatiko@gmail.com</authorEmail>
   <version>{{version}}</version>
   <description>PLG_MEDIA_ACTION_RESPONSIVE_DESC</description>
+  <scriptfile>script.php</scriptfile>
+  <namespace path="src">Joomla\Plugin\Media\Action\Responsive</namespace>
   <files>
+    <folder plugin="responsive">src</folder>
     <folder>language</folder>
-    <filename plugin="responsive">responsive.php</filename>
+    <folder>services</folder>
+    <filename>license.txt</filename>
   </files>
-  <languages>
-    <language tag="en-GB">language/en-GB/plg_media-action_responsive.ini</language>
-    <language tag="en-GB">language/en-GB/plg_media-action_responsive.sys.ini</language>
-  </languages>
   <config>
     <fields name="params">
       <fieldset name="basic">
