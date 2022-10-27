@@ -7,6 +7,6 @@ title: Downloads
 {% assign fff = releases | first %}
 
 - {{fff.version}} is the latest version.
-- Download it here: [{{fff.version}}](/dist/{{fff.name}})
+- Download it here: [{{fff.version}}](/dist/pkg_responsive_{{fff.version}}.zip)
 
 {% img %}
