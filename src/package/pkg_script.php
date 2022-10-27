@@ -111,9 +111,6 @@ class pkg_ResponsiveInstallerScript extends \Joomla\CMS\Installer\InstallerScrip
       if (is_file(JPATH_ROOT . '/plugins/content/responsive/helper.php')) {
         @unlink(JPATH_ROOT . '/plugins/content/responsive/helper.php');
       }
-      if (is_file(JPATH_ROOT . '/plugins/content/responsive/script.php')) {
-        @unlink(JPATH_ROOT . '/plugins/content/responsive/script.php');
-      }
     }
   }
 

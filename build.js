@@ -1,7 +1,7 @@
 const { readFile, rm } = require('fs').promises;
 const { readdirSync, existsSync } = require('fs');
 const admZip = require('adm-zip');
-const { version, ttcVersion } = require('./package.json');
+const { version } = require('./package.json');
 
 globalThis.doNotZip = [`system/responsiveplgoverrides`, '.DS_Store'];
 globalThis.zips = [];
@@ -47,20 +47,18 @@ const zipExtension = async (path, name, type) => {
 }
 
 (async function exec() {
-  // if (existsSync('build_tmp')) await rm('build_tmp', { recursive: true });
-
   const processes = [];
   console.log(getDirectories(`${process.cwd()}/src`));
   getDirectories(`${process.cwd()}/src`).forEach(dir => {
     if (dir === 'package') {
       return;
     }
-    // if (dir === 'libraries') {
-    //   const zipped = getDirectories(`${process.cwd()}/src/libraries`)
-    //   zipped.forEach(lib => {
-    //     processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib}`, lib, 'libraries'));
-    //   })
-    // }
+    if (dir === 'libraries') {
+      const zipped = getDirectories(`${process.cwd()}/src/libraries`)
+      zipped.forEach(lib => {
+        processes.push(zipExtension(`${process.cwd()}/src/libraries/${lib}`, lib, 'libraries'));
+      })
+    }
     if (dir === 'plugins') {
       const plgTypes = getDirectories(`${process.cwd()}/src/plugins`);
       plgTypes.forEach(type => {
@@ -88,8 +86,6 @@ const zipExtension = async (path, name, type) => {
     zip.addFile(`packages/${pre}${z.name.toLowerCase()}_${version}.zip`, z.data);
   });
 
-  zip.addLocalFile(`build_tmp/dist/lib_ttc_${ttcVersion}.zip`, `packages`, `lib_ttc_${version}.zip`);
-
   zip.addLocalFile('src/package/pkg_script.php');
   zip.addLocalFile('src/plugins/system/responsiveplgoverrides/html/layouts/joomla/html/image.php');
   zip.addLocalFile('src/plugins/system/responsiveplgoverrides/html/layouts/ttc/image.php', '', 'image2.php');
@@ -98,6 +94,4 @@ const zipExtension = async (path, name, type) => {
   zip.addLocalFile('license.txt');
 
   zip.writeZip(`site/dist/pkg_responsive_${version}.zip`);
-
-  if (existsSync('build_tmp')) await rm('build_tmp', { recursive: true });
 })();

@@ -49,7 +49,7 @@ $img = '<img ' . ArrayHelper::toString($displayData) . '>';
 
 // Respect the plugin state
 if (PluginHelper::isEnabled('content', 'responsive')) {
-	$img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
+  $img = (new ResponsiveHelper)->transformImage($img, $breakpoints);
 }
 
 echo $img;
