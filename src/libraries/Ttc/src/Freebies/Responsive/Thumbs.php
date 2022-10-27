@@ -42,6 +42,11 @@ class Thumbs
         $orgHeight   = \imagesy($sourceImage);
         $thumbHeight = floor($orgHeight * ((int) $options->validSizes[$i] / $orgWidth));
         $destImage   = \imagecreatetruecolor((int) $options->validSizes[$i], $thumbHeight);
+        // Retain the alpha data
+        if ($img->type === 'png') {
+          \imageAlphaBlending($destImage, false);
+          \imageSaveAlpha($destImage, true);
+        }
         \imagecopyresampled($destImage, $sourceImage, 0, 0, 0, 0, (int) $options->validSizes[$i], $thumbHeight, $orgWidth, $orgHeight);
         \imagedestroy($sourceImage);
 

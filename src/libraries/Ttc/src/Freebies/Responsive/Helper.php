@@ -27,6 +27,7 @@ class Helper
   private $qualityWEBP  = 60;
   private $qualityAVIF  = 40;
   private $scaleUp      = false;
+  private $driver       = 'gd';
   private $validSizes   = [320, 768, 1200];
   private $validExt     = ['jpg', 'jpeg', 'png']; // 'webp', 'avif'
 
@@ -43,11 +44,11 @@ class Helper
       $this->qualityAVIF = (int) $this->params->get('qualityAVIF', 40);
       $this->scaleUp     = (bool) $this->params->get('scaleUp', false);
       $this->separator   = $this->params->get('separator', '_');
-      $preferedDriver    = $this->params->get('preferedDriver', 'gd');
+      $this->driver      = $this->params->get('preferedDriver', 'gd');
       $excludeFolders    = preg_split('/[\s,]+/', $this->params->get('excludeFolders'));
       $sizes             = preg_split('/[\s,]+/', $this->params->get('sizes'));
 
-      if (!is_array($sizes) || count($sizes) < 1) $sizes = [200, 320, 480, 768, 992, 1200, 1600, 1920];
+      if (!is_array($sizes) || count($sizes) < 1) $sizes = [320, 768, 1200];
 
       asort($sizes);
       $this->validSizes = $sizes;
@@ -75,11 +76,11 @@ class Helper
     // creating new document
     $docImage = new \DOMDocument('1.0', 'utf-8');
 
-    //turning off some errors
+    // turning off some errors
     libxml_use_internal_errors(true);
 
     // it loads the content without adding enclosing html/body tags and also the doctype declaration
-    $docImage->LoadHTML($image, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    $docImage->LoadHTML(mb_convert_encoding($image, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
     $src = $docImage->firstElementChild->getAttribute('src') ?? null;
 
@@ -92,9 +93,10 @@ class Helper
 
     // Valid root path and not excluded path
     if (empty($paths)
-        || strpos($paths->pathReal, JPATH_ROOT) !== 0
-        || strpos($paths->pathReal, JPATH_ROOT) === false
-        || in_array(dirname($paths->pathReal), $this->excludeFolders)) return $image;
+      || strpos($paths->pathReal, JPATH_ROOT) !== 0
+      || strpos($paths->pathReal, JPATH_ROOT) === false
+      || $this->isExcludedFolder(dirname($paths->pathReal))
+    ) return $image;
 
     $pathInfo = pathinfo($paths->path);
 
@@ -191,42 +193,42 @@ class Helper
    */
   private function buildSrcsetJSON(object $image, array $breakpoints = [320, 768, 1200])
   {
-        if (empty($breakpoints) || !is_file(JPATH_ROOT . '/' . $image->dirname . '/' . $image->filename . '.' . $image->extension)) return $image->tag;
-        if (!is_file(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json')) $this->createImages(str_replace('%20', ' ', $image->dirname), $image->filename, $image->extension);
+    if (empty($breakpoints) || !is_file(JPATH_ROOT . '/' . $image->dirname . '/' . $image->filename . '.' . $image->extension)) return $image->tag;
+    if (!is_file(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json')) $this->createImages(str_replace('%20', ' ', $image->dirname), $image->filename, $image->extension);
 
-        try {
-            $srcSets = \json_decode(@file_get_contents(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json'));
-        } catch (\Exception $e) {
-            return $image->tag;
-        }
+    try {
+      $srcSets = \json_decode(@file_get_contents(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json'));
+    } catch (\Exception $e) {
+      return $image->tag;
+    }
 
-        if (null === $srcSets || $srcSets === false) return $image->tag;
+    if (null === $srcSets || $srcSets === false) return $image->tag;
 
-        $type   = in_array(mb_strtolower($image->extension), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image->extension);
-        $output = (object) [];
+    $type   = in_array(mb_strtolower($image->extension), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image->extension);
+    $output = (object) [];
 
-        if (null !== $srcSets->avif && count(get_object_vars($srcSets->avif->srcset)) > 0) {
-            $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
-            if ($srcSetAvif !== '') $output->avif = [ 'srcset' => $srcSetAvif, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
-        }
+    if (null !== $srcSets->avif && count(get_object_vars($srcSets->avif->srcset)) > 0) {
+      $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
+      if ($srcSetAvif !== '') $output->avif = ['srcset' => $srcSetAvif, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
+    }
 
-        if (null !== $srcSets->webp && count(get_object_vars($srcSets->webp->srcset)) > 0) {
-            $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
-            if ($srcSetWebp !== '') $output->webp = ['srcset' => $srcSetWebp, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
-        }
+    if (null !== $srcSets->webp && count(get_object_vars($srcSets->webp->srcset)) > 0) {
+      $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
+      if ($srcSetWebp !== '') $output->webp = ['srcset' => $srcSetWebp, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
+    }
 
-        $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
-        if ($srcSetOrig !== '') $output->{$type} = ['srcset' => $srcSetOrig, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
+    $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
+    if ($srcSetOrig !== '') $output->{$type} = ['srcset' => $srcSetOrig, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
 
-        $image->dom->firstElementChild->setAttribute('width', $srcSets->base->width);
-        $image->dom->firstElementChild->setAttribute('height', $srcSets->base->height);
-        if (null !== $image->dom->firstElementChild->getAttribute('loading')) $image->dom->firstElementChild->setAttribute('loading', 'lazy');
-        if (null !== $image->dom->firstElementChild->getAttribute('decoding')) $image->dom->firstElementChild->setAttribute('decoding', 'async');
+    $image->dom->firstElementChild->setAttribute('width', $srcSets->base->width);
+    $image->dom->firstElementChild->setAttribute('height', $srcSets->base->height);
+    if (null !== $image->dom->firstElementChild->getAttribute('loading')) $image->dom->firstElementChild->setAttribute('loading', 'lazy');
+    if (null !== $image->dom->firstElementChild->getAttribute('decoding')) $image->dom->firstElementChild->setAttribute('decoding', 'async');
 
-        // Create the fallback img
-        $output->fallback = $image->tag;
+    // Create the fallback img
+    $output->fallback = $image->tag;
 
-        return  $output;
+    return  $output;
   }
 
   /**
@@ -303,11 +305,9 @@ class Helper
     ];
 
     try {
-      $thumbs = new Thumbs('gd');
+      $thumbs = new Thumbs($this->driver);
       $thumbs->create($img, $options, $srcSets);
-    } catch (Exception $e) {
-
-    }
+    } catch (Exception $e) {}
   }
 
   /**
@@ -325,18 +325,10 @@ class Helper
   private static function checkMemoryLimit($properties, $imagePath): bool
   {
     $memorycheck = ($properties['width'] * $properties['height'] * $properties['bits']);
-    $memorycheck_text = $memorycheck / (1024 * 1024);
-    $memory_limit = ini_get('memory_limit');
+    // $memorycheck_text = $memorycheck / (1024 * 1024);
+    $memory_limit = self::toByteSize(ini_get('memory_limit'));
 
-    if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
-      if ($matches[2] == 'M') {
-        $memory_limit_value = $matches[1] * 1024 * 1024; // nnnM -> nnn MB
-      } else if ($matches[2] == 'K') {
-        $memory_limit_value = $matches[1] * 1024; // nnnK -> nnn KB
-      }
-    }
-
-    if (isset($memory_limit_value) && $memorycheck > $memory_limit_value) {
+    if (isset($memory_limit) && $memorycheck > $memory_limit) {
       Factory::getApplication()->enqueueMessage('Image too big to be processed', 'error'); //, $imagePath, $memorycheck_text, $memory_limit
 
       return false;
@@ -372,5 +364,32 @@ class Helper
       'path' => str_replace('%20', ' ', $path),
       'pathReal' => realpath(JPATH_ROOT . str_replace('%20', ' ', $path)),
     ];
+  }
+
+  private function isExcludedFolder($path)
+  {
+    $isExcluded = false;
+
+    foreach ($this->excludeFolders as $folder) {
+      if (substr($path, 0, strlen($folder)) === $folder) {
+        $isExcluded = true;
+        break;
+      }
+    }
+
+    return $isExcluded;
+  }
+
+  private static function toByteSize($formated)
+  {
+    $formated = strtolower(trim($formated));
+    $unit = substr($formated, -1, 1);
+    $formated = substr($formated, 0, -1);
+
+    if ($unit == 'g') $formated *= 1024 * 1024 * 1024;
+    else if ($unit == 'm') $formated *= 1024 * 1024;
+    else if ($unit == 'k') $formated *= 1024;
+    else return false;
+    return $formated;
   }
 }
