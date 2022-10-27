@@ -19,7 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Ttc\Freebies\Responsive\Helper as ResponsiveHelper;
 
-$breakpoints = [200, 320, 480, 768, 992, 1200, 1600, 1920];
+$breakpoints = [320, 768, 1200];
 
 // Handle the alt attribute
 if (isset($displayData['alt'])) {

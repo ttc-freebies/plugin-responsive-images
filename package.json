@@ -45,12 +45,7 @@
   },
   "pkgs_": {
     "responsive": {
-      "files": [
-        {
-          "name": "image2.php",
-          "path": "src/plugins/system/responsiveplgoverrides/html/layouts/joomla/html/image.php"
-        }
-      ],
+      "files": [],
       "zips": [
         {
           "name": "responsive",

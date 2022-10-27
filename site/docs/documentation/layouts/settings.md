@@ -21,13 +21,13 @@ Enabling Responsive images in any Component/Module/Template is as easy as it get
  * or they need to be added, eg.:
  */
 use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\HTML\HTMLHelper;
+
  /** 
  * Also assumes that the image URL is in a variable named $imageUrl
  * And that the image alt attribute value is a variable named $imageAlt
  */
 $image = '<img
-            src="' . HTMLHelper::cleanImageURL($imageUrl) . '"
+            src="' . $imageUrl . '"
             alt="' . $imageAlt . '"
             // Other attributes
           />';
@@ -37,12 +37,12 @@ echo LayoutHelper::render(
   'ttc.image',
   [
     'img' => $image,
-    'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
+    'breakpoints' => [320, 768, 1200]
   ]
 );
 ```
 
-- The `array(200, 320, 480, 768, 992, 1200, 1600, 1920)` can be used to reduce the sizes that will be displayed (the generated images are controlled by the actual width of the image and the setting of the plugin). This is extremely useful and in reality is a camouflaged way to create sufficient thumbnails in any layout! 👌🏻
+- The `array(320, 768, 1200)` can be used to reduce the sizes that will be displayed (the generated images are controlled by the actual width of the image and the settings of the plugin). This is extremely useful and in reality is a camouflaged way to create sufficient thumbnails in any layout! 👌🏻
 
 
 ### A note for people updating to version 4:

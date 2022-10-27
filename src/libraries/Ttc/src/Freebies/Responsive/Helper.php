@@ -68,7 +68,7 @@ class Helper
    *
    * @throws \Exception
    */
-  public function transformImage($image, array $breakpoints, $jsonReturn = false): string
+  public function transformImage($image, array $breakpoints): string
   {
     // Bail out early
     if (!is_array($breakpoints) || !$this->enabled || strpos($image, '<img') === false) return $image;
@@ -110,22 +110,13 @@ class Helper
       ) return $image;
     }
 
-    if (!$jsonReturn) return $this->buildSrcset(
+    return $this->buildSrcset(
       (object) [
         'dirname'   => str_replace('%20', ' ', $pathInfo['dirname']),
         'filename'  => str_replace('%20', ' ', $pathInfo['filename']),
         'extension' => $pathInfo['extension'],
         'tag'       => $image,
         'dom'       => $docImage,
-      ],
-      $breakpoints,
-    );
-    else $this->buildSrcsetJSON(
-      (object) [
-        'dirname'   => str_replace('%20', ' ', $pathInfo['dirname']),
-        'filename'  => str_replace('%20', ' ', $pathInfo['filename']),
-        'extension' => $pathInfo['extension'],
-        'tag'       => $image,
       ],
       $breakpoints,
     );
@@ -158,19 +149,20 @@ class Helper
 
     $type   = in_array(mb_strtolower($image->extension), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image->extension);
     $output = '<picture class="responsive-image">';
+    $sizesAttr = isset($srcSets->base->sizes) && count($srcSets->base->sizes) ? ' sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '"' : '';
 
     if (isset($srcSets->avif) && count(get_object_vars($srcSets->avif->srcset)) > 0) {
       $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
-      if ($srcSetAvif !== '') $output .= '<source type="image/avif"  srcset="' . $srcSetAvif . '" sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '">';
+      if ($srcSetAvif !== '') $output .= '<source type="image/avif"  srcset="' . $srcSetAvif . '" ' . $sizesAttr . '>';
     }
 
     if (isset($srcSets->webp) && count(get_object_vars($srcSets->webp->srcset)) > 0) {
       $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
-      if ($srcSetWebp !== '') $output .= '<source type="image/webp" srcset="' . $srcSetWebp . '" sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '">';
+      if ($srcSetWebp !== '') $output .= '<source type="image/webp" srcset="' . $srcSetWebp . '"' . $sizesAttr . '>';
     }
 
     $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
-    if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . $srcSetOrig . '" sizes = "' . implode(', ', array_reverse($srcSets->base->sizes)) . '">';
+    if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . $srcSetOrig . '"' . $sizesAttr . '>';
 
     $image->dom->firstElementChild->setAttribute('width', $srcSets->base->width);
     $image->dom->firstElementChild->setAttribute('height', $srcSets->base->height);
@@ -179,56 +171,6 @@ class Helper
 
     // Create the fallback img
     return  $output . $image->tag . '</picture>';
-  }
-
-  /**
-   * Build the srcset string
-   *
-   * @param  array   $breakpoints  the different breakpoints
-   * @param  object   $image        the image attributes, expects dirname, filename, extension
-   *
-   * @return string|object
-   *
-   * @since  1.0
-   */
-  private function buildSrcsetJSON(object $image, array $breakpoints = [320, 768, 1200])
-  {
-    if (empty($breakpoints) || !is_file(JPATH_ROOT . '/' . $image->dirname . '/' . $image->filename . '.' . $image->extension)) return $image->tag;
-    if (!is_file(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json')) $this->createImages(str_replace('%20', ' ', $image->dirname), $image->filename, $image->extension);
-
-    try {
-      $srcSets = \json_decode(@file_get_contents(JPATH_ROOT . '/media/cached-resp-images/___data___/' . $image->dirname . '/' . $image->filename . '.json'));
-    } catch (\Exception $e) {
-      return $image->tag;
-    }
-
-    if (null === $srcSets || $srcSets === false) return $image->tag;
-
-    $type   = in_array(mb_strtolower($image->extension), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image->extension);
-    $output = (object) [];
-
-    if (null !== $srcSets->avif && count(get_object_vars($srcSets->avif->srcset)) > 0) {
-      $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
-      if ($srcSetAvif !== '') $output->avif = ['srcset' => $srcSetAvif, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
-    }
-
-    if (null !== $srcSets->webp && count(get_object_vars($srcSets->webp->srcset)) > 0) {
-      $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
-      if ($srcSetWebp !== '') $output->webp = ['srcset' => $srcSetWebp, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
-    }
-
-    $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
-    if ($srcSetOrig !== '') $output->{$type} = ['srcset' => $srcSetOrig, 'sizes' => implode(', ', array_reverse($srcSets->base->sizes))];
-
-    $image->dom->firstElementChild->setAttribute('width', $srcSets->base->width);
-    $image->dom->firstElementChild->setAttribute('height', $srcSets->base->height);
-    if (null !== $image->dom->firstElementChild->getAttribute('loading')) $image->dom->firstElementChild->setAttribute('loading', 'lazy');
-    if (null !== $image->dom->firstElementChild->getAttribute('decoding')) $image->dom->firstElementChild->setAttribute('decoding', 'async');
-
-    // Create the fallback img
-    $output->fallback = $image->tag;
-
-    return  $output;
   }
 
   /**
@@ -283,7 +225,7 @@ class Helper
     ];
     // (max-width: 300px) 100vw, (max-width: 600px) 50vw, (max-width: 900px) 33vw, 900px 320, 768, 1200
     // array_push($srcSets->base->sizes, '(max-width: 320px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 1200px');
-    array_push($srcSets->base->sizes, '(min-width: 22.5em) 50vw, 100vw');
+    array_push($srcSets->base->sizes);
     $img = (object) [
       'dirname'   => $dirname,
       'filename'  => $filename,

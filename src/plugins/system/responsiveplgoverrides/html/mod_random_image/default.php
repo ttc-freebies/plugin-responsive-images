@@ -12,7 +12,7 @@ if (!count($images)) {
 $img = LayoutHelper::render('joomla.html.image', [
   'src'         => $image->folder . '/' . $image->name,
   'alt'         => empty($value['alt_text']) && empty($value['alt_empty']) ? '' : $value['alt_text'],
-  'breakpoints' => [200, 320, 480, 768, 992, 1200, 1600, 1920]
+  'breakpoints' => [320, 768, 1200]
 ]);
 
 echo '<div class="mod-randomimage random-image">'

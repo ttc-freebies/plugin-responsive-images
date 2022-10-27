@@ -157,15 +157,20 @@
     "joomlaVer": "4",
     "client": "site",
     "phpMin": "7.4",
-    "bugs": [],
+    "bugs": [
+      "Memory check was flaky"
+    ],
     "features": [
       "Add a clear created cached images button",
       "Expose the graphic driver (GD or Imagick)"
     ],
     "changes": [
       "Rewrite everything as Native Joomla 4",
-      "Drop the Imagine Library for own implementation"
+      "Drop the Imagine Library for own implementation",
+      "The default source sets are now 320/768/1200px, the most common sizes"
     ],
-    "notes": []
+    "notes": [
+      "Highly recommended to uninstall the old plugin before installing 4.2.0"
+    ]
   }
 ]
