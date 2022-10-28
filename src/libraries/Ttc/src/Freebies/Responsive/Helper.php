@@ -294,7 +294,7 @@ class Helper
 
     if (count($retArr) > 0) return implode(', ', array_reverse($retArr));
 
-    return null;
+    return '';
   }
 
   private function getPaths($path)
