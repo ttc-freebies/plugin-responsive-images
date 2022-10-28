@@ -172,5 +172,18 @@
     "notes": [
       "Highly recommended to uninstall the old plugin before installing 4.2.0"
     ]
+  },
+  {
+    "version": "4.2.1",
+    "type": "stable",
+    "joomlaVer": "4",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Null was returned instead of string"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": []
   }
 ]
