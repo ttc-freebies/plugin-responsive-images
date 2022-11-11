@@ -48,7 +48,6 @@ class Thumbs
           \imageSaveAlpha($destImage, true);
         }
         \imagecopyresampled($destImage, $sourceImage, 0, 0, 0, 0, (int) $options->validSizes[$i], $thumbHeight, $orgWidth, $orgHeight);
-        \imagedestroy($sourceImage);
 
         // Save the image
         if ($img->type === 'jpeg') {
@@ -71,6 +70,12 @@ class Thumbs
           if (!isset($srcSets->avif)) $srcSets->avif = (object) ['srcset' => []];
           $srcSets->avif->srcset[$options->validSizes[$i]] = str_replace(' ', '%20', $fileSrc) . '.avif' . '?version=' . $hash . ' ' . $options->validSizes[$i] . 'w';
         }
+
+        \imagedestroy($sourceImage);
+        \imagedestroy($destImage);
+
+        $sourceImage = null;
+        $destImage = null;
 
         \gc_collect_cycles();
       }
@@ -119,6 +124,7 @@ class Thumbs
         }
 
         $image->destroy();
+        $image = null;
         \gc_collect_cycles();
       }
     }
