@@ -31,7 +31,7 @@
     "naf-css": "3.0.3",
     "nunjucks": "3.2.3",
     "postcss": "8.4.19",
-    "postcss-cli": "10.0.0",
+    "postcss-cli": "10.1.0",
     "postcss-import": "15.0.0",
     "rimraf": "3.0.2",
     "rollup": "3.5.0",
