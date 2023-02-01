@@ -84,7 +84,7 @@ class Helper
     libxml_use_internal_errors(true);
 
     // it loads the content without adding enclosing html/body tags and also the doctype declaration
-    $docImage->LoadHTML(htmlspecialchars_decode(iconv('UTF-8', 'ISO-8859-1', htmlentities($image, ENT_COMPAT, 'UTF-8')), ENT_QUOTES), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    $docImage->LoadHTML(htmlspecialchars_decode(htmlentities($image)), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
     if (!isset($docImage->firstElementChild)) {
       $imageEl = $docImage->childNodes->item(0);

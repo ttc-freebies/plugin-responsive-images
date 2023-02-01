@@ -212,5 +212,18 @@
     "features": [],
     "changes": [],
     "notes": []
+  },
+  {
+    "version": "4.2.4",
+    "type": "stable",
+    "joomlaVer": "4",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Alternative fix for the Deprecation notice on 8.2"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": []
   }
 ]
