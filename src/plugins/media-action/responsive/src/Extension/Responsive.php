@@ -94,7 +94,7 @@ final class Responsive extends MediaActionPlugin implements SubscriberInterface
     $plugin          = PluginHelper::getPlugin('content', 'responsive');
     $this->params    = new Registry($plugin->params);
     $this->separator = $this->params->get('separator', '_');
-    $sizes           = array_map('trim', array_filter(explode(',', $this->params->get('sizes')), 'trim'));
+    $sizes           = array_map('trim', array_filter(explode(',', $this->params->get('sizes', '')), 'trim'));
 
     if (!is_array($sizes)) $sizes = [320, 768, 1200];
 

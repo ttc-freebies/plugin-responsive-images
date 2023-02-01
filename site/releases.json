@@ -198,5 +198,19 @@
     "features": [],
     "changes": [],
     "notes": []
+  },
+  {
+    "version": "4.2.3",
+    "type": "stable",
+    "joomlaVer": "4",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Fix errors on 7.4",
+      "Fix Deprecation notice on 8.2"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": []
   }
 ]

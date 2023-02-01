@@ -9,7 +9,6 @@ namespace Ttc\Freebies\Responsive;
 
 defined('_JEXEC') || die();
 
-use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -22,14 +21,19 @@ use Ttc\Freebies\Responsive\Thumbs;
  */
 class Helper
 {
-  private $separator    = '_';
-  private $qualityJPG   = 75;
-  private $qualityWEBP  = 60;
-  private $qualityAVIF  = 40;
-  private $scaleUp      = false;
-  private $driver       = 'gd';
-  private $validSizes   = [320, 768, 1200];
-  private $validExt     = ['jpg', 'jpeg', 'png']; // 'webp', 'avif'
+  private $params;
+  private $enabled        = false;
+  private $enableWEBP     = false;
+  private $enableAVIF     = false;
+  private $excludeFolders = [];
+  private $separator      = '_';
+  private $qualityJPG     = 75;
+  private $qualityWEBP    = 60;
+  private $qualityAVIF    = 40;
+  private $scaleUp        = false;
+  private $driver         = 'gd';
+  private $validSizes     = [320, 768, 1200];
+  private $validExt       = ['jpg', 'jpeg', 'png']; // 'webp', 'avif'
 
   public function __construct()
   {
@@ -45,8 +49,8 @@ class Helper
       $this->scaleUp     = (bool) $this->params->get('scaleUp', false);
       $this->separator   = $this->params->get('separator', '_');
       $this->driver      = $this->params->get('preferedDriver', 'gd');
-      $excludeFolders    = preg_split('/[\s,]+/', $this->params->get('excludeFolders'));
-      $sizes             = preg_split('/[\s,]+/', $this->params->get('sizes'));
+      $excludeFolders    = preg_split('/[\s,]+/', $this->params->get('excludeFolders', ''));
+      $sizes             = preg_split('/[\s,]+/', $this->params->get('sizes', ''));
 
       if (!is_array($sizes) || count($sizes) < 1) $sizes = [320, 768, 1200];
 
@@ -80,19 +84,26 @@ class Helper
     libxml_use_internal_errors(true);
 
     // it loads the content without adding enclosing html/body tags and also the doctype declaration
-    $docImage->LoadHTML(mb_convert_encoding($image, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    $docImage->LoadHTML(htmlspecialchars_decode(iconv('UTF-8', 'ISO-8859-1', htmlentities($image, ENT_COMPAT, 'UTF-8')), ENT_QUOTES), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-    $src = $docImage->firstElementChild->getAttribute('src') ?? null;
+    if (!isset($docImage->firstElementChild)) {
+      $imageEl = $docImage->childNodes->item(0);
+    } else {
+      $imageEl = $docImage->firstElementChild;
+    }
 
-    if ($src) {
+    $src = $imageEl->getAttribute('src') ?? null;
+
+    if ($imageEl && $src) {
       $paths = $this->getPaths($src);
-      $docImage->firstElementChild->setAttribute('src', ltrim($paths->path, '/'));
+      $imageEl->setAttribute('src', ltrim($paths->path, '/'));
     }
 
     $image = $docImage->saveHTML();
 
     // Valid root path and not excluded path
-    if (empty($paths)
+    if (
+      empty($paths)
       || strpos($paths->pathReal, JPATH_ROOT) !== 0
       || strpos($paths->pathReal, JPATH_ROOT) === false
       || $this->isExcludedFolder(dirname($paths->pathReal))
@@ -164,10 +175,19 @@ class Helper
     $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
     if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . $srcSetOrig . '"' . $sizesAttr . '>';
 
-    $image->dom->firstElementChild->setAttribute('width', $srcSets->base->width);
-    $image->dom->firstElementChild->setAttribute('height', $srcSets->base->height);
-    if (null !== $image->dom->firstElementChild->getAttribute('loading')) $image->dom->firstElementChild->setAttribute('loading', 'lazy');
-    if (null !== $image->dom->firstElementChild->getAttribute('decoding')) $image->dom->firstElementChild->setAttribute('decoding', 'async');
+    if (!isset($image->dom->childNodes)) {
+      return $image->tag;
+    }
+    if (!isset($image->dom->firstElementChild)) {
+      $imageEl = $image->dom->childNodes->item(0);
+    } else {
+      $imageEl = $image->dom->firstElementChild;
+    }
+
+    $imageEl->setAttribute('width', $srcSets->base->width);
+    $imageEl->setAttribute('height', $srcSets->base->height);
+    if (null !== $imageEl->getAttribute('loading')) $imageEl->setAttribute('loading', 'lazy');
+    if (null !== $imageEl->getAttribute('decoding')) $imageEl->setAttribute('decoding', 'async');
 
     // Create the fallback img
     return  $output . $image->tag . '</picture>';
@@ -249,7 +269,8 @@ class Helper
     try {
       $thumbs = new Thumbs($this->driver);
       $thumbs->create($img, $options, $srcSets);
-    } catch (Exception $e) {}
+    } catch (Exception $e) {
+    }
   }
 
   /**

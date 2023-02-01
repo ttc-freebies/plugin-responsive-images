@@ -111,7 +111,7 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
       foreach ($matches[0] as $img) {
         // Make sure we have a src
         if (strpos($img, ' src=') === false || strpos($img, '//') !== false) continue;
-        $sizes = array_map('trim', array_filter(explode(',', $this->params->get('sizes', '320, 768, 1200')), 'trim'));
+        $sizes = array_map('trim', array_filter(explode(',', $this->params->get('sizes', '320,768,1200')), 'trim'));
         $processed = (new \Ttc\Freebies\Responsive\Helper)->transformImage($img, $sizes);
         if ($replaceTags && $processed !== $img) {
           $row->{$ext} = str_replace($img, $processed, $row->{$ext});
@@ -131,7 +131,7 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
 
     if (!is_object($pluginComponents)) {
       try {
-        $pluginComponents = \json_decode($this->params->get('components'));
+        $pluginComponents = \json_decode($this->params->get('components', ''));
       } catch (\Exception $e) {
         return true;
       }
