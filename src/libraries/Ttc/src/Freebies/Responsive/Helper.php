@@ -77,29 +77,16 @@ class Helper
     // Bail out early
     if (!is_array($breakpoints) || !$this->enabled || strpos($image, '<img') === false) return $image;
 
-    // creating new document
-    $docImage = new \DOMDocument('1.0', 'utf-8');
+    $matches = [];
+    preg_match_all('/src="([^"]+)"/', $image, $matches);
+    // We can't handle this
+    if (count($matches) === 0 || count($matches[1]) === 0) return $image;
 
-    // turning off some errors
-    libxml_use_internal_errors(true);
-
-    // it loads the content without adding enclosing html/body tags and also the doctype declaration
-    $docImage->LoadHTML(htmlspecialchars_decode(htmlentities($image)), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-    if (!isset($docImage->firstElementChild)) {
-      $imageEl = $docImage->childNodes->item(0);
-    } else {
-      $imageEl = $docImage->firstElementChild;
-    }
-
-    $src = $imageEl->getAttribute('src') ?? null;
-
-    if ($imageEl && $src) {
+    $src = $matches[1][0];
+    if ($src) {
       $paths = $this->getPaths($src);
-      $imageEl->setAttribute('src', ltrim($paths->path, '/'));
+      $image = preg_replace('(src="(.*?)")', 'src="' . ltrim($paths->path, '/') . '"', $image);
     }
-
-    $image = $docImage->saveHTML();
 
     // Valid root path and not excluded path
     if (
@@ -127,7 +114,6 @@ class Helper
         'filename'  => str_replace('%20', ' ', $pathInfo['filename']),
         'extension' => $pathInfo['extension'],
         'tag'       => $image,
-        'dom'       => $docImage,
       ],
       $breakpoints,
     );
@@ -175,19 +161,31 @@ class Helper
     $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
     if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . $srcSetOrig . '"' . $sizesAttr . '>';
 
-    if (!isset($image->dom->childNodes)) {
-      return $image->tag;
-    }
-    if (!isset($image->dom->firstElementChild)) {
-      $imageEl = $image->dom->childNodes->item(0);
-    } else {
-      $imageEl = $image->dom->firstElementChild;
-    }
+    $heightMatches = [];
+    $widthMatches  = [];
+    $loadingMatches = [];
+    $decodingMatches = [];
+    preg_match_all('/height="([^"]+)"/', $image->tag, $heightMatches);
+    preg_match_all('/width="([^"]+)"/', $image->tag, $widthMatches);
+    preg_match_all('/loading="([^"]+)"/', $image->tag, $loadingMatches);
+    preg_match_all('/decoding="([^"]+)"/', $image->tag, $decodingMatches);
 
-    $imageEl->setAttribute('width', $srcSets->base->width);
-    $imageEl->setAttribute('height', $srcSets->base->height);
-    if (null !== $imageEl->getAttribute('loading')) $imageEl->setAttribute('loading', 'lazy');
-    if (null !== $imageEl->getAttribute('decoding')) $imageEl->setAttribute('decoding', 'async');
+    if (count($loadingMatches) === 0 || count($loadingMatches[1]) === 0) {
+        $image->tag = str_replace('<img ', '<img loading="lazy" ', $image->tag);
+    }
+    if (count($decodingMatches) === 0 || count($decodingMatches[1]) === 0) {
+        $image->tag = str_replace('<img ', '<img decoding="async" ', $image->tag);
+    }
+    if (count($heightMatches) === 0 || count($heightMatches[1]) === 0) {
+        $image->tag = str_replace('<img ', '<img height="' . $srcSets->base->height . '" ', $image->tag);
+    } else {
+        $image->tag = preg_replace('(height="(.*?)")', 'height="' . $srcSets->base->height . '"', $image->tag);
+    }
+    if (count($widthMatches) === 0 || count($widthMatches[1]) === 0) {
+        $image->tag = str_replace('<img ', '<img width="' . $srcSets->base->width . '" ', $image->tag);
+    } else {
+        $image->tag = preg_replace('(width="(.*?)")', 'width="' . $srcSets->base->width . '"', $image->tag);
+    }
 
     // Create the fallback img
     return  $output . $image->tag . '</picture>';

@@ -225,5 +225,18 @@
     "features": [],
     "changes": [],
     "notes": []
+  },
+  {
+    "version": "4.2.5",
+    "type": "stable",
+    "joomlaVer": "4",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Fix: alt text rendering weird symbols"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": []
   }
 ]
