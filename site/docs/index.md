@@ -32,7 +32,7 @@ A rock solid solution for creating and using responsive images with Joomla 4 fro
 - {{fff.version}} is the latest version.
 - Download it here: 
 
-Download the latest Version ( {{fff.version}} ) [here](/dist/pkg_responsive_{{fff.version}}.zip) or for any previous vesrion go to : [Downloads](/downloads)
+Download the latest Version ( {{fff.version}} ) [here](/dist/pkg_responsive_{{fff.version}}.zip) or for any previous version go to : [Downloads](/downloads)
 
 ### What it does
 
