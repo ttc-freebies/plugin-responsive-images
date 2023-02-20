@@ -24,7 +24,7 @@
     "@11ty/eleventy-navigation": "0.3.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "4.2.0",
     "@rollup/plugin-node-resolve": "15.0.1",
-    "@zip.js/zip.js": "2.6.66",
+    "@zip.js/zip.js": "2.6.67",
     "adm-zip": "0.5.10",
     "fs-extra": "11.1.0",
     "markdown-it-anchor": "8.6.7",
