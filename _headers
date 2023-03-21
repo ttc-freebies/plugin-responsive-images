@@ -1,0 +1,11 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+
+/static/*
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: nosnippet
+
+/dist/*
+  X-Robots-Tag: noindex
