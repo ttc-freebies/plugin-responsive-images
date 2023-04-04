@@ -4,6 +4,7 @@
   "private": true,
   "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
+    "test": "eleventy",
     "build": "node build.js",
     "build:site": "eleventy",
     "serve": "eleventy --serve"
