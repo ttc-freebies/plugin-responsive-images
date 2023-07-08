@@ -36,7 +36,7 @@
     "postcss-import": "15.1.0",
     "rimraf": "5.0.1",
     "rollup": "3.26.2",
-    "semver": "7.5.3",
+    "semver": "7.5.4",
     "uhtml": "3.2.1"
   },
   "data": {
