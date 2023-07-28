@@ -285,9 +285,10 @@ class Helper
    */
   private static function checkMemoryLimit($properties, $imagePath): bool
   {
-    $memorycheck = ($properties['width'] * $properties['height'] * $properties['bits']);
+    $memorycheck  = ($properties['width'] * $properties['height'] * $properties['bits']);
     // $memorycheck_text = $memorycheck / (1024 * 1024);
-    $memory_limit = self::toByteSize(ini_get('memory_limit'));
+    $phpMemory    = ini_get('memory_limit');
+    $memory_limit = is_numeric($phpMemory) ? $phpMemory : self::toByteSize($phpMemory);
 
     if (isset($memory_limit) && $memorycheck > $memory_limit) {
       Factory::getApplication()->enqueueMessage('Image too big to be processed', 'error'); //, $imagePath, $memorycheck_text, $memory_limit

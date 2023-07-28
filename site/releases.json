@@ -238,5 +238,18 @@
     "features": [],
     "changes": [],
     "notes": []
+  },
+  {
+    "version": "4.2.6",
+    "type": "stable",
+    "joomlaVer": "4",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Fix: memory could be defined as integer on some ISP"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": []
   }
 ]
