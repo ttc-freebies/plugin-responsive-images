@@ -34,7 +34,7 @@
     "postcss": "8.4.30",
     "postcss-cli": "10.1.0",
     "postcss-import": "15.1.0",
-    "rimraf": "5.0.1",
+    "rimraf": "5.0.4",
     "rollup": "3.29.3",
     "semver": "7.5.4",
     "uhtml": "3.2.2"
