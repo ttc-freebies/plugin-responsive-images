@@ -144,22 +144,23 @@ class Helper
 
     if (null === $srcSets || $srcSets === false) return $image->tag;
 
+    $base = Uri::root(true);
     $type   = in_array(mb_strtolower($image->extension), ['jpg', 'jpeg']) ? 'jpeg' : mb_strtolower($image->extension);
     $output = '<picture class="responsive-image">';
     $sizesAttr = isset($srcSets->base->sizes) && count($srcSets->base->sizes) ? ' sizes="' . implode(', ', array_reverse($srcSets->base->sizes)) . '"' : '';
 
     if (isset($srcSets->avif) && count(get_object_vars($srcSets->avif->srcset)) > 0) {
       $srcSetAvif = $this->getSrcSets($srcSets->avif->srcset, $breakpoints);
-      if ($srcSetAvif !== '') $output .= '<source type="image/avif"  srcset="' . $srcSetAvif . '" ' . $sizesAttr . '>';
+      if ($srcSetAvif !== '') $output .= '<source type="image/avif"  srcset="' . str_replace('media/cached-resp-images/', $base . '/media/cached-resp-images/', $srcSetAvif) . '" ' . $sizesAttr . '>';
     }
 
     if (isset($srcSets->webp) && count(get_object_vars($srcSets->webp->srcset)) > 0) {
       $srcSetWebp = $this->getSrcSets($srcSets->webp->srcset, $breakpoints);
-      if ($srcSetWebp !== '') $output .= '<source type="image/webp" srcset="' . $srcSetWebp . '"' . $sizesAttr . '>';
+      if ($srcSetWebp !== '') $output .= '<source type="image/webp" srcset="' . str_replace('media/cached-resp-images/', $base . '/media/cached-resp-images/', $srcSetWebp) . '"' . $sizesAttr . '>';
     }
 
     $srcSetOrig = $this->getSrcSets($srcSets->base->srcset, $breakpoints);
-    if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . $srcSetOrig . '"' . $sizesAttr . '>';
+    if ($srcSetOrig !== '') $output .= '<source type="image/' . $type . '" srcset="' . str_replace('media/cached-resp-images/', $base . '/media/cached-resp-images/', $srcSetOrig) . '"' . $sizesAttr . '>';
 
     $heightMatches = [];
     $widthMatches  = [];
@@ -186,6 +187,8 @@ class Helper
     } else {
         $image->tag = preg_replace('(width="(.*?)")', 'width="' . $srcSets->base->width . '"', $image->tag);
     }
+
+    $image->tag = preg_replace('(src="(.*?)")', 'src="' . $base . $image->dirname . '/' . $image->filename . '.' . $image->extension . '"', $image->tag);
 
     // Create the fallback img
     return  $output . $image->tag . '</picture>';
