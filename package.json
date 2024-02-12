@@ -37,7 +37,7 @@
     "rimraf": "5.0.5",
     "rollup": "3.29.4",
     "semver": "7.6.0",
-    "uhtml": "4.4.7"
+    "uhtml": "4.4.8"
   },
   "data": {
     "repo": "ooo"
