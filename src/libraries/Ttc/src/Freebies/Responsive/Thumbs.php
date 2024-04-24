@@ -65,7 +65,7 @@ class Thumbs
           if (!isset($srcSets->webp)) $srcSets->webp = (object) ['srcset' => []];
           $srcSets->webp->srcset[$options->validSizes[$i]] = str_replace(' ', '%20', $fileSrc) . '.webp' . '?version=' . $hash . ' ' . $options->validSizes[$i] . 'w';
         }
-        if ($options->enableAVIF && \imagewebp($destImage, JPATH_ROOT . '/' . $fileSrc . '.avif', $options->qualityAVIF)) {
+        if ($options->enableAVIF && \imageavif($destImage, JPATH_ROOT . '/' . $fileSrc . '.avif', $options->qualityAVIF)) {
           $hash = hash_file('md5', JPATH_ROOT . '/' . $fileSrc . '.avif', false);
           if (!isset($srcSets->avif)) $srcSets->avif = (object) ['srcset' => []];
           $srcSets->avif->srcset[$options->validSizes[$i]] = str_replace(' ', '%20', $fileSrc) . '.avif' . '?version=' . $hash . ' ' . $options->validSizes[$i] . 'w';

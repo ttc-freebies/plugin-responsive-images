@@ -266,5 +266,20 @@
     "notes": [
       "Joomla 5 compatible"
     ]
+  },
+  {
+    "version": "4.2.8",
+    "type": "stable",
+    "joomlaVer": "[45].[01234]",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Fix: incorectly encoded AVIF files as WebP"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": [
+      "Joomla 5 compatible"
+    ]
   }
 ]
