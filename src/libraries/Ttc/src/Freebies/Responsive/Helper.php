@@ -83,23 +83,16 @@ class Helper
     if (count($matches) === 0 || count($matches[1]) === 0) return $image;
 
     $src = $matches[1][0];
-    if ($src) {
-      $paths = $this->getPaths($src);
-      $image = preg_replace('(src="(.*?)")', 'src="' . ltrim($paths->path, '/') . '"', $image);
-    }
+    $paths = $src ? $this->getPaths($src) : null;
+    $image = $src ? preg_replace('/src="([^"]+)"/', 'src="' . ltrim($paths->path, '/') . '"', $image) : $image;
 
     // Valid root path and not excluded path
-    if (
-      empty($paths)
-      || strpos($paths->pathReal, JPATH_ROOT) !== 0
-      || strpos($paths->pathReal, JPATH_ROOT) === false
-      || $this->isExcludedFolder(dirname($paths->pathReal))
-    ) return $image;
+    if (empty($paths) || !str_starts_with($paths->pathReal, JPATH_ROOT) || $this->isExcludedFolder(dirname($paths->pathReal))) return $image;
 
     $pathInfo = pathinfo($paths->path);
 
     // Bail out if no images supported
-    if (!in_array(mb_strtolower($pathInfo['extension']), $this->validExt) || !file_exists(JPATH_ROOT . $paths->path)) return $image;
+    if (!in_array(mb_strtolower($pathInfo['extension']), $this->validExt) || !file_exists(JPATH_ROOT . '/' . $paths->path)) return $image;
 
     if (!is_dir(JPATH_ROOT . '/media/cached-resp-images/' . str_replace('%20', ' ', $pathInfo['dirname']))) {
       if (
@@ -172,20 +165,20 @@ class Helper
     preg_match_all('/decoding="([^"]+)"/', $image->tag, $decodingMatches);
 
     if (count($loadingMatches) === 0 || count($loadingMatches[1]) === 0) {
-        $image->tag = str_replace('<img ', '<img loading="lazy" ', $image->tag);
+      $image->tag = str_replace('<img ', '<img loading="lazy" ', $image->tag);
     }
     if (count($decodingMatches) === 0 || count($decodingMatches[1]) === 0) {
-        $image->tag = str_replace('<img ', '<img decoding="async" ', $image->tag);
+      $image->tag = str_replace('<img ', '<img decoding="async" ', $image->tag);
     }
     if (count($heightMatches) === 0 || count($heightMatches[1]) === 0) {
-        $image->tag = str_replace('<img ', '<img height="' . $srcSets->base->height . '" ', $image->tag);
+      $image->tag = str_replace('<img ', '<img height="' . $srcSets->base->height . '" ', $image->tag);
     } else {
-        $image->tag = preg_replace('(height="(.*?)")', 'height="' . $srcSets->base->height . '"', $image->tag);
+      $image->tag = preg_replace('(height="(.*?)")', 'height="' . $srcSets->base->height . '"', $image->tag);
     }
     if (count($widthMatches) === 0 || count($widthMatches[1]) === 0) {
-        $image->tag = str_replace('<img ', '<img width="' . $srcSets->base->width . '" ', $image->tag);
+      $image->tag = str_replace('<img ', '<img width="' . $srcSets->base->width . '" ', $image->tag);
     } else {
-        $image->tag = preg_replace('(width="(.*?)")', 'width="' . $srcSets->base->width . '"', $image->tag);
+      $image->tag = preg_replace('(width="(.*?)")', 'width="' . $srcSets->base->width . '"', $image->tag);
     }
 
     $image->tag = preg_replace('(src="(.*?)")', 'src="' . $base . $image->dirname . '/' . $image->filename . '.' . $image->extension . '"', $image->tag);
@@ -216,7 +209,7 @@ class Helper
 
     if (empty($info)) return;
 
-    $imageWidth = $info[0];
+    $imageWidth  = $info[0];
     $imageHeight = $info[1];
 
     // Skip if the width is less or equal to the required
@@ -270,7 +263,7 @@ class Helper
     try {
       $thumbs = new Thumbs($this->driver);
       $thumbs->create($img, $options, $srcSets);
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
     }
   }
 
@@ -329,7 +322,7 @@ class Helper
 
     return (object) [
       'path' => str_replace('%20', ' ', $path),
-      'pathReal' => realpath(JPATH_ROOT . str_replace('%20', ' ', $path)),
+      'pathReal' => realpath(JPATH_ROOT . '/' . str_replace('%20', ' ', $path)),
     ];
   }
 
