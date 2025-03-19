@@ -322,8 +322,10 @@ class Helper
 
   private function getPaths($path)
   {
-    $path = MediaHelper::getCleanMediaFieldValue(str_replace(Uri::base(), '', $path));
-    $path = (substr($path, 0, 1) === '/' ? $path : '/' . $path);
+    $urlbase = Uri::base(true);
+    $path = str_starts_with($path, $urlbase) ? str_replace($urlbase, '', $path) : $path;
+    $path = (substr($path, 0, 1) === '/' ? substr($path, 1) : $path);
+    $path = MediaHelper::getCleanMediaFieldValue($path);
 
     return (object) [
       'path' => str_replace('%20', ' ', $path),
