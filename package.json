@@ -27,7 +27,7 @@
     "@rollup/plugin-node-resolve": "16.0.1",
     "@zip.js/zip.js": "2.7.62",
     "adm-zip": "0.5.16",
-    "fs-extra": "11.3.0",
+    "fs-extra": "11.3.2",
     "markdown-it-anchor": "9.2.0",
     "naf-css": "3.0.3",
     "nunjucks": "3.2.4",
