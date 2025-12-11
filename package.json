@@ -1,6 +1,6 @@
 {
   "name": "plugin-responsive-images",
-  "version": "4.2.9",
+  "version": "4.2.10",
   "private": true,
   "description": "A tiny content plugin that creates a few different sized images on the fly and also updates the markup to use the well established and supported HTML5 image tag srcset",
   "scripts": {
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@11ty/eleventy": "3.1.2",
     "@11ty/eleventy-img": "6.0.4",
-    "@11ty/eleventy-navigation": "1.0.4",
+    "@11ty/eleventy-navigation": "1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "5.0.2",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@zip.js/zip.js": "2.8.11",
@@ -35,7 +35,7 @@
     "postcss-cli": "11.0.1",
     "postcss-import": "16.1.1",
     "rimraf": "6.1.2",
-    "rollup": "3.29.5",
+    "rollup": "4.53.3",
     "semver": "7.7.3",
     "uhtml": "5.0.9"
   },

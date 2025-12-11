@@ -133,7 +133,7 @@ final class Responsive extends CMSPlugin implements SubscriberInterface
       try {
         $pluginComponents = \json_decode($this->params->get('components', ''));
       } catch (\Exception $e) {
-        return true;
+        return (object) [];
       }
 
       if ($pluginComponents === false) return (object) [];

@@ -296,5 +296,20 @@
     "notes": [
       "Joomla 5 compatible"
     ]
+  },
+  {
+    "version": "4.2.10",
+    "type": "stable",
+    "joomlaVer": "[456].[01234]",
+    "client": "site",
+    "phpMin": "7.4",
+    "bugs": [
+      "Fix: wrong path for subfolder installed Joomla instances"
+    ],
+    "features": [],
+    "changes": [],
+    "notes": [
+      "Joomla 5 compatible"
+    ]
   }
 ]
